@@ -577,6 +577,7 @@ class UserController extends BaseController {
                     $url = 'http://'.C('SERVER_IP').'/GetOldGeneralizeList';
                     $params = $this->publicEncrypt($params);
                     $url .= '?data='.$params;
+//                    var_dump($url);die;
                     $lists = $this->getHTTPData($url);
                 }else{//查新数据
                     //周的时间处理

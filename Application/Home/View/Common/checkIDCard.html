@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	<title>认证与绑定</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		a{
+			text-decoration: none;
+		}
+		@font-face {
+			font-family: "hkhbt";
+			src: url('__PUBLIC__/assets/img/common/hkhbt.ttf');
+		}
+
+	</style>
+</head>
+<body style="width: 100%; height: 100%; margin: 0; padding: 0;">
+	<div class="title">
+		<h1 style="height: 42px; background-image: url('__PUBLIC__/assets/img/common/bind_title_bg.png'); background-size: 100% 100%; background-repeat: no-repeat; text-align: center; color: #69313A; font-weight: normal; font-size: 24px; padding-top: 5px; padding-bottom: 10px; line-height: 44px;">
+			<p style="font-family: hkhbt">用户中心</p>
+		</h1>
+	</div>
+	<div class="content" style="width: 95%; margin: 0 auto;">
+		<div class="idCard">
+			<h2 style="color: #69313A; font-size: 18px; padding-top: 12px; padding-bottom: 8px;">
+			实名认证<img style="width: 100%;" src="__PUBLIC__/assets/img/common/bind_border.png" alt=""></h2>
+			<div style="overflow: hidden; margin-top: 8px;">
+				<if condition="$idcard eq true">
+					<div class="icon" style="float: left; width: 40px; height: 40px; background-image: url('__PUBLIC__/assets/img/common/bind_idcard_bg.jpg'); background-size: 100%; background-repeat: no-repeat;">
+					</div>
+					<div style="float: left; color: #69313A; font-size: 12px; margin-left: 15px; margin-top: 5px;">
+						<p>您已通过实名认证</p>
+						<p>证件号码：{$idcard}</p>
+					</div>
+					<div style="float: right; margin-top: 5px; margin-right: 10px;">
+						<p><a style="display: inline-block; width: 65px; height: 35px; background-image: url('__PUBLIC__/assets/img/common/bind_idcard_btn2.png'); background-size: 100% 100%; background-repeat: no-repeat;" href="{:U('Home/Common/Authentication',array('uid'=>$uid))}"></a></p>
+					</div>
+
+				<else/>
+					<div class="icon" style="float: left; width: 40px; height: 40px;  background-image: url('__PUBLIC__/assets/img/common/bind_idcard_bg.jpg'); background-size: 100%; background-repeat: no-repeat;">
+					</div>
+
+					<div style="float: left; color: #69313A; font-size: 12px; margin-left: 15px; margin-top: 5px;">
+						<p>您还未通过实名认证</p>
+						<p>认证后不能更改,请仔细填写</p>
+					</div>
+					<div style="float: right; margin-top: 5px; margin-right: 10px;">
+						<p><a style="display: inline-block; width: 65px; height: 35px; background-image: url('__PUBLIC__/assets/img/common/bind_idcard_btn.png'); background-size: 100% 100%; background-repeat: no-repeat;" href="{:U('Home/Common/bindIDCard',array('uid'=>$uid))}"></a></p>
+					</div>
+				</if>
+			</div>
+		</div>
+		<div class="bankCard" style="margin-top: 15px;">
+			<h2 style="color: #69313A; font-size: 18px; padding-top: 8px; padding-bottom: 8px;">
+			银行卡绑定<img style="width: 100%;" src="__PUBLIC__/assets/img/common/bind_border.png" alt=""></h2>
+			<if condition="$collection_account eq true">
+				<div style="overflow: hidden; margin-top: 8px;">
+					<div class="icon" style="float: left; width: 40px; height: 40px; background-image: url('__PUBLIC__/assets/img/common/bind_bank_bg.jpg'); background-size: 100%; background-repeat: no-repeat;">
+					</div>
+					<div style="float: left; color: #69313A; font-size: 12px; margin-left: 15px; margin-top: 5px;">
+						<p>您已绑定：{$bank}:{$collection_account}</p>
+						<p>您只可以绑定一个银行卡号</p>
+					</div>
+					<div style="float: right; margin-top: 5px; margin-right: 10px;">
+						<p><a style="display: inline-block; width: 65px; height: 35px; background-image: url('__PUBLIC__/assets/img/common/bind_bank_btn2.png'); background-size: 100% 100%; background-repeat: no-repeat;" href="{:U('Home/Common/manageAccount',array('uid'=>$uid))}"></a></p>
+					</div>
+				</div>
+			<else/>
+				<div style="overflow: hidden; margin-top: 8px;">
+					<div class="icon" style="float: left; width: 40px; height: 40px; background-image: url('__PUBLIC__/assets/img/common/bind_bank_bg.jpg'); background-size: 100%; background-repeat: no-repeat;">
+					</div>
+					<div style="float: left; color: #69313A; font-size: 12px; margin-left: 15px; margin-top: 5px;">
+						<p>您还未绑定银行卡</p>
+						<p>您只可以绑定一个银行卡号</p>
+					</div>
+					<div style="float: right; margin-top: 5px; margin-right: 10px;">
+						<p><a style="display: inline-block; width: 65px; height: 35px; background-image: url('__PUBLIC__/assets/img/common/bind_bank_btn.png'); background-size: 100% 100%; background-repeat: no-repeat;" href="{:U('Home/Common/bindBank',array('uid'=>$uid))}"></a></p>
+					</div>
+
+				</div>
+			</if>
+		</div>
+	</div>
+</body>
+</html>

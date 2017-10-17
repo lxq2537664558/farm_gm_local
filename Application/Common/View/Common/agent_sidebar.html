@@ -1,0 +1,68 @@
+<div class="admin-sidebar am-offcanvas  am-padding-0" id="admin-offcanvas" style="width: 15%;">
+    <div class="am-offcanvas-bar admin-offcanvas-bar">
+        <!-- User -->
+        <!-- End User -->
+        <ul class="am-list admin-sidebar-list">
+            <li style="font-size: 20px;">
+                <a href="{:U('Agent/User/index')}" style="display:inline-block;"><span class="am-icon-home"></span>首页</a>
+                <b>
+                    <a href="{:U('Agent/User/logout')}" style="display: inline-block; font-size: 12px;">退出</a>
+                </b>
+            </li>
+
+
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><i class="am-icon-user" aria-hidden="true"></i> 用户管理 <span class="am-icon-angle-right am-fr am-margin-right" id="arrow"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub" id="collapse-nav2">
+                        <li><a href="{:U('Agent/User/index')}" class="am-cf"> 用户列表</span></a></li>
+                    </ul>
+                </li>
+                <!--<li class="admin-parent">-->
+                    <!--<a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><i class="am-icon-dollar" aria-hidden="true"></i> 提现管理 <span class="am-icon-angle-right am-fr am-margin-right" id="arrow"></span></a>-->
+                    <!--<ul class="am-list am-collapse admin-sidebar-sub" id="collapse-nav3">-->
+                        <!--<li><a href="{:U('Home/Withdraw/withdrawManagement')}" class="am-cf"> 提现管理</a></li>-->
+                        <!--<li><a href="{:U('Home/Withdraw/withdrawComplete')}">提现完成</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                <!--<li class="admin-parent">-->
+                    <!--<a class="am-cf" data-am-collapse="{target: '#collapse-nav6'}"><i class="am-icon-balance-scale" aria-hidden="true"></i> 权限支付 <span class="am-icon-angle-right am-fr am-margin-right" id="arrow"></span></a>-->
+                    <!--<ul class="am-list am-collapse admin-sidebar-sub" id="collapse-nav6">-->
+                        <!--<li><a href="{:U('Home/Authority/authorityManagement')}" class="am-cf"> 权限管理</span></a></li>-->
+                        <!--<li><a href="{:U('Home/Authority/authorityPayList')}" class="am-cf"> 支付列表</span></a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                <!--<li class="admin-parent">-->
+                    <!--<a class="am-cf" data-am-collapse="{target: '#collapse-nav7'}"><i class="am-icon-share-alt" aria-hidden="true"></i> 推广设置 <span class="am-icon-angle-right am-fr am-margin-right" id="arrow"></span></a>-->
+                    <!--<ul class="am-list am-collapse admin-sidebar-sub" id="collapse-nav7">-->
+                        <!--<li><a href="{:U('Home/Promotion/promotionSettings')}" class="am-cf"> 推广设置</span></a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                <!--<li class="admin-parent">-->
+                    <!--<a class="am-cf" data-am-collapse="{target: '#collapse-nav8'}"><i class="am-icon-gear" aria-hidden="true"></i> 基础管理 <span class="am-icon-angle-right am-fr am-margin-right" id="arrow"></span></a>-->
+                    <!--<ul class="am-list am-collapse admin-sidebar-sub" id="collapse-nav8">-->
+                        <!--<li><a href="{:U('Home/Basic/basicWorshipFarmland')}" class="am-cf"> 供奉设置</a></li>-->
+                        <!--<li><a href="{:U('Home/Basic/basicPacks')}">礼包设置</a></li>-->
+                        <!--<li><a href="{:U('Home/Basic/basicMail')}">邮件设置</a></li>-->
+                        <!--<li><a href="{:U('Home/Basic/basicOutputList')}">产出设置</a></li>-->
+                        <!--<li><a href="{:U('Home/Basic/basicPublic')}">发行设置</a></li>-->
+                        <!--&lt;!&ndash; <li><a href="{:U('Home/Basic/basicAchievementSettings')}">成就设置</a></li> &ndash;&gt;-->
+                        <!--&lt;!&ndash; <li><a href="{:U('Home/Basic/basicDogfoodSettings')}">狗粮兑换设置</a></li> &ndash;&gt;-->
+                    <!--</ul>-->
+                <!--</li>-->
+
+
+            <!--<if condition="$group eq 2">-->
+                <!--<li class="admin-parent">-->
+                    <!--<a class="am-cf" data-am-collapse="{target: '#collapse-nav9'}"><i class="am-icon-gears" aria-hidden="true"></i> 高级管理 <span class="am-icon-angle-right am-fr am-margin-right" id="arrow"></span></a>-->
+                    <!--<ul class="am-list am-collapse admin-sidebar-sub" id="collapse-nav9">-->
+                        <!--<li><a href="{:U('Home/Advance/goldRecharge')}" class="am-cf"> 金币充值</a></li>-->
+                        <!--<li><a href="{:U('Home/Advance/diamondRecharge')}" class="am-cf"> 钻石充值</a></li>-->
+                        <!--<li><a href="{:U('Home/Advance/propsGift')}">道具赠送</a></li>-->
+                        <!--<li><a href="{:U('Home/Advance/productRecharge')}" style="margin-bottom: 10px;">产品充值</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+            <!--</if>-->
+        </ul>
+    </div>
+<input type="hidden" id="group" value="{$group}">
+</div>

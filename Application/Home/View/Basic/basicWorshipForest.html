@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>农地供奉</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <!-- 标题 -->
+        <div class="title" style="margin-left: 10px;">
+            <a href="{:U('Home/Basic/basicWorshipFarmland')}" style="color: gray;"><h2 style="display: inline-block;">农地供奉</h2></a>
+            <a href="{:U('Home/Basic/basicWorshipFishpond')}" style="color: gray;"><h2 style="display: inline-block; margin-left: 20px;">鱼塘供奉</h2></a>
+            <h2 style="display: inline-block; margin-left: 20px;">森林供奉</h2></a>
+            <a href="{:U('Home/Basic/basicWorshipMine')}" style="color: gray; margin-left: 20px;"><h2 style="display: inline-block;">矿洞供奉</h2></a>
+        </div>
+        <!-- 内容 -->
+        <div class="basic-worship-forest" style="overflow: hidden">
+            <table id="mytable" style="width: 100%;" border="1">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>森林供奉物品</th>
+                    <th>森林供奉数量</th>
+                    <th>持续时间</th>
+                    <th>序列号</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <foreach name="worship" item="w">
+                    <tr>
+                        <td class="worship_id">{$w['id']}</td>
+                        <td>[{$w['name']}]</td>
+                        <td>[{$w['number']}]</td>
+                        <td>{$w['day']}</td>
+                        <td>{$w['serial']}</td>
+                        <td>未提交</td>
+                        <td><button class="delete_worship" style="border: none; border: 1px solid gray; border-radius: 5px;">删除</button></td>
+                    </tr>
+                </foreach>
+                </tbody>
+            </table>
+            <span>当前服务器供奉期次为 <b style="color: red;">{$selectid}</b></span>
+            <div id="edit_page">
+                <i class="am-icon-plus-circle" id="goadd_btn" style="font-size: 70px; margin-left: 10px; cursor: pointer;"></i>
+                <span>当前添加第 <b id="current_number">{$max_sid}</b> 期</span><span>（已提交 <b>{$max_sid-1}</b> 期）</span>
+                <b style="color: red;">本期所有数据添加完成之后，方可点击提交到服务器(意味着本期操作结束)</b>
+                <div id="add_input" style="display: none; border: 1px solid #5697B5; width: 600px; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; margin-top: 20px;">
+                    <form action="#" method="post" id="addform">
+                        <p>
+                            <span style="display: inline-block; width: 120px;">森林供奉物品</span>
+                            <input type="" name="name" readonly="readonly" id="itemid_input" required="required" placeholder="下拉框选择(不能为空)" style="margin-left: 5px;">
+                            <select id="select_itemid">
+                                <option>请选择供奉物品</option>
+                                <foreach name="products" item="p">
+                                    <option value="{$p['pid']}">{$p['name']}</option>
+                                </foreach>
+                            </select>
+                            <span id="clear_itemid" style="display: inline-block; font-size: 12px; cursor: pointer; border: 1px solid gray; border-radius: 5px; width: 40px; text-align: center;">清空</span>
+                        </p>
+                        <p>
+                            <span class="worship_number" style="display: inline-block; width: 120px;">森林供奉数量</span>
+                            <input class="worship_number_input" type="hidden" name="number" value="">
+                            <!-- <input type="" name="number"  required="required" placeholder="必许与物品一一对应"><span style="font-size: 12px; color: red; letter-spacing: 1px;">(数量之间必须用逗号<b>[英文状态下]</b>隔开)</span> -->
+                        </p>
+                        <p>
+                            <span style="display: inline-block; width: 120px;">供奉天数</span>
+                            <input class="worship_days" type="" name="day" style="margin-left: 5px;">
+                            <input type="hidden" value="{$max_sid}" name="max_sid" id="sid"><!--序列号-->
+                        </p>
+                        <input class="add_worship" type="submit" value="添加" style="margin-bottom: 10px;">
+                        <input type="button" name="" value="取消" style="margin-left: 20px; margin-bottom: 10px;" id="cancel_add"><br>
+                    </form>
+                </div>
+                <button style="background: #377896; float: right; margin-top: 35px; border: 1px solid gray; border-radius: 10px; height: 40px; color: white" id="worship_submit">提交到服务器</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/basic/worshipForest.js"></script>
+<script type="text/javascript">
+    $('#collapse-nav8').addClass('am-in');
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

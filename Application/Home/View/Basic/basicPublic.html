@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发行</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <!-- 标题 -->
+        <h2 class="title" style="margin-top: 35px; margin-left: 10px;">发行量设置</h2>
+        <!-- 内容 -->
+        <div class="basic-public">
+            <table id="mytable" style="width: 100%;" border="1">
+                <thead>
+                <tr>
+                    <th style="cursor: pointer;">产品id</th>
+                    <th>产品种类</th>
+                    <th style="cursor: pointer;">发行总量</th>
+                    <th style="cursor: pointer;">玩家产出总量</th>
+                    <th style="cursor: pointer;">剩余总量</th>
+                    <th style="cursor: pointer;">剩余比例</th>
+                    <th style="cursor: pointer;">消耗总量</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <foreach name="info" item="i">
+                    <tr>
+                        <td>{$i['itemId']}</td>
+                        <td>{$products[$i['itemId']]}</td>
+                        <td>{$i['releaseCount']}</td>
+                        <td>{$i['currentRelease']}</td>
+                        <td>{$i['leftNum']}</td>
+                        <td>{$i['leftNum']/$i['releaseCount']}</td>
+                        <td><if condition="$i['costNum'] eq true">{$i['costNum']}<else/>0</if></td>
+                        <td><a href="{:U('Home/Basic/publicEdit',array('id'=>$i['itemId']))}">编辑</a></td>
+                    </tr>
+                </foreach>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript">
+    $('#collapse-nav8').addClass('am-in');
+
+
+
+    var table=document.getElementById("mytable");
+    var table_th=document.getElementsByTagName("th");
+    var table_tbody=table.getElementsByTagName("tbody")[0];
+    var table_tr=table_tbody.getElementsByTagName("tr");
+    function click_sort(_i){
+            table_th[_i].onclick=function(){
+                var temp_arr=[];
+                var temp_tr_arr=[];
+                for(j=0;j<table_tr.length;j++){
+                    temp_arr.push(table_tr[j].getElementsByTagName("td")[_i].innerHTML);
+                    temp_tr_arr.push(table_tr[j].cloneNode(true));
+                };
+                var tr_length=table_tr.length
+                for(x=0;x<tr_length;x++){
+                    table_tbody.removeChild(table_tbody.getElementsByTagName("tr")[0]);
+                }
+                var temp=parseInt(temp_arr[0])||temp_arr[0];
+                if(typeof(temp)=='number'){
+                    temp_arr.sort(function(a,b){return a-b;});
+                }else{
+                    temp_arr.sort();
+                }
+                for(k=0;k<temp_arr.length;k++){
+                        for(vv=0;vv<temp_tr_arr.length;vv++){
+                            if(temp_arr[k]==temp_tr_arr[vv].getElementsByTagName("td")[_i].innerHTML){
+                                table_tbody.appendChild(temp_tr_arr[vv]);
+                            }
+                        }
+                }
+            }
+        }
+    for(i=0;i<table_th.length;i++){
+        click_sort(i);
+    }
+    table_th[1].onclick=null;
+    table_th[7].onclick=null;
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

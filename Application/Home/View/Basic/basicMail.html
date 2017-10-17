@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮件</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <div class="basic-mail">
+            <div class="title" style="margin-top: 35px; margin-left: 10px;">
+                <h2 style="display: inline-block; margin-top: 5px;">邮件</h2>
+                <if condition="$group neq 0">
+                    <a href="{:U('Home/Basic/basicAddMail')}" style="color: gray; margin-left: 20px;"><h2 style="display: inline-block;">新增邮件</h2></a>
+                </if>
+            </div>
+            <table style="width: 100%" border="1" id="mytable">
+                <thead>
+                    <tr>
+                        <th>邮件标题</th>
+                        <th>邮件内容<span style="color: red">[内容有代码属正常现象]</span></th>
+                        <th>物品ID</th>
+                        <th>物品数量</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <foreach name="mails" item="m">
+                        <tr>
+                            <td>{$m['title']}</td>
+                            <td>{$m['content']}</td>
+                            <td>{$m['item_ids']}</td>
+                            <td>{$m['item_number']}</td>
+                            <td>
+                                <if condition="$group neq 0">
+                                    <a href="{:U('Home/Basic/basicAddMail',array('id'=>$m['id']))}">编辑</a>
+                                    <!-- <a href="javascript:void(0);" class="delete_mail">删除</a> -->
+                                    <a href="{:U('Home/Basic/deleteMail',array('id'=>$m['id']))}"  onClick="return confirm('确定删除吗?');">删除</a>
+                                    <a href="{:U('Home/Basic/sendMail',array('id'=>$m['id']))}" class="send">发送</a>
+                                </if>
+                            </td>
+                        </tr>
+                    </foreach>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript">
+    $('#collapse-nav8').addClass('am-in');
+
+    // $('.delete_confirm').hide();
+    // $('.delete_mail').click(function(){
+    //     $('.delete_confirm').show();
+    // })
+    //
+    // $('.delete_cancel').click(function(){
+    //     $('.delete_confirm').hide();
+    // })
+
+
+    // $('.send').click(function(){
+    //     // var Title = aaa;
+    //     // var Text = bbb;
+    //     // var item = 4,10,10,8;
+    //     // var uidVal = 12;
+    //     // widown.location
+    //     $.ajax({
+    //         url: "http://172.168.1.70:8888/SendNotice?Title=brt6jut6jy&Text=xxxxaaaa&item=4,1,8,1,10,1&uidVal=12",
+    //         data: "GET",
+    //         dataType: "json",
+    //         success: fucntion(data){
+    //             console.log(1);
+    //         }
+    //     })
+    // })
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加用户</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <h2 class="title" style="margin-top: 35px; margin-left: 10px;">添加用户</h2>
+        <form action="{$url}" method="post">
+            <div class="user-add">
+                <p>
+                    <span style="display: inline-block; width: 100px;">用户账号</span>
+                    <input type="" name="account">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 100px;">用户昵称</span>
+                    <input type="" name="username">
+                </p>
+                <!-- <p>
+                    <span style="display: inline-block; width: 100px;">身份证号</span>
+                    <input type="" name="idcard">
+                </p> -->
+                <p>
+                    <span style="display: inline-block; width: 100px;">设置密码</span>
+                    <input type="password" name="password">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 100px;">推广码</span>
+                    <input type="text" name="extension_code" readonly="readonly" value="{$extension_code}">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 100px;">用户组</span>
+                    <select name="user_type">
+                        <option value="0">普通用户</option>
+                        <option value="1">代理商</option>
+                        <option value="2">商会长</option>
+                    </select>
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 100px;">是否GM帐号</span>
+                    <select name="is_admin">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                </p>
+                <!--<p>-->
+                    <!--<span>一级代理佣金</span>-->
+                    <!--<input type="" name="">-->
+                <!--</p>-->
+                <!--<p>-->
+                    <!--<span>一级交易手续费佣金</span>-->
+                    <!--<input type="" name="">-->
+                <!--</p>-->
+                <!--<p>-->
+                    <!--<span>二级代理佣金</span>-->
+                    <!--<input type="" name="">-->
+                <!--</p>-->
+                <!--<p>-->
+                    <!--<span>二级代理手续费佣金</span>-->
+                    <!--<input type="" name="">-->
+                <!--</p>-->
+                <!--<p>-->
+                    <!--<span>状态</span>-->
+                    <!--<select name="state">-->
+                        <!--<option value="0">正常</option>-->
+                        <!--<option value="1">封号</option>-->
+                        <!--<option value="2">永久封号</option>-->
+                    <!--</select>-->
+                <!--</p>-->
+                <!--<p>-->
+                    <!--<span>封号时间</span>-->
+                    <!--<input type="" name="close_time" readonly="">-->
+                <!--</p>-->
+                <button style="width: 100px; margin-left: 10px; background: #4CA3FF; border: 1px solid gray; border-radius: 5px; color: white; height: 30px;">添加</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript">
+    // 判断是否是移动端进入此页面
+    function IsPC() {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = ["Android", "iPhone",
+                    "SymbianOS", "Windows Phone",
+                    "iPad", "iPod"];
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                $('#admin-offcanvas').css('display','none');
+            }
+        }
+    }
+    IsPC();
+
+//    $('#collapse-nav2').addClass('am-in');
+//    if($('.user-add p:nth-child(5) input').val()!=''){
+//        $('.user-add p:nth-child(6) select').attr('disabled',true)
+//    }
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

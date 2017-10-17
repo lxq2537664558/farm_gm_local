@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户物品清单</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <!-- 标题 -->
+        <div class="title" style="margin-left: 10px;">
+            <a href="{:U('Home/User/index')}" style="color: gray;"><h2 style="display: inline-block;">用户列表</h2></a>
+            <h2 style="display: inline-block; margin-left: 20px;">物品清单</h2></a>
+        </div>
+        <!-- 表格导出 -->
+        <button class="out_excel">表格导出为excel</button>
+        <!-- 内容 -->
+        <div class="items-list">
+            <table style="width: 100%;"  id="mytable" border="1">
+                <thead>
+                    <tr>
+                        <th>作物id</th>
+                        <th>作物名称</th>
+                        <th>作物数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/user/items_list.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/tableExport.js"></script>
+<script type="text/javascript">
+    $('#collapse-nav2').addClass('am-in');
+
+    $(".out_excel").click(function(){
+
+        $('#mytable').tableExport({
+
+        type:'excel',
+
+        escape:'false',
+
+        fileName: '用户物品清单'
+
+        });
+
+    });
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

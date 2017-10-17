@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>推广设置</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <!-- 标题 -->
+        <div class="title" style="margin-left: 10px;">
+            <a href="{:U('Home/Promotion/promotionSettings')}" style="color: gray;"><h2 style="display: inline-block;">推广设置</h2></a>
+            <h2 style="display: inline-block; margin-left: 20px;">查看</h2></a>
+        </div>
+        <!-- 内容 -->
+        <div class="view-code">
+            <p>
+                <span style="display: inline-block; width: 130px;">推广码</span>
+                <input type="" name="" style="height: 30px; width: 260px;" readonly="readonly">
+            </p>
+            <p>
+                <span style="display: inline-block; width: 130px;">推广码下载地址</span>
+                <input type="" name="" style="height: 30px; width: 260px;">
+            </p>
+            <p>
+                <span style="display: inline-block; width: 130px;">地址二维码</span>
+                <img src="" />
+            </p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/promotion/view_code.js"></script>
+<script type="text/javascript">
+    $('#collapse-nav7').addClass('am-in');
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

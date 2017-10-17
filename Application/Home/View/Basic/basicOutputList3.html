@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产出表3</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <!-- 标题 -->
+        <div class="title" style="margin-left: 10px;">
+            <a href="{:U('Home/Basic/basicOutputList')}" style="color: gray;"><h2 style="display: inline-block;">产出表</h2></a>
+            <a href="{:U('Home/Basic/basicOutputList1')}" style="color: gray;"><h2 style="display: inline-block; margin-left: 20px;">产出表1</h2></a>
+            <a href="{:U('Home/Basic/basicOutputList2')}" style="color: gray; margin-left: 20px;"><h2 style="display: inline-block;">产出表2</h2></a>
+            <h2 style="display: inline-block; margin-left: 20px;">产出表3</h2></a>
+        </div>
+        <!-- 内容 -->
+        <div class="basic-output-list3">
+            <table id="mytable" border="1">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>产物种类</th>
+                    <th>产出区域</th>
+                    <th>一级地主产物概率</th>
+                    <th>一级地主产物产出量</th>
+                    <th>一级地副1产物概率</th>
+                    <th>一级地副1产物产出量</th>
+                    <th>一级地副2产物概率</th>
+                    <th>一级地副2产物产出量</th>
+                    <th>二级地主产物概率</th>
+                    <th>二级地主产物产出量</th>
+                    <th>二级地副1产物概率</th>
+                    <th>二级地副1产物产出量</th>
+                    <th>二级地副2产物概率</th>
+                    <th>二级地副2产物产出量</th>
+                    <th>三级地主产物概率</th>
+                    <th>三级地主产物产出量</th>
+                    <th>三级地副1产物概率</th>
+                    <th>三级地副1产物产出量</th>
+                    <th>三级地副2产物概率</th>
+                    <th>三级地副2产物产出量</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <foreach name="items" item="i">
+                        <tr>
+                            <td><input type="hidden" name="mid" value="{$i['_id']}"><span>{$i['id']}</span></td>
+                            <td>{$i['name']}</td>
+                            <td>{$i['area']}</td>
+                            <td>{$i['lv1LandMainProbability']}</td>
+                            <td>{:join(',',$i['lv1LandMainNumber'])}</td>
+                            <td>{$i['lv1LandMinor1Probability']}</td>
+                            <td>{:join(',',$i['lv1LandMinor1Number'])}</td>
+                            <td>{$i['lv1LandMinor2Probability']}</td>
+                            <td>{:join(',',$i['lv1LandMinor2Number'])}</td>
+                            <td>{$i['lv2LandMainProbability']}</td>
+                            <td>{:join(',',$i['lv2LandMainNumber'])}</td>
+                            <td>{$i['lv2LandMinor1Probability']}</td>
+                            <td>{:join(',',$i['lv2LandMinor1Number'])}</td>
+                            <td>{$i['lv2LandMinor2Probability']}</td>
+                            <td>{:join(',',$i['lv2LandMinor2Number'])}</td>
+                            <td>{$i['lv3LandMainProbability']}</td>
+                            <td>{:join(',',$i['lv3LandMainNumber'])}</td>
+                            <td>{$i['lv3LandMinor1Probability']}</td>
+                            <td>{:join(',',$i['lv3LandMinor1Number'])}</td>
+                            <td>{$i['lv3LandMinor2Probability']}</td>
+                            <td>{:join(',',$i['lv3LandMinor2Number'])}</td>
+                            <td class="edit" style="cursor: pointer; color: #0E90D2">编辑</td>
+                        </tr>
+                    </foreach>
+                </tbody>
+            </table>
+            <!-- 编辑区域 -->
+            <div class="edit_area" style="background: #54A1D7; width: 410px; padding-bottom: 10px; position: absolute; top: 15%; border-radius: 10px; left: 50%; margin-left: -210px; display: none; padding-left: 10px;">
+                <h3 style="text-align: center;">编辑</h3>
+                <p>
+                    <span style="display: inline-block; width: 170px;">id</span>
+                    <input type="" name="" readonly="readonly">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">产品种类</span>
+                    <input type="" name="" readonly="readonly">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">产出区域</span>
+                    <input type="" name="" readonly="readonly">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">一级地主产物概率</span>
+                    <input type="" name="">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">一级地主产物产出量</span>
+                    <input type="" name="" placeholder="用逗号隔开(英文状态下)">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">一级地副1产物概率</span>
+                    <input type="" name="">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">一级地副1产物产出量</span>
+                    <input type="" name="" placeholder="用逗号隔开(英文状态下)">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">一级地副2产物概率</span>
+                    <input type="" name="">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">一级地副2产物产出量</span>
+                    <input type="" name="" placeholder="用逗号隔开(英文状态下)">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">二级地主产物概率</span>
+                    <input type="" name="">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">二级地主产物产出量</span>
+                    <input type="" name="" placeholder="用逗号隔开(英文状态下)">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">二级地副1产物概率</span>
+                    <input type="" name="">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">二级地副1产物产出量</span>
+                    <input type="" name="" placeholder="用逗号隔开(英文状态下)">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">二级地副2产物概率</span>
+                    <input type="" name="">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">二级地副2产物产出量</span>
+                    <input type="" name="" placeholder="用逗号隔开(英文状态下)">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">三级地主产物概率</span>
+                    <input type="" name="">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">三级地主产物产出量</span>
+                    <input type="" name="" placeholder="用逗号隔开(英文状态下)">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">三级地副1产物概率</span>
+                    <input type="" name="">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">三级地副1产物产出量</span>
+                    <input type="" name="" placeholder="用逗号隔开(英文状态下)">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">三级地副2产物概率</span>
+                    <input type="" name="">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 170px;">三级地副2产物产出量</span>
+                    <input type="" name="" placeholder="用逗号隔开(英文状态下)">
+                </p>
+                <button class="edit_submit" style="margin-left: 130px; border: 1px solid gray; border-radius: 5px;">确定</button><button id="edit_cancel" style="margin-left: 30px; border: 1px solid gray; border-radius: 5px;">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/basic/outputList3.js"></script>
+<script type="text/javascript">
+    $('#collapse-nav8').addClass('am-in');
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

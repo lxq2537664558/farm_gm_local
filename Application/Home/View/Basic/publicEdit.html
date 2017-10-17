@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发行编辑</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <form action="{$url}" method="post">
+            <!-- 标题 -->
+            <h2 class="title" style="margin-top: 35px; margin-left: 10px;">发行编辑</h2>
+            <!-- 内容 -->
+            <div class="public-edit">
+                <p>
+                    <span style="display: inline-block; width: 100px;">产品种类</span>
+                    <input type="text" name="" value="{$products[$info['itemId']]}" readonly="readonly">
+                    <input type="hidden" name="itemId" value="{$info['itemId']}" readonly="readonly">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 100px;">发行总量</span>
+                    <input type="text" name="releaseCount" value="{$info['releaseCount']}">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 100px;">玩家产出总量</span>
+                    <input type="text" name="" value="{$info['currentRelease']}" readonly="readonly">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 100px;">剩余总量</span>
+                    <input type="text" name="" value="{$info['leftNum']}" readonly="readonly">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 100px;">剩余比例</span>
+                    <input type="text" name="" value="{$info['rate']}" readonly="readonly">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 100px;">消耗总量</span>
+                    <input type="text" name="" value="{$info['costNum']}" readonly="readonly">
+                </p>
+                <input type="submit" name="" value="提交" style="width: 80px; border: 1px solid gray; background: #4B8BF5; border-radius: 5px; color: white;">
+            </div>
+
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript">
+    $('#collapse-nav8').addClass('am-in');
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

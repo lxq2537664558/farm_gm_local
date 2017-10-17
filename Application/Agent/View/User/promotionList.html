@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户推广列表</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:agent_sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <!-- 标题 -->
+        <div class="title" style="margin-left: 10px;">
+            <a href="{:U('Agent/User/index')}" style="color: gray;"><h2 style="display: inline-block;">用户列表</h2></a>
+            <h2 style="display: inline-block; margin-left: 20px;">用户推广列表</h2></a>
+        </div>
+        <!-- 内容 -->
+        <div class="promotion-list" style="overflow: hidden;">
+            <!-- 按周查询 -->
+            <div class="week_div" style="display: none;">
+                <span>查询第</span>
+                <select class="select_week">
+                    <option value="">请选择</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                </select>
+                <span>周</span><b style="color: red; font-size: 12px; margin-left: 10px;">若选择周查询，按日期查询则失效隐藏</b>
+            </div>
+            <!-- 按日期查询 -->
+            <div id="search_data" style="display: none; margin-bottom: 10px;">
+                <div class="start_time">
+                    <span>请选择开始日期：</span>
+                    <select id="start_year">
+                        <option value="">请选择年份</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                    </select>
+                    <select id="start_month" disabled="disabled">
+                        <option value="">请选择月份</option>
+                        <option value="-1" class="startmonth1">1</option>
+                        <option value="-2" class="startmonth2">2</option>
+                        <option value="-3" class="startmonth3">3</option>
+                        <option value="-4" class="startmonth4">4</option>
+                        <option value="-5" class="startmonth5">5</option>
+                        <option value="-6" class="startmonth6">6</option>
+                        <option value="-7" class="startmonth7">7</option>
+                        <option value="-8" class="startmonth8">8</option>
+                        <option value="-9" class="startmonth9">9</option>
+                        <option value="-10">10</option>
+                        <option value="-11">11</option>
+                        <option value="-12">12</option>
+                    </select>
+                    <select id="start_day" disabled="disabled">
+                        <option value="">请选择日</option>
+                        <option value="-1" class="startday1">1</option>
+                        <option value="-2" class="startday2">2</option>
+                        <option value="-3" class="startday3">3</option>
+                        <option value="-4" class="startday4">4</option>
+                        <option value="-5" class="startday5">5</option>
+                        <option value="-6" class="startday6">6</option>
+                        <option value="-7" class="startday7">7</option>
+                        <option value="-8" class="startday8">8</option>
+                        <option value="-9" class="startday9">9</option>
+                        <option value="-10" class="startday10">10</option>
+                        <option value="-11" class="startday11">11</option>
+                        <option value="-12" class="startday12">12</option>
+                        <option value="-13" class="startday13">13</option>
+                        <option value="-14" class="startday14">14</option>
+                        <option value="-15" class="startday15">15</option>
+                        <option value="-16">16</option>
+                        <option value="-17">17</option>
+                        <option value="-18">18</option>
+                        <option value="-19">19</option>
+                        <option value="-20">20</option>
+                        <option value="-21">21</option>
+                        <option value="-22">22</option>
+                        <option value="-23">23</option>
+                        <option value="-24">24</option>
+                        <option value="-25">25</option>
+                        <option value="-26">26</option>
+                        <option value="-27">27</option>
+                        <option value="-28">28</option>
+                        <option value="-29">29</option>
+                        <option value="-30">30</option>
+                        <option value="-31">31</option>
+                    </select>
+                </div>
+                <div class="end_time" >
+                    <span>请选择结束日期：</span>
+                    <select id="end_year">
+                        <option value="">请选择年份</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                    </select>
+                    <select id="end_month" disabled="disabled">
+                        <option value="">请选择月份</option>
+                        <option value="-1" class="endmonth1">1</option>
+                        <option value="-2" class="endmonth2">2</option>
+                        <option value="-3" class="endmonth3">3</option>
+                        <option value="-4" class="endmonth4">4</option>
+                        <option value="-5" class="endmonth5">5</option>
+                        <option value="-6" class="endmonth6">6</option>
+                        <option value="-7" class="endmonth7">7</option>
+                        <option value="-8" class="endmonth8">8</option>
+                        <option value="-9" class="endmonth9">9</option>
+                        <option value="-10">10</option>
+                        <option value="-11">11</option>
+                        <option value="-12">12</option>
+                    </select>
+                    <select id="end_day" disabled="disabled">
+                        <option value="">请选择日</option>
+                        <option value="-1" class="endday1">1</option>
+                        <option value="-2" class="endday2">2</option>
+                        <option value="-3" class="endday3">3</option>
+                        <option value="-4" class="endday4">4</option>
+                        <option value="-5" class="endday5">5</option>
+                        <option value="-6" class="endday6">6</option>
+                        <option value="-7" class="endday7">7</option>
+                        <option value="-8" class="endday8">8</option>
+                        <option value="-9" class="endday9">9</option>
+                        <option value="-10" class="endday10">10</option>
+                        <option value="-11" class="endday11">11</option>
+                        <option value="-12" class="endday12">12</option>
+                        <option value="-13" class="endday13">13</option>
+                        <option value="-14" class="endday14">14</option>
+                        <option value="-15" class="endday15">15</option>
+                        <option value="-16">16</option>
+                        <option value="-17">17</option>
+                        <option value="-18">18</option>
+                        <option value="-19">19</option>
+                        <option value="-20">20</option>
+                        <option value="-21">21</option>
+                        <option value="-22">22</option>
+                        <option value="-23">23</option>
+                        <option value="-24">24</option>
+                        <option value="-25">25</option>
+                        <option value="-26">26</option>
+                        <option value="-27">27</option>
+                        <option value="-28">28</option>
+                        <option value="-29">29</option>
+                        <option value="-30">30</option>
+                        <option value="-31">31</option>
+                    </select>
+                </div>
+            </div>
+            <button id="search_btn">搜索</button>
+            <p style="float: right; margin-right: 20px; font-size: 20px;">代理商等级：<b class="level" style="font-size: 30px;"></b></p>
+            <table style="width: 100%;"  id="mytable" border="1">
+                <thead>
+                    <tr>
+                        <th>UID</th>
+                        <th>用户名</th>
+                        <th>注册时间</th>
+                        <th>充值总额</th>
+                        <th>消费总额</th>
+                        <th>消费佣金</th>
+                        <th>交易手续费总额</th>
+                        <th>手续费佣金</th>
+                        <th>佣金总额</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <div style="float: left; display: none; margin: 10px 10px;" id="left_page">
+                <span id="total_page" style="margin-right: 10px;"></span>
+                <input type="" name="" id="jump_val" style="width: 50px; margin-top: -5px;">
+                <button id="jump" style="margin-top: -5px; border: 1px solid gray; border-radius: 3px; background: #699A02; color: white;">跳转</button>
+            </div>
+            <div style="float: right; display: none; margin: 10px 30px;" id="right_page">
+                <button id="prev" style="margin-right: 15px; border: 1px solid gray; background: #ED6033; border-radius: 5px; color: white; height: 30px; line-height: 10px;">上一页</button>
+                <button id="next" style="border: 1px solid gray; background: #4B97EB; border-radius: 5px; color: white; height: 30px; line-height: 10px;">下一页</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/agent_user/promotion_list.js"></script>
+<script type="text/javascript">
+    $('#collapse-nav2').addClass('am-in');
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

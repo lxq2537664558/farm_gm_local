@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户游戏数据</title>
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
+    <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+</head>
+<body>
+<div class="admin" style="width: 100%; height: 100%;">
+    <include file="Common@Common:agent_sidebar" />
+    <div class="content-page" style="position: absolute; left: 15%; width:85%;">
+        <!-- 标题 -->
+        <div class="title" style="margin-left: 10px;">
+            <a href="{:U('Agent/User/index')}" style="color: gray;"><h2 style="display: inline-block;">用户列表</h2></a>
+            <h2 style="display: inline-block; margin-left: 20px;">用户游戏数据</h2></a>
+        </div>
+        <!-- 表格导出 -->
+        <button class="out_excel">表格导出为excel</button>
+        <!-- 内容 -->
+        <div class="user-game-data">
+            <div id="search" style="display: none; margin-bottom: 10px;">
+                <input type="" name="" placeholder="">
+                <button>搜索</button>
+            </div>
+
+            <table id="mytable" border="1">
+                <thead>
+                <tr>
+                    <th style="width: 200px;">UID</th>
+                    <th style="width: 200px;">用户名</th>
+                    <th style="width: 200px;">当前拥有钻石</th>
+                    <th style="width: 200px;">财富总额</th>
+                    <th style="width: 200px;">充值总额</th>
+                    <th style="width: 200px;">下线总额</th>
+                    <th style="width: 200px;">上下差值</th>
+                    <th style="width: 200px;">仓库等级</th>
+                    <th style="width: 250px;">偷取总价值</th>
+                    <th style="width: 250px;">被偷总价值</th>
+                    <th style="width: 200px;">偷取差值</th>
+                    <th style="width: 200px;">狗总值</th>
+                    <th style="width: 250px;">兑换狗粮数量</th>
+                    <th style="width: 250px;">加速符购买数量</th>
+                    <th style="width: 200px;">供奉券总数</th>
+                    <th style="width: 250px;">农地扩建情况</th>
+                    <th style="width: 250px;">鱼塘扩建情况</th>
+                    <th style="width: 250px;">森林扩建情况</th>
+                    <th style="width: 250px;">矿洞扩建情况</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    
+                </tr>
+                </tbody>
+            </table>
+            <!-- 分页 -->
+            <div style="float: left; display: none; margin: 10px 10px;" id="left_page">
+                <span id="total_page" style="margin-right: 10px;"></span>
+                <input type="" name="" id="jump_val" style="width: 50px; margin-top: -5px;">
+                <button id="jump" style="margin-top: -5px; border: 1px solid gray; border-radius: 3px; background: #699A02; color: white;">跳转</button>
+            </div>
+            <div style="float: right; display: none; margin: 10px 30px;" id="right_page">
+                <button id="prev" style="margin-right: 15px; border: 1px solid gray; background: #ED6033; border-radius: 5px; color: white; height: 30px; line-height: 10px;">上一页</button>
+                <button id="next" style="border: 1px solid gray; background: #4B97EB; border-radius: 5px; color: white; height: 30px; line-height: 10px;">下一页</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/agent_user/game_data.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/tableExport.js"></script>
+<script type="text/javascript">
+    $('#collapse-nav2').addClass('am-in');
+
+    $(".out_excel").click(function(){
+
+        $('#mytable').tableExport({
+
+        type:'excel',
+
+        escape:'false',
+
+        fileName: '用户游戏数据'
+
+        });
+
+    });
+</script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
+</body>
+</html>

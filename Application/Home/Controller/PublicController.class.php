@@ -239,7 +239,7 @@ class PublicController extends BaseController {
                     return $return;
                 }
             }
-
+            //github 111111111
             //存到提现表
             $tData = array(
                 'uid'=>$uid,

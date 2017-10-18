@@ -4,7 +4,7 @@ var uid = href[3].slice(4);
 var mid = href[4].slice(4);
 function checktable(issearch){
     $.ajax({
-         url:ipaddress+"index.php?m=Agent&c=User&a=pendingOrder",
+         url:ipaddress+"index.php?m=Home&c=User&a=pendingOrder",
          data : {
             "uid" : uid,
             "mid" : mid,

@@ -169,6 +169,8 @@
                 </div>
             </div>
             <button id="search_btn">搜索</button>
+            <!-- 表格导出 -->
+            <p><button class="out_excel" style="float: left;">表格导出为excel</button></p>
             <p style="float: right; margin-right: 20px; font-size: 20px;">代理商等级：<b class="level" style="font-size: 30px;"></b></p>
             <table style="width: 100%;"  id="mytable" border="1">
                 <thead>
@@ -204,8 +206,23 @@
 <script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/agent_user/promotion_list.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/tableExport.js"></script>
 <script type="text/javascript">
     $('#collapse-nav2').addClass('am-in');
+
+    $(".out_excel").click(function(){
+
+        $('#mytable').tableExport({
+
+        type:'excel',
+
+        escape:'false',
+
+        fileName: '用户推广列表'
+
+        });
+
+    });
 </script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
 </body>

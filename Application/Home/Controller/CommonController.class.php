@@ -129,6 +129,12 @@ class CommonController extends Controller
                 die;
             }
 
+            preg_match('/^([1-9]{1})(\d{14}|\d{18})$/',$collection_account,$match);
+            if(!$match[0]){
+                $this->error('账户银行格式不正确！');
+                die;
+            }
+
             //验证姓名是否一致
             $where['realname'] = $realname;
             $where['id'] = $uid;

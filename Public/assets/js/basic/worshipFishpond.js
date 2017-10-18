@@ -48,7 +48,7 @@ $('#select_itemid').change(function(){
 		}
 		// 自动计算数量
 		$('.input_price').eq(0).bind('input propertychange', function() {
-			$('.input_number').eq(0).val(Math.ceil($('.input_closing_price').eq(0).val() * $('.input_price').eq(0).val()));
+			$('.input_number').eq(0).val(Math.ceil($('.input_price').eq(0).val()) / $('.input_closing_price').eq(0).val()));
 		});
 
 	}else if(change_num==1){
@@ -63,11 +63,11 @@ $('#select_itemid').change(function(){
 		}
 		// 自动计算数量
 		$('.input_price').eq(0).bind('input propertychange', function() {
-			$('.input_number').eq(0).val(Math.ceil($('.input_closing_price').eq(0).val() * $('.input_price').eq(0).val()));
+			$('.input_number').eq(0).val(Math.ceil($('.input_price').eq(0).val() / $('.input_closing_price').eq(0).val()));
 		});
 
 		$('.input_price').eq(1).bind('input propertychange', function() {
-			$('.input_number').eq(1).val(Math.ceil($('.input_closing_price').eq(1).val() * $('.input_price').eq(1).val()));
+			$('.input_number').eq(1).val(Math.ceil($('.input_price').eq(1).val() / $('.input_closing_price').eq(1).val()));
 		});
 	}else if(change_num==2){
 		$(this).attr('disabled',true);
@@ -82,15 +82,15 @@ $('#select_itemid').change(function(){
 		}
 		// 自动计算数量
 		$('.input_price').eq(0).bind('input propertychange', function() {
-			$('.input_number').eq(0).val(Math.ceil($('.input_closing_price').eq(0).val() * $('.input_price').eq(0).val()));
+			$('.input_number').eq(0).val(Math.ceil($('.input_price').eq(0).val() / $('.input_closing_price').eq(0).val()));
 		});
 
 		$('.input_price').eq(1).bind('input propertychange', function() {
-			$('.input_number').eq(1).val(Math.ceil($('.input_closing_price').eq(1).val() * $('.input_price').eq(1).val()));
+			$('.input_number').eq(1).val(Math.ceil($('.input_price').eq(1).val() / $('.input_closing_price').eq(1).val()));
 		});
 
 		$('.input_price').eq(2).bind('input propertychange', function() {
-			$('.input_number').eq(2).val(Math.ceil($('.input_closing_price').eq(2).val() * $('.input_price').eq(2).val()));
+			$('.input_number').eq(2).val(Math.ceil($('.input_price').eq(2).val() / $('.input_closing_price').eq(2).val()));
 		});
 	}
    change_num++;

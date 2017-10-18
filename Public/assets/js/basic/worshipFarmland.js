@@ -11,11 +11,11 @@ for(var i=0; i<$('#mytable tbody tr').length; i++){
 	}
 }
 
-// 提交到服务器
+// 删除供奉
 var worship_id = $('.worship_id').text();
 $('.delete_worship').click(function(){
 	var worship_id = $('#mytable tbody tr').eq($(this).parents('tr').index()).find('td:nth-child(1)').text();
-	window.location = "http://127.0.0.1/farm_gm_local/index.php?m=Home&c=Basic&a=deleteWorship&area=1&id="+worship_id;
+	window.location = ipaddress+"index.php?m=Home&c=Basic&a=deleteWorship&area=1&id="+worship_id;
 })
 
 
@@ -48,7 +48,7 @@ $('#select_itemid').change(function(){
 		}
 		// 自动计算数量
 		$('.input_price').eq(0).bind('input propertychange', function() {
-			$('.input_number').eq(0).val(Math.ceil($('.input_closing_price').eq(0).val() * $('.input_price').eq(0).val()));    
+			$('.input_number').eq(0).val(Math.ceil($('.input_closing_price').eq(0).val() * $('.input_price').eq(0).val()));
 		});
 
 	}else if(change_num==1){
@@ -63,11 +63,11 @@ $('#select_itemid').change(function(){
 		}
 		// 自动计算数量
 		$('.input_price').eq(0).bind('input propertychange', function() {
-			$('.input_number').eq(0).val(Math.ceil($('.input_closing_price').eq(0).val() * $('.input_price').eq(0).val()));    
+			$('.input_number').eq(0).val(Math.ceil($('.input_closing_price').eq(0).val() * $('.input_price').eq(0).val()));
 		});
 
 		$('.input_price').eq(1).bind('input propertychange', function() {
-			$('.input_number').eq(1).val(Math.ceil($('.input_closing_price').eq(1).val() * $('.input_price').eq(1).val()));    
+			$('.input_number').eq(1).val(Math.ceil($('.input_closing_price').eq(1).val() * $('.input_price').eq(1).val()));
 		});
 	}else if(change_num==2){
 		$(this).attr('disabled',true);
@@ -82,15 +82,15 @@ $('#select_itemid').change(function(){
 		}
 		// 自动计算数量
 		$('.input_price').eq(0).bind('input propertychange', function() {
-			$('.input_number').eq(0).val(Math.ceil($('.input_closing_price').eq(0).val() * $('.input_price').eq(0).val()));    
+			$('.input_number').eq(0).val(Math.ceil($('.input_closing_price').eq(0).val() * $('.input_price').eq(0).val()));
 		});
 
 		$('.input_price').eq(1).bind('input propertychange', function() {
-			$('.input_number').eq(1).val(Math.ceil($('.input_closing_price').eq(1).val() * $('.input_price').eq(1).val()));    
+			$('.input_number').eq(1).val(Math.ceil($('.input_closing_price').eq(1).val() * $('.input_price').eq(1).val()));
 		});
 
 		$('.input_price').eq(2).bind('input propertychange', function() {
-			$('.input_number').eq(2).val(Math.ceil($('.input_closing_price').eq(2).val() * $('.input_price').eq(2).val()));    
+			$('.input_number').eq(2).val(Math.ceil($('.input_closing_price').eq(2).val() * $('.input_price').eq(2).val()));
 		});
 	}
    change_num++;
@@ -167,7 +167,7 @@ $('.add_worship').click(function(){
 var sid = $('#sid').val();
 // 提交到服务器
 $('#worship_submit').click(function(){
-	window.location = "http://127.0.0.1/farm_gm_local/index.php?m=Home&c=Basic&a=worshipSettings&type=1&method=basicWorshipFarmland&sid="+sid;
+	window.location = ipaddress+"index.php?m=Home&c=Basic&a=worshipSettings&type=1&method=basicWorshipFarmland&sid="+sid;
 })
 
 

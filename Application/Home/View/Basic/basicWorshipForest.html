@@ -46,6 +46,18 @@
                 </foreach>
                 </tbody>
             </table>
+
+
+            <table id="closing_price_table" style="display: none;">
+                <foreach name="close_price" item="cp">
+                    <tr>
+                        <td>{$cp['id']}</td>
+                        <td>{$cp['closePrice']/10}</td>
+                    </tr>
+                </foreach>
+            </table>
+
+
             <span>当前服务器供奉期次为 <b style="color: red;">{$selectid}</b></span>
             <div id="edit_page">
                 <i class="am-icon-plus-circle" id="goadd_btn" style="font-size: 70px; margin-left: 10px; cursor: pointer;"></i>
@@ -64,6 +76,17 @@
                             </select>
                             <span id="clear_itemid" style="display: inline-block; font-size: 12px; cursor: pointer; border: 1px solid gray; border-radius: 5px; width: 40px; text-align: center;">清空</span>
                         </p>
+
+                        <p>
+                            <span class="closing_price" style="display: inline-block; width: 120px;">收盘价</span>
+                            <input class="closing_price_input" type="hidden" name="close_price" value="">
+                        </p>
+
+                        <p>
+                            <span class="pricing" style="display: inline-block; width: 120px;">定价</span>
+                            <input class="pricing_input" type="hidden" name="price" value="">
+                        </p>
+                        
                         <p>
                             <span class="worship_number" style="display: inline-block; width: 120px;">森林供奉数量</span>
                             <input class="worship_number_input" type="hidden" name="number" value="">

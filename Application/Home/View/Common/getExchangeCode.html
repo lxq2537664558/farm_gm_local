@@ -34,6 +34,7 @@
 	</div>
 </body>
 <script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js" ></script>
 <script>
 	$('.receive_cdk').click(function(){
 		if($('.phone').val()==""){
@@ -42,7 +43,7 @@
 			alert("请填写正确的手机号");
 		}else{
 			$.ajax({
-				url: "http://www.jiyu-keji.com/farm/index.php?m=Home&c=Common&a=checkCode",
+				url: ipaddress+"index.php?m=Home&c=Common&a=checkCode",
 				type: "POST",
 				dataType: "json",
 				data:{phone: $('.phone').val()},

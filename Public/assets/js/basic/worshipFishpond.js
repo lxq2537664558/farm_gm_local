@@ -48,7 +48,7 @@ $('#select_itemid').change(function(){
 		}
 		// 自动计算数量
 		$('.input_price').eq(0).bind('input propertychange', function() {
-			$('.input_number').eq(0).val(Math.ceil($('.input_price').eq(0).val()) / $('.input_closing_price').eq(0).val()));
+			$('.input_number').eq(0).val(Math.ceil($('.input_price').eq(0).val() / $('.input_closing_price').eq(0).val()));
 		});
 
 	}else if(change_num==1){

@@ -29,6 +29,7 @@ class BaseController extends Controller {
             $this->checkAdmin();
 //            }
         }
+        $this->behaviorRecords();
     }
 
     //公共加密方法-备后期修改加密算法之用
@@ -560,5 +561,48 @@ class BaseController extends Controller {
         //        header("Content-Disposition:attachment;filename=$xlsTitle.xls"); //attachment新窗口打印inline本窗口打印
         $objWriter = new \PHPExcel_Writer_Excel5($objPHPExcel, 'Excel2005');
         $objWriter->save('php://output');
+    }
+
+
+    //后台记录用户行为方法
+    public function behaviorRecords(){
+        $loginInfo = session('AdminInfo');
+        if($loginInfo) {
+            //有登录信息才处理数据
+            //POST数据
+            $post_data = I('post.');
+            //GET数据
+            $get_data = I('get.');
+            $record_data = '';
+            if($post_data) {
+                $record_data .= 'POST数据:';
+                foreach ($post_data as $pk => $pv) {
+                    $record_data .= '"'.$pk.'"=>"'.$pv.'"';
+                }
+                $record_data .= '--------';
+            }
+
+            if($get_data) {
+                $record_data .= 'GET数据:';
+                foreach ($get_data as $gk => $gv) {
+                    $record_data .= '"'.$gk.'"=>"'.$gv.'"';
+                }
+                $record_data .= '--------';
+            }
+
+            $data = array(
+                'uid' => $loginInfo['uid'],
+                'module_name' => MODULE_NAME,
+                'controller_name' => CONTROLLER_NAME,
+                'action_name' => ACTION_NAME,
+                'time' => time(),
+                'month' => date('m'),
+                'day' => date('d'),
+                'data' => $record_data,
+            );
+
+            //插入数据
+            D('user_behavior')->add($data);
+        }
     }
 }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1" cellspacing="0">
+    <tr>
+        <foreach name="header" item="h">
+            <td>{$h}</td>
+        </foreach>
+    </tr>
+
+    <foreach name="behavior" item="b">
+        <tr>
+            <foreach name="header" item="h">
+                <td>{$b[$h]}</td>
+            </foreach>
+        </tr>
+    </foreach>
+</table>
+<br/><br/><br/>
+当前{$page['page']}页，共{$page['totalPage']}页
+<a href="{:U('Home/Download/showBehavior',array('page'=>$page['start']))}">首页</a>
+<a href="{:U('Home/Download/showBehavior',array('page'=>$page['back']))}">上一页</a>
+<a href="{:U('Home/Download/showBehavior',array('page'=>$page['next']))}">下一页</a>
+<a href="{:U('Home/Download/showBehavior',array('page'=>$page['end']))}">尾页</a>
+<br/><br/><br/>
+<a href="{:U('Home/Download/monitorLogin',array('logout'=>1))}">退出</a>
+</body>
+</html>

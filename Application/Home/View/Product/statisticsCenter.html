@@ -40,7 +40,7 @@
                         <td>{$p['finishNum']}</td>
                         <td>{$p['buyNum']}</td>
                         <td>{$p['sellNum']}</td>
-                        <td>{$p['charge']}</td>
+                        <td>{:round($p['charge'],1)}</td>
                     </tr>
                 </foreach>
                 </tbody>
@@ -62,11 +62,11 @@
 
         $('#mytable').tableExport({
 
-        type:'excel',
+            type:'excel',
 
-        escape:'false',
+            escape:'false',
 
-        fileName: '统计中心'
+            fileName: '统计中心'
 
         });
 

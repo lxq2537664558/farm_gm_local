@@ -824,7 +824,7 @@ class UserController extends BaseController {
                 $combine[$k] = array(
                     'uid'=>$v['id'],
                     'username'=>$sort_data[$v['id']]['userName'],
-                    'diamond'=>$sort_data[$v['id']]['diamond'],
+                    'diamond'=>floor($sort_data[$v['id']]['diamond']),
                     'treasure'=>$sort_data[$v['id']]['treasure'],
                     'recharge'=>$sort_data[$v['id']]['recharge'],//充值总额
                     'cost'=>$sort_data[$v['id']]['cost'],//下线总额cost
@@ -848,7 +848,7 @@ class UserController extends BaseController {
                         $combine[$k][$key] = 0;
                     }
                 }
-            } 
+            }
 //            var_dump($http_data,$sort_data);die;
 
             $json = array('data'=>$combine,'page'=>$users['page']);

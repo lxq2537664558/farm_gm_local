@@ -397,7 +397,7 @@ class UserController extends BaseController {
                     'username'=>$v['username'],
                     'state'=>$user_state[$v['state']],
                     'user_type'=>$user_type[$v['user_type']],
-                    'diamond'=>$sort_data[$v['id']]['diamond'],
+                    'diamond'=>floor($sort_data[$v['id']]['diamond']),
                     'player_num'=>$count_data[$v['id']],
                     'login_time'=>$sort_data2[$v['id']]['login_time']?date('Y-m-d H:i:s',$sort_data2[$v['id']]['login_time']):'-',
                     'register_time'=>$v['register_time']?date('Y-m-d H:i:s',$v['register_time']):'-',
@@ -456,7 +456,7 @@ class UserController extends BaseController {
                     'product_name'=>$v['itemName'],
                     'order_type'=>$order_type[$v['type']],
                     'order_num'=>$v['entrustNum'],
-                    'price'=>$v['price'],
+                    'price'=>round($v['price'],4),
                     'order_time'=>$v['startTime'],
                     'order_state'=>$order_state[$v['state']],
                     'end_time'=>$v['tradeTime'],
@@ -843,7 +843,7 @@ class UserController extends BaseController {
                 $combine[$k] = array(
                     'uid'=>$v['id'],
                     'username'=>$sort_data[$v['id']]['userName'],
-                    'diamond'=>$sort_data[$v['id']]['diamond'],
+                    'diamond'=>floor($sort_data[$v['id']]['diamond']),
                     'treasure'=>$sort_data[$v['id']]['treasure'],
                     'recharge'=>$sort_data[$v['id']]['recharge'],//充值总额
                     'cost'=>$sort_data[$v['id']]['cost'],//下线总额cost

@@ -114,7 +114,7 @@ class ProductController extends BaseController {
                     'itemName'=>$v['itemName'],
                     'type'=>$trade_type[$v['type']],
                     'entrustNum'=>$v['entrustNum'],
-                    'price'=>$v['price'],
+                    'price'=>$v['price']?round($v['price'],4):0,
                     'startTime'=>$v['startTime']?date('Y-m-d H:i:s',$v['startTime']):'-',
                     'tradeTime'=>$v['tradeTime']?date('Y-m-d H:i:s',$v['tradeTime']):'-',
                     'state'=>$trade_state[$v['state']],

@@ -1,4 +1,4 @@
-function checktable(issearch,isuid,isgt,islt){
+function checktable(issearch,isdata,isuid,isgt,islt){
     $.ajax({
          url:ipaddress+"index.php?m=Home&c=Authority&a=authorityPayList",
          data : {
@@ -6,6 +6,7 @@ function checktable(issearch,isuid,isgt,islt){
             "table" : "user",
             "page" : page,
             "search" : issearch,
+            "data" : isdata,
             "uid" : isuid,
             "gt" : isgt,
             "lt" : islt
@@ -60,12 +61,13 @@ $('#prev').click(function(){
     checktable(null);
 })
 
+var data = 1;
 // 搜索
 $('.search_btn').click(function(){
     console.log($('#search').val());
     page = 1;
     $('#prev').attr('disabled',true).css('background','gray');
-    checktable($('#search .search_state').val(),$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
+    checktable($('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
     // 若最大页为1，设置下一页不可点
     if($('#largest_page').text()==1){
         $('#next').attr('disabled',true).css('background','gray');
@@ -81,7 +83,7 @@ $('.search_btn').click(function(){
         if(page==$('#largest_page').text()){
             $(this).attr('disabled',true).css('background','gray');
         }
-        checktable($('#search .search_state').val(),$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
+        checktable($('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
     });
     $('#prev').click(function(){
         page--;
@@ -89,7 +91,7 @@ $('.search_btn').click(function(){
             $('#prev').attr('disabled',true).css('background','gray');
         }
         $('#next').attr('disabled',false).css('background','#4B97EB');
-        checktable($('#search .search_state').val(),$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
+        checktable($('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
     });
     $('#jump').click(function(){
     if(isNaN($('#jump_val').val())){
@@ -120,7 +122,7 @@ $('.search_btn').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable($('#search .search_state').val(),$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
+        checktable($('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
     }
 })
 })

@@ -193,6 +193,11 @@ class BasicController extends BaseController {
             die;
         }
 
+        //获取收盘价
+        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
+        $lists = $this->getHTTPData($url);
+        $this->assign('close_price',$lists['items']);
+
         //获取供奉清单
         $where['area'] = 2;
         $worship = $this->getAll('worship',$where,'','','id');
@@ -254,6 +259,11 @@ class BasicController extends BaseController {
             $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             die;
         }
+
+        //获取收盘价
+        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
+        $lists = $this->getHTTPData($url);
+        $this->assign('close_price',$lists['items']);
 
         //获取供奉清单
         $where['area'] = 3;
@@ -317,6 +327,11 @@ class BasicController extends BaseController {
             die;
         }
 
+        //获取收盘价
+        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
+        $lists = $this->getHTTPData($url);
+        $this->assign('close_price',$lists['items']);
+        
         //获取供奉清单
         $where['area'] = 4;
         $worship = $this->getAll('worship',$where,'','','id');

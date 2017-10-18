@@ -37,21 +37,23 @@ class PublicController extends BaseController {
         }
 
         //帐号或用户名或手机号
-        $where1['account'] = $username;
-        $where1['username'] = $username;
-        $where1['phone'] = $username;
-        $where1['_logic'] = 'or';
+//        $where1['account'] = $username;
+//        $where1['username'] = $username;
+//        $where1['phone'] = $username;
+//        $where1['_logic'] = 'or';
+        //区分大小写查询
+        $where['_string']='BINARY account = "'.$username.'" AND BINARY username = "'.$username.'"'.'" AND BINARY phone = "'.$username.'"';
 
         //密码
-        $where2['password'] = $password;
+        $where['password'] = $password;
 
-        //条件逻辑
-        $where_main['_complex'] = array(
-            $where1, $where2,
-            '_logic' => 'and'
-        );
+//        //条件逻辑
+//        $where_main['_complex'] = array(
+//            $where1, $where2,
+//            '_logic' => 'and'
+//        );
 
-        $is_true = $this->getAll('user',$where_main);
+        $is_true = $this->getAll('user',$where);
 
         if(!$is_true){
             //登录失败-用户名、密码错误
@@ -369,9 +371,11 @@ class PublicController extends BaseController {
         $post = I('post.');
         if($post){
             $username = $post['username'];
-            $password = $post['password'];
-            $where['username'] = $username;
-            $where['password'] = base64_encode($password);
+            $password = base64_encode($post['password']);
+//            $where['username'] = $username;
+//            $where['password'] = base64_encode($password);
+
+            $where['_string']='BINARY username = "'.$username.'" AND BINARY password = "'.$password.'"';
 
             if(!$username || !$password){
                 $this->error('用户名或密码不能为空！');
@@ -380,6 +384,8 @@ class PublicController extends BaseController {
 
 //            var_dump($password,base64_encode($password));
             $user_exists = $this->getAll('admin',$where);
+//var_dump($user_exists);
+//            die;
             
             if(!$user_exists){
                 $this->error('用户名或密码错误！');

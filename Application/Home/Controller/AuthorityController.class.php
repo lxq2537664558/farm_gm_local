@@ -85,6 +85,7 @@ class AuthorityController extends BaseController {
                 $data[$k]['state'] = $state_array[$v['state']];
                 $data[$k]['type'] = $type_array[$v['type']];
                 $data[$k]['time'] = date('Y-m-d H:i:s',$v['time']);
+                $data[$k]['num'] = $v['num']/100;
 
                 $temp_num += $v['num'];
             }

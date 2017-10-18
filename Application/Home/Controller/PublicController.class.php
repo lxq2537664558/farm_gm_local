@@ -37,23 +37,24 @@ class PublicController extends BaseController {
         }
 
         //帐号或用户名或手机号
-//        $where1['account'] = $username;
-//        $where1['username'] = $username;
-//        $where1['phone'] = $username;
-//        $where1['_logic'] = 'or';
-        //区分大小写查询
-        $where['_string']='BINARY account = "'.$username.'" AND BINARY username = "'.$username.'"'.'" AND BINARY phone = "'.$username.'"';
+        $where1['account'] = $username;
+        $where1['username'] = $username;
+        $where1['phone'] = $username;
+        $where1['_logic'] = 'or';
+//        //区分大小写查询
+//        $where['_string']='BINARY account = "'.$username.'" OR BINARY username = "'.$username.'"'.'" OR BINARY phone = "'.$username.'"';
 
         //密码
-        $where['password'] = $password;
+        $where2['password'] = $password;
+//        $where_main['password'] = $password;
 
-//        //条件逻辑
-//        $where_main['_complex'] = array(
-//            $where1, $where2,
-//            '_logic' => 'and'
-//        );
+        //条件逻辑
+        $where_main['_complex'] = array(
+            $where1, $where2,
+            '_logic' => 'and'
+        );
 
-        $is_true = $this->getAll('user',$where);
+        $is_true = $this->getAll('user',$where_main);
 
         if(!$is_true){
             //登录失败-用户名、密码错误
@@ -375,7 +376,7 @@ class PublicController extends BaseController {
 //            $where['username'] = $username;
 //            $where['password'] = base64_encode($password);
 
-            $where['_string']='BINARY username = "'.$username.'" AND BINARY password = "'.$password.'"';
+            $where['_string']='BINARY username = "'.$username.'" AND password = "'.$password.'"';
 
             if(!$username || !$password){
                 $this->error('用户名或密码不能为空！');

@@ -146,7 +146,7 @@ class UserController extends BaseController {
 
             //组装数据
             foreach ($users['data'] as $k=>$v){
-                $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?round($http_user_data[$v['id']]['gold'],2):0;//金币
+                $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?floor($http_user_data[$v['id']]['gold']):0;//金币
 //                $users['data'][$k]['father_id'] = $http_user_data[$v['id']]['generalizeId1']?$http_user_data[$v['id']]['generalizeId1']:0;//一级推广id
                 $users['data'][$k]['father_id'] = $v['father_id']?$v['father_id']:0;//改为自表查询，不再显示接口的数据
 //                $users['data'][$k]['grandfather_id'] = $http_user_data[$v['id']]['generalizeId2']?$http_user_data[$v['id']]['generalizeId2']:0;//二级推广id

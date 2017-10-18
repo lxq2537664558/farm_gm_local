@@ -286,7 +286,15 @@ class UserController extends BaseController {
         $id = I('get.uid');
         $where['id'] = $id;
 
+        //日志记录
+        //获取用户信息
+
+        //获取POST信息
+        //记录到表中
+        //===记录到文件中
+
         if($post){
+            var_dump($_SESSION);die;
             $uWhere['id'] = $post['uid'];
             unset($post['uid']);
 

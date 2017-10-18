@@ -37,9 +37,9 @@ class PublicController extends BaseController {
         }
 
         //帐号或用户名或手机号
-        $where1['account'] = $username;
-        $where1['username'] = $username;
-        $where1['phone'] = $username;
+        $where1['account'] = trim($username);
+        $where1['username'] = trim($username);
+        $where1['phone'] = trim($username);
         $where1['_logic'] = 'or';
 //        //区分大小写查询
 //        $where['_string']='BINARY account = "'.$username.'" OR BINARY username = "'.$username.'"'.'" OR BINARY phone = "'.$username.'"';
@@ -371,7 +371,7 @@ class PublicController extends BaseController {
 
         $post = I('post.');
         if($post){
-            $username = $post['username'];
+            $username = trim($post['username']);
             $password = base64_encode($post['password']);
 //            $where['username'] = $username;
 //            $where['password'] = base64_encode($password);

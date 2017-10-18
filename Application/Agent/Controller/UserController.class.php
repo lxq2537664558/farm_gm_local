@@ -105,9 +105,9 @@ class UserController extends BaseController {
             $uid = $user_info['uid'];
 
             //查下级单位
-            $where1['id'] = $uid;//保留当前用户数据
+//            $where1['id'] = $uid;//保留当前用户数据
             $where1['father_id'] = $uid;
-            $where1['grandfather_id'] = $uid;
+//            $where1['grandfather_id'] = $uid;
             $where1['_logic'] = 'or';
 
             //模糊搜索
@@ -132,7 +132,7 @@ class UserController extends BaseController {
 //            var_dump($users);
 //            die;
             $user_ids = $this->sortInfoById($users['data'],'id','id');
-            $user_ids[$uid] = $uid;
+//            $user_ids[$uid] = $uid;
 //            $user_ids = array_keys($users['data']);
             $uid_string = join('_', $user_ids);
 

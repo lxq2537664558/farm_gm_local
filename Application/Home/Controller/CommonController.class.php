@@ -217,94 +217,96 @@ class CommonController extends Controller
     //用户自助注册界面
     public function userRegister()
     {
-        $post = I('post.');
-
-        if ($post) {
-            $extension_code = $post['extension_code'];
-            $account = $post['account'];
-            $password = $post['password'];
-            $repass = $post['repass'];
-            $code = $post['code'];
-
-            //字段验证
-            if (!$password) {
-                $this->error('密码不能为空！');
-                die;
-            }
-            if ($password != $repass) {
-                $this->error('两次密码输入不一致！');
-                die;
-            }
-
-            //手机号唯一性
-            $pWhere['phone'] = $post['phone'];
-            $phone_exists = D('user')->where($pWhere)->select();
-            if ($phone_exists) {
-                $this->error('该手机号已被注册！');
-                die;
-            }
-
-            //短信发送成功的时候写入到SESSION中
-            $session = session('messege_code');
-            $session_code = $session['code'];
-            $time = $session['time'];
-
-            if ($session_code != $code) {
-                $this->error('验证码错误！');
-                die;
-            }
-            //验证码5分钟内有效
-            if (time() > ($time + 5 * 60)) {
-                $this->error('验证码已失效，请重新获取！');
-                die;
-            }
-
-            //获取father_id和grandfather_id
-            $where['extension_code'] = $extension_code;
-            $father = D('user')->where($where)->select();
-            $father = current($father);
-            $father_id = $father['id'];
-
-            $data = array(
-                'account' => $account,
-                'password' => base64_encode($password),
-                'father_id' => $father_id,
-                'grandfather_id' => $father['father_id'],
-                'phone' => $post['phone'],
-                'username' => $post['phone'],
-                'register_time' => time(),
-            );
-            $res = D('user')->add($data);
-            if ($res) {
-                //移动设备浏览，则切换模板
-                if (ismobile()) {
-                    $agent = strtolower($_SERVER['HTTP_USER_AGENT']);//全部变成小写字母
-
-                    //分别进行判断
-                    if (strpos($agent, 'iphone') || strpos($agent, 'ipad')) {
-                        $type = 'ios';
-                        $download_url = 'http://dafuvip.com/vy6ZRz';
-                    }
-
-                    if (strpos($agent, 'android')) {
-                        $type = 'android';
-                        $download_url = 'http://dafuvip.com/eUZfmq';
-                    }
-                }
-                
-                header('location:'.$download_url);//跳转到成功页面
-                die;
-            } else {
-                $this->error('注册失败，请联系管理员！');
-                die;
-            }
-        } else {
-            $extension_code = I('get.extension_code', '');
-            $this->assign('sendMessageUrl', 'http://' . $_SERVER['HTTP_HOST'] . '/farm/sms_send.php');
-            $this->assign('url', U('Home/Common/userRegister'));
-            $this->assign('extension_code', $extension_code);
-            $this->display();
-        }
+//        $post = I('post.');
+//
+//        if ($post) {
+//            $extension_code = $post['extension_code'];
+//            $account = $post['account'];
+//            $password = $post['password'];
+//            $repass = $post['repass'];
+//            $code = $post['code'];
+//
+//            //字段验证
+//            if (!$password) {
+//                $this->error('密码不能为空！');
+//                die;
+//            }
+//            if ($password != $repass) {
+//                $this->error('两次密码输入不一致！');
+//                die;
+//            }
+//
+//            //手机号唯一性
+//            $pWhere['phone'] = $post['phone'];
+//            $phone_exists = D('user')->where($pWhere)->select();
+//            if ($phone_exists) {
+//                $this->error('该手机号已被注册！');
+//                die;
+//            }
+//
+//            //短信发送成功的时候写入到SESSION中
+//            $session = session('messege_code');
+//            $session_code = $session['code'];
+//            $time = $session['time'];
+//
+//            if ($session_code != $code) {
+//                $this->error('验证码错误！');
+//                die;
+//            }
+//            //验证码5分钟内有效
+//            if (time() > ($time + 5 * 60)) {
+//                $this->error('验证码已失效，请重新获取！');
+//                die;
+//            }
+//
+//            //获取father_id和grandfather_id
+//            $where['extension_code'] = $extension_code;
+//            $father = D('user')->where($where)->select();
+//            $father = current($father);
+//            $father_id = $father['id'];
+//
+//            $data = array(
+//                'account' => $account,
+//                'password' => base64_encode($password),
+//                'father_id' => $father_id,
+//                'grandfather_id' => $father['father_id'],
+//                'phone' => $post['phone'],
+//                'username' => $post['phone'],
+//                'register_time' => time(),
+//            );
+//            $res = D('user')->add($data);
+//            if ($res) {
+//                //移动设备浏览，则切换模板
+//                if (ismobile()) {
+//                    $agent = strtolower($_SERVER['HTTP_USER_AGENT']);//全部变成小写字母
+//
+//                    //分别进行判断
+//                    if (strpos($agent, 'iphone') || strpos($agent, 'ipad')) {
+//                        $type = 'ios';
+//                        $download_url = 'http://dafuvip.com/vy6ZRz';
+//                    }
+//
+//                    if (strpos($agent, 'android')) {
+//                        $type = 'android';
+//                        $download_url = 'http://dafuvip.com/eUZfmq';
+//                    }
+//                }
+//
+//                header('location:'.$download_url);//跳转到成功页面
+//                die;
+//            } else {
+//                $this->error('注册失败，请联系管理员！');
+//                die;
+//            }
+//        } else {
+//            $extension_code = I('get.extension_code', '');
+//            $this->assign('sendMessageUrl', 'http://' . $_SERVER['HTTP_HOST'] . '/farm/sms_send.php');
+//            $this->assign('url', U('Home/Common/userRegister'));
+//            $this->assign('extension_code', $extension_code);
+//            $this->display();
+//        }
+        //临时关闭该接口
+        $this->display();
     }
 
     //将验证码存入SESSION

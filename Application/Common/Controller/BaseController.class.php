@@ -26,7 +26,7 @@ class BaseController extends Controller {
         //后台权限验证
         if((CONTROLLER_NAME != 'Public') && (MODULE_NAME != 'Agent')){
 //            if(!(CONTROLLER_NAME == 'User' && ACTION_NAME == 'addUser')){
-                $this->checkAdmin();
+            $this->checkAdmin();
 //            }
         }
     }
@@ -433,7 +433,7 @@ class BaseController extends Controller {
                         $msg = $v[4]?$v[4]:'非法的数据！';
                         return array('msg'=>$msg);
                     }
-                break;
+                    break;
             }
         }
         return array('state'=>1);

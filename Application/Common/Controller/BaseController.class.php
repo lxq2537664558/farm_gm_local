@@ -615,7 +615,7 @@ class BaseController extends Controller {
                 'data' => $record_data,
             );
 
-            $file_data = '用户于'.date('Y-m-d H:i:s',$time);
+            $file_data = '用户'.$loginInfo['username'].'['.$loginInfo['uid'].']于'.date('Y-m-d H:i:s',$time);
             if($post_data){
                 $file_data .= '处理了数据：'.$record_data.'\n';
             }else{

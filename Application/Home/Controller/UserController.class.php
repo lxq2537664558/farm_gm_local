@@ -309,9 +309,13 @@ class UserController extends BaseController {
 //                $post['close_time'] = $post['close_time'];//封号时间
 //            }
 
-            //推广码
-            $code = $this->getExtensionCode($post);
-            $post['extension_code'] = $code;
+            $user_info = $this->getAll('user',$where);
+            $user_info = current($user_info);
+            if(!in_array($user_info['user_type'],array(1,2))){
+                //推广码
+                $code = $this->getExtensionCode($post);
+                $post['extension_code'] = $code;
+            }
 
             $res = $this->insAndUpdate('user',$uWhere,$post);
             if($res['state']){

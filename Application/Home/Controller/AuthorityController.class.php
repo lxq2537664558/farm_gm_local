@@ -21,7 +21,7 @@ class AuthorityController extends BaseController {
             $admin[$k]['state'] = $state_array[$v['state']];
             $admin[$k]['group'] = $group_array[$v['group']];
         }
-        
+
         $this->assign('admin',$admin);
         $this->display();
     }
@@ -30,8 +30,8 @@ class AuthorityController extends BaseController {
     public function authorityPayList(){
         $post = I('post.');
         if($post) {
-            $search = I('post.search');//支付状态
-            $data2 = I('post.data');//支付状态标识，辨识search为0无法分辨的状态
+            $search = I('post.search',0);//支付状态
+            $data2 = I('post.data',0);//支付状态标识，辨识search为0无法分辨的状态
             $uid = I('post.uid',0);
             $gte = I('post.gt','');//大于
             $lte = I('post.lt','');//小于
@@ -62,11 +62,12 @@ class AuthorityController extends BaseController {
             $lte?$params.='&lte='.$lte:'';
 
 //            var_dump($_POST,$params);die;
-            
+
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
 
             $lists = $this->getHTTPData($url);
+//            var_dump($lists);die;
             $data = $lists['pays'];
 
             //获取uids
@@ -95,7 +96,7 @@ class AuthorityController extends BaseController {
                 'showId'=>'总计：',
                 'username'=>'-',
                 'tradeId'=>'-',
-                'num'=>$temp_num,
+                'num'=>$temp_num/100,
                 'type'=>'-',
                 'time'=>'-',
                 'state'=>'-',

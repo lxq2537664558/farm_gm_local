@@ -1,0 +1,4 @@
+用户于2017-10-18 19:04:30访问了页面Home/Index/index
+用户于2017-10-18 19:04:32访问了页面Home/User/index
+用户于2017-10-18 19:04:32处理了数据：POST数据:"page_name"=>"channelManagement""search"=>"""table"=>"user""page"=>"1"--------\n用户于2017-10-18 19:04:34访问了页面Home/Authority/authorityPayList
+用户于2017-10-18 19:04:35处理了数据：POST数据:"page_name"=>"channelManagement""table"=>"user""page"=>"1""search"=>""--------\n用户于2017-10-18 19:04:43处理了数据：POST数据:"page_name"=>"channelManagement""table"=>"user""page"=>"1""search"=>"0""uid"=>"""gt"=>"""lt"=>""--------\n用户于2017-10-18 19:05:05处理了数据：POST数据:"page_name"=>"channelManagement""table"=>"user""page"=>"1""search"=>"1""uid"=>"""gt"=>"""lt"=>""--------\n

@@ -564,6 +564,19 @@ class BaseController extends Controller {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     //后台记录用户行为方法
     public function behaviorRecords(){
         $loginInfo = session('AdminInfo');
@@ -590,16 +603,28 @@ class BaseController extends Controller {
                 $record_data .= '--------';
             }
 
+            $time = time();
             $data = array(
                 'uid' => $loginInfo['uid'],
                 'module_name' => MODULE_NAME,
                 'controller_name' => CONTROLLER_NAME,
                 'action_name' => ACTION_NAME,
-                'time' => time(),
+                'time' => $time,
                 'month' => date('m'),
                 'day' => date('d'),
                 'data' => $record_data,
             );
+
+            $file_data = '用户于'.date('Y-m-d H:i:s',$time);
+            if($post_data){
+                $file_data .= '处理了数据：'.$record_data.'\n';
+            }else{
+                $file_data .= '访问了页面'.MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME.PHP_EOL;
+            }
+
+            //写文件
+            $filename = 'user_behavior_'.date('Ymd').'.txt';//以日期命名
+            file_put_contents($filename,$file_data,FILE_APPEND);
 
             //插入数据
             D('user_behavior')->add($data);

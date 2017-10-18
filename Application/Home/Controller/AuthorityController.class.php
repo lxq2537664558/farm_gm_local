@@ -36,7 +36,6 @@ class AuthorityController extends BaseController {
             $gte = I('post.gt','');//大于
             $lte = I('post.lt','');//小于
 
-//            var_dump($post);die;
             //处理分页
             $page = I('post.page',1);
             $pageSize = 20;
@@ -48,7 +47,6 @@ class AuthorityController extends BaseController {
 
             //请求接口数据
             $page = $post['page']?$post['page']:1;
-//            var_dump($start);
             $url = 'http://'.C('SERVER_IP').'/GetPayList';
 
             $params = 'index='.$start.'&num='.$pageSize;
@@ -60,8 +58,6 @@ class AuthorityController extends BaseController {
             $uid?$params.='&showId='.$uid:'';
             $gte?$params.='&gte='.$gte:'';
             $lte?$params.='&lte='.$lte:'';
-
-//            var_dump($_POST,$params);die;
 
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;

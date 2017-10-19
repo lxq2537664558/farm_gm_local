@@ -7,12 +7,10 @@
     <link rel="stylesheet" href="__PUBLIC__/assets/css/amazeui.css" />
     <link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
 
-    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script>
-    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
-    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
     <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
-    <script type="text/javascript">var ue = UE.getEditor('editor');</script>
+    <script type="text/javascript">var ue = UE.getEditor('editor');</script> -->
 </head>
 <body>
 <div class="admin" style="width: 100%; height: 100%;">
@@ -23,20 +21,50 @@
                 <a href="{:U('Home/Basic/basicMail')}" style="color: gray;"><h2 style="display: inline-block;">邮件</h2></a>
                 <h2 style="display: inline-block; margin-left: 20px;">添加邮件</h2></a>
             </div>
-            <form action="{$url}" method="post">
-                <span style="display: inline-block; width: 100px;">邮件标题</span><input class="mail_title" type="" name="title" value="{$info['title']}"><br>
-                <span style="display: inline-block; width: 100px; margin-top: 15px;">邮件内容</span><textarea class="mail_content" name="content" style="width: 300px; height: 200px; margin-top: 20px; margin-bottom: 20px;">{$info['content']}</textarea><br>
-                <span style="display: inline-block; width: 100px;">邮件接收UID</span><input type="text" name="uid" value="{$info['uid']}"><span style="color: red; margin-left: 10px;">若全服发送则填写数字0</span><br>
-                <span style="display: inline-block; width: 100px; margin-top: 20px;">礼品ID</span><input style="width: 180px;" type="item_ids" name="item_ids" readonly="readonly" id="itemid_input" required="required" placeholder="下拉框选择(不能为空)" value="{$info['item_ids']}">
-                <select id="select_itemid" style="margin-left: 10px;">
-                    <option>请选择礼品</option>
-                    <foreach name="products" item="p">
-                        <option value="{$p['pid']}">{$p['name']}</option>
-                    </foreach>
-                </select>
-                <span id="clear_itemid" style="display: inline-block; font-size: 12px; cursor: pointer; border: 1px solid gray; border-radius: 5px; width: 40px; text-align: center;">清空</span><br>
-                <span class="item_number_span" style="display: inline-block; width: 90px; margin-top: 20px;">礼品数量</span><input class="item_number" type="hidden" name="item_number" value="{$info['item_number']}" placeholder="与礼品ID一一对应" /><br>
-                <input class="submit" type="submit" style="width: 100px; margin-left: 10px; background: #4CA3FF; border: 1px solid gray; border-radius: 5px; color: white; height: 30px; margin-top: 30px;">
+            <form action="{$url}" method="post" style="margin-left: 20px;">
+                <p>
+                    <span style="display: inline-block; width: 150px;">邮件标题</span>
+                    <input class="mail_title" type="" name="title" value="{$info['title']}">
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 150px; margin-top: 15px;">邮件内容</span>
+                    <textarea class="mail_content" name="content" style="width: 300px; height: 200px; margin-top: 20px; margin-bottom: 20px;">{$info['content']}</textarea>
+                </p>
+
+                <p>
+                    <span style="display: inline-block; width: 150px;">设置邮件接收UID</span>
+                    <span class="set_uid_area">
+                        <!-- <input class="uid_input1" type="text" style="width: 60px;"> -->
+                        <input class="uid_input" type="text" style="width: 65px;">
+                    </span>
+                    <button class="add_uid_input" type="button" style="cursor: pointer;">点击添加uid输入框</button>
+                </p>
+
+                <p>
+                    <span style="display: inline-block; width: 150px; margin-top: 20px;">邮件接收UID</span>
+                    <!-- <input class="finally_uid_input" type="text" name="uid" value="{$info['uid']}"> -->
+                    <!-- <textarea class="finally_uid_input" type="text" name="uid" value="{$info['uid']}"></textarea> -->
+                    <textarea class="finally_uid_input" name="uid" style="width: 300px;" readonly>{$info['uid']}</textarea>
+                    <span style="color: red; margin-left: 10px;">若全服发送则填写数字0</span>
+                </p>
+                <p>
+                    <span style="display: inline-block; width: 150px; margin-top: 20px;">礼品ID</span>
+                    <input style="width: 180px;" type="item_ids" name="item_ids" readonly="readonly" id="itemid_input" required="required" placeholder="下拉框选择(不能为空)" value="{$info['item_ids']}">
+                    <select id="select_itemid" style="margin-left: 10px;">
+                        <option>请选择礼品</option>
+                        <foreach name="products" item="p">
+                            <option value="{$p['pid']}">{$p['name']}</option>
+                        </foreach>
+                    </select>
+                    <span id="clear_itemid" style="display: inline-block; font-size: 12px; cursor: pointer; border: 1px solid gray; border-radius: 5px; width: 40px; text-align: center;">清空</span>
+                </p>
+                <p>
+                    <span class="item_number_span" style="display: inline-block; width: 90px; margin-top: 20px;">礼品数量</span>
+                    <input class="item_number" type="hidden" name="item_number" value="{$info['item_number']}" placeholder="与礼品ID一一对应" />
+                </p>
+                <p>
+                    <input class="submit" type="submit" style="width: 100px; margin-left: 10px; background: #4CA3FF; border: 1px solid gray; border-radius: 5px; color: white; height: 30px; margin-top: 30px;">
+                </p>
             </form>
         </div>
     </div>
@@ -45,6 +73,43 @@
 <script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
 <script type="text/javascript">
     $('#collapse-nav8').addClass('am-in');
+
+    $('.add_uid_input').click(function(){
+        $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px;">');
+    });
+
+    $('.set_uid_area').on('input propertychange','.uid_input', function() {
+        var finally_uid = "";
+        for(var i = 0; i < $('.uid_input').length; i++) {
+            if($('.uid_input').eq(i).val()==""){
+                // return false;
+                finally_uid = finally_uid;
+            }else{
+                finally_uid += $('.uid_input').eq(i).val()+","
+            }
+        }
+        finally_uid = finally_uid.substring(0,finally_uid.length - 1);
+        console.log(finally_uid);
+        $('.finally_uid_input').val(finally_uid);
+    })
+        // for(var i = 0; i < $(".uid_input").length; i++) {
+        //     // finally_uid += $('.uid_input'+i).val()+","
+        //     $('.uid_input').bind('input propertychange', function() {
+        //         console.log(1);
+        //     })
+        // }
+        // console.log(finally_uid)
+
+
+    // var finally_uid = "";
+    // $(".set_uid_area input").bind('input propertychange', function() {
+    //     for(var i = 1; i < $(".set_uid_area input").length; i++) {
+    //         // finally_uid += $('.uid_input'+i).val()+","
+    //         console.log(i);
+    //     }
+    //     // console.log(finally_uid)
+    // })
+
 
     if($('.item_number').val()!=""){
         console.log($('.item_number').val());
@@ -85,22 +150,6 @@
     }else{
         $('.title h2:nth-child(2)').text('新增邮件');
     }
-
-    // 选择邮件物品
-    // var change_num = 0;
-    // $('#select_itemid').change(function(){
-    //     if($(this).val()=="请选择礼品"){
-    //         return false;
-    //     }
-
-    //     if(change_num == 0){
-    //         $('#itemid_input').val($(this).val());
-    //     }else{
-    //         $('#itemid_input').val($('#itemid_input').val()+","+$(this).val());
-    //     }
-    //     change_num++;
-    //     // $('#itemid_input').css('width',30*change_num+"px")
-    // })
 
 
     // 选择邮件礼品

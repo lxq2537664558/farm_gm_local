@@ -157,6 +157,8 @@ class UserController extends BaseController {
 
                 $users['data'][$k]['username'] = $v['username']?$v['username']:'';//用户名
                 $users['data'][$k]['phone'] = $v['phone']?$v['phone']:'';//手机
+                $users['data'][$k]['state'] = ($v['state'] == -1)?2:$v['state'];//状态
+//                $users['data'][$k]['state'] = $v['state'];//状态
 //                var_dump($users['data'][$k]['state'],$v['state']);
 //                $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?$http_user_data[$v['id']]['gold']:0;//注册时间
             }
@@ -294,7 +296,7 @@ class UserController extends BaseController {
         //===记录到文件中
 
         if($post){
-            var_dump($_SESSION);die;
+//            var_dump($_SESSION);die;
             $uWhere['id'] = $post['uid'];
             unset($post['uid']);
 

@@ -295,6 +295,7 @@ class PublicController extends BaseController {
     public function getPacksInfoByCDK($http_request_data){
         $key_code = $http_request_data['key_code'];
         $uid = $http_request_data['uid'];
+        $kWhere['key_code'] = $key_code;
         if(!$key_code){
             $return = array('state'=>0,'msg'=>'系统错误，空的CDK！','data'=>NULL);
             return $return;
@@ -302,8 +303,13 @@ class PublicController extends BaseController {
 
         //根据CDK查询礼包id
         $key_info = D('gift_cdk')->query('select * from gift_cdk where binary key_code = '.$key_code);;
+        if(!$key_info){
+            $return = array('state'=>0,'msg'=>'无效的CDK！','data'=>NULL);
+            return $return;
+        }
         $key_info = current($key_info);
         $gid = $key_info['gid'];//礼包id
+
         //礼包状态
 //        $gift_state = $key_info['state'];
 //        if(!$gift_state){

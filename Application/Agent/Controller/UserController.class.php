@@ -479,7 +479,7 @@ class UserController extends BaseController {
                 //否则处理日期
                 //查询16号以后的，使用老接口
                 if(!$start_year){
-                    $uid = I('post.uid');
+//                    $uid = I('post.uid');
                     $url = 'http://' . C('SERVER_IP') . '/GetGeneralizeList';
 
                     $start = ($page - 1) * $pageSize;
@@ -503,7 +503,7 @@ class UserController extends BaseController {
                     $end_time = strtotime($end_year . $end_month . $end_day . ' 23:59');//结束时间
 
                     $mid = I('post.mid');
-                    $uid = I('post.uid');
+//                    $uid = I('post.uid');
                     $url = 'http://' . C('SERVER_IP') . '/GetGeneralizeList';
 
                     $start = ($page - 1) * $pageSize;
@@ -522,7 +522,7 @@ class UserController extends BaseController {
 
 
 
-            $current_user_info = $lists['self'];
+//            $current_user_info = $lists['self'];
             $data = $lists['users'];
 
             foreach ($data as $v){

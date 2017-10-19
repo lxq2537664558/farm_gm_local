@@ -211,12 +211,6 @@ class PublicController extends BaseController {
             'admin_id'=>$http_request_data['admin_id'],
         );
 
-//        if(!$res['state']){
-//            $model->rollback();//回滚操作
-//            $return = array('state'=>0,'msg'=>'系统错误，金币记录写入失败！','data'=>NULL);
-//            return $return;
-//        }
-
         $model = D();//实例化空模型
         $model->startTrans();//开始事务
 
@@ -308,7 +302,8 @@ class PublicController extends BaseController {
         }
 
         //根据CDK查询礼包id
-        $key_info = D('gift_cdk')->query('select * from gift_cdk where binary key_code = '.$key_code);;
+//        $key_info = D('gift_cdk')->query('select * from gift_cdk where binary key_code = '.$key_code);
+        $key_info = D('gift_cdk')->where($kWhere)->select();
         if(!$key_info){
             $return = array('state'=>0,'msg'=>'无效的CDK！','data'=>NULL);
             return $return;
@@ -398,7 +393,7 @@ class PublicController extends BaseController {
             $user_exists = $this->getAll('admin',$where);
 //var_dump($user_exists);
 //            die;
-            
+
             if(!$user_exists){
                 $this->error('用户名或密码错误！');
                 die;

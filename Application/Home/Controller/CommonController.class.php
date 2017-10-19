@@ -337,7 +337,10 @@ class CommonController extends Controller
         $this->display();
     }
 
-    //AJAX验证兑换码
+
+
+
+    //AJAX验证兑换码-只针对新手礼包
     public function checkCode(){
         $post = I('post.');
 
@@ -351,29 +354,20 @@ class CommonController extends Controller
         }
         $user_info = current($user_exists);
 
-        //一个用户只能领取一次
+        //一个用户一个礼包只能领取一次
         $oWhere['uid'] = $user_info['id'];
+        $oWhere['gid'] = 1;//新手礼包的gid为1
         $is_get = D('gift_cdk')->where($oWhere)->select();
         if($is_get){
-            echo json_encode(array('state'=>0,'msg'=>'每个户只能领取一次！'));
+            echo json_encode(array('state'=>0,'msg'=>'每个户只能领取一次新手礼包！'));
             die;
         }
-
-        //获取CDK-新手礼包的gids
-        $s_g_where['novice'] = 1;
-        $s_gift = D('gifts')->where($s_g_where)->select();
-        foreach ($s_gift as $v){
-            $gift_ids[] = $v['id'];
-        }
-
-
 
         //高并发处理
         $model = D('gift_cdk');
         $model->startTrans();
 
-        $gift_ids = join(',',$gift_ids);
-        $sql = 'SELECT * FROM gift_cdk WHERE gid IN ('.$gift_ids.') AND state = 0 AND uid IS NULL LIMIT 0,1 FOR UPDATE';
+        $sql = 'SELECT * FROM gift_cdk WHERE gid = 1 AND state = 0 AND uid IS NULL LIMIT 0,1 FOR UPDATE';
         $res = $model->query($sql);
         $cdk_info = current($res);
         $code = $cdk_info['key_code'];
@@ -381,9 +375,10 @@ class CommonController extends Controller
         //绑定CDK
         $data = array('uid'=>$user_info['id']);
         $kWhere['key_code'] = $code;
+//        $sql = 'update gift_cdk set uid = '.$user_info['id'].' where binary key_code = '.$code;
         $res = D('gift_cdk')->where($kWhere)->save($data);
-//        $msg = D('gift_cdk')->_sql();
-//        echo json_encode(array('state'=>0,'msg'=>$sql));die;
+//        $res = D('gift_cdk')->query($sql);
+
         if($res){
             $model->commit();
             echo json_encode(array('state'=>1,'code'=>$code));
@@ -393,10 +388,6 @@ class CommonController extends Controller
             echo json_encode(array('state'=>0,'msg'=>'系统错误，数据更新失败！'));
             die;
         }
-
-
-
-
 
 //        $sWhere['gid'] = array('in',$gift_ids);
 //        $sWhere['state'] = 0;

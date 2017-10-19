@@ -211,6 +211,12 @@ class PublicController extends BaseController {
             'admin_id'=>$http_request_data['admin_id'],
         );
 
+//        if(!$res['state']){
+//            $model->rollback();//回滚操作
+//            $return = array('state'=>0,'msg'=>'系统错误，金币记录写入失败！','data'=>NULL);
+//            return $return;
+//        }
+
         $model = D();//实例化空模型
         $model->startTrans();//开始事务
 

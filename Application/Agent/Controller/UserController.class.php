@@ -139,6 +139,7 @@ class UserController extends BaseController {
             $url = 'http://'.C('SERVER_IP').'/GetUserData';
 
             $params = 'showIds=' . $uid_string . '&type=0';
+//            var_dump($params);
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
 
@@ -146,6 +147,7 @@ class UserController extends BaseController {
 
 //            var_dump($url);
 //            var_dump($lists);
+//            die;
             //序列化接口请求的数据
             $http_user_data = $this->sortInfoById($lists['users'],'showId');
 //            var_dump($http_user_data);die;
@@ -522,8 +524,18 @@ class UserController extends BaseController {
     public function promotionList(){
         $post = I('post.');
         if($post){
-            $uid = I('post.uid');
             set_time_limit(0);
+            $uid = I('post.uid');
+
+            //请求接口数据的mid信息
+//            $url = 'http://'.C('SERVER_IP').'/GetUserData';
+//            $params = 'showIds=' . $uid . '&type=0';
+////            var_dump($params);
+//            $params = $this->publicEncrypt($params);
+//            $url .= '?data='.$params;
+//            $lists = $this->getHTTPData($url);
+////            var_dump($url,$lists);die;
+
             //分页配置
             $page = I('post.page',1);
             $pageSize = 10;

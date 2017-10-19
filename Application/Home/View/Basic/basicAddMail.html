@@ -37,6 +37,7 @@
                         <!-- <input class="uid_input1" type="text" style="width: 60px;"> -->
                         <input class="uid_input" type="text" style="width: 65px;">
                     </span>
+                    <span style="color: red; margin-left: 10px;">若全服发送则填写数字0</span>
                     <button class="add_uid_input" type="button" style="cursor: pointer;">点击添加uid输入框</button>
                 </p>
 
@@ -45,12 +46,11 @@
                     <!-- <input class="finally_uid_input" type="text" name="uid" value="{$info['uid']}"> -->
                     <!-- <textarea class="finally_uid_input" type="text" name="uid" value="{$info['uid']}"></textarea> -->
                     <textarea class="finally_uid_input" name="uid" style="width: 300px;" readonly>{$info['uid']}</textarea>
-                    <span style="color: red; margin-left: 10px;">若全服发送则填写数字0</span>
                 </p>
                 <p>
                     <span style="display: inline-block; width: 150px; margin-top: 20px;">礼品ID</span>
                     <input style="width: 180px;" type="item_ids" name="item_ids" readonly="readonly" id="itemid_input" required="required" placeholder="下拉框选择(不能为空)" value="{$info['item_ids']}">
-                    <select id="select_itemid" style="margin-left: 10px;">
+                    <select id=select_itemid" style="margin-left: 10px;">
                         <option>请选择礼品</option>
                         <foreach name="products" item="p">
                             <option value="{$p['pid']}">{$p['name']}</option>

@@ -32,12 +32,19 @@
                 </p>
 
                 <p>
+                    <span style="display: inline-block; width: 150px; margin-top: 15px;">是否全服发送</span>
+                    <select class="set_isall">
+                        <option value="0">是</option>
+                        <option value="1">否</option>
+                    </select>
+                </p>
+
+                <p class="isdisplay_setuid_area">
                     <span style="display: inline-block; width: 150px;">设置邮件接收UID</span>
                     <span class="set_uid_area">
                         <!-- <input class="uid_input1" type="text" style="width: 60px;"> -->
-                        <input class="uid_input" type="text" style="width: 65px;">
+                        <!-- <input class="uid_input" type="text" style="width: 65px;"> -->
                     </span>
-                    <span style="color: red; margin-left: 10px;">若全服发送则填写数字0</span>
                     <button class="add_uid_input" type="button" style="cursor: pointer;">点击添加uid输入框</button>
                 </p>
 
@@ -50,7 +57,7 @@
                 <p>
                     <span style="display: inline-block; width: 150px; margin-top: 20px;">礼品ID</span>
                     <input style="width: 180px;" type="item_ids" name="item_ids" readonly="readonly" id="itemid_input" required="required" placeholder="下拉框选择(不能为空)" value="{$info['item_ids']}">
-                    <select id=select_itemid" style="margin-left: 10px;">
+                    <select id="select_itemid" style="margin-left: 10px;">
                         <option>请选择礼品</option>
                         <foreach name="products" item="p">
                             <option value="{$p['pid']}">{$p['name']}</option>
@@ -74,6 +81,40 @@
 <script type="text/javascript">
     $('#collapse-nav8').addClass('am-in');
 
+
+    // 进页面判断
+    if($('.finally_uid_input').val()!=""){
+        $('.set_isall').val("1");
+        $('.isdisplay_setuid_area').show();
+    }else{
+        $('.set_isall').val("0");
+        $('.isdisplay_setuid_area').hide();
+    }
+
+    // alert($('.finally_uid_input').val())
+    var uid_arr = $('.finally_uid_input').val().split(',');
+    // alert(uid_arr[1]);
+    // for()
+
+    for(var i = 0; i < uid_arr.length; i++) {
+        // console.log(uid_arr[0])
+        $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px;">');
+        $('.uid_input').eq(i).val(uid_arr[0])
+    }
+
+    $('.set_isall').change(function(){
+        if($(this).val()=="0"){
+            $('.isdisplay_setuid_area').hide();
+            $('.uid_input').hide();
+            $('.uid_input').val("");
+            $('.finally_uid_input').val("");
+        }else if($(this).val()=="1"){
+            $('.isdisplay_setuid_area').show();
+        }
+    })
+
+
+
     $('.add_uid_input').click(function(){
         $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px;">');
     });
@@ -89,30 +130,12 @@
             }
         }
         finally_uid = finally_uid.substring(0,finally_uid.length - 1);
-        console.log(finally_uid);
+        // console.log(finally_uid);
         $('.finally_uid_input').val(finally_uid);
     })
-        // for(var i = 0; i < $(".uid_input").length; i++) {
-        //     // finally_uid += $('.uid_input'+i).val()+","
-        //     $('.uid_input').bind('input propertychange', function() {
-        //         console.log(1);
-        //     })
-        // }
-        // console.log(finally_uid)
-
-
-    // var finally_uid = "";
-    // $(".set_uid_area input").bind('input propertychange', function() {
-    //     for(var i = 1; i < $(".set_uid_area input").length; i++) {
-    //         // finally_uid += $('.uid_input'+i).val()+","
-    //         console.log(i);
-    //     }
-    //     // console.log(finally_uid)
-    // })
-
 
     if($('.item_number').val()!=""){
-        console.log($('.item_number').val());
+        // console.log($('.item_number').val());
 
         var item_number = $('.item_number').val();
         var item_number = item_number.split(",");

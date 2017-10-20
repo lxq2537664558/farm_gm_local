@@ -36,25 +36,9 @@ class PublicController extends BaseController {
             return $return;
         }
 
-        //帐号或用户名或手机号
-        $where1['account'] = trim($username);
-        $where1['username'] = trim($username);
-        $where1['phone'] = trim($username);
-        $where1['_logic'] = 'or';
-//        //区分大小写查询
-//        $where['_string']='BINARY account = "'.$username.'" OR BINARY username = "'.$username.'"'.'" OR BINARY phone = "'.$username.'"';
-
-        //密码
-        $where2['password'] = $password;
-//        $where_main['password'] = $password;
-
-        //条件逻辑
-        $where_main['_complex'] = array(
-            $where1, $where2,
-            '_logic' => 'and'
-        );
-
-        $is_true = $this->getAll('user',$where_main);
+        $where['phone'] = trim($username);//手机号
+        $where['password'] = $password;//密码
+        $is_true = $this->getAll('user',$where);
 
         if(!$is_true){
             //登录失败-用户名、密码错误
@@ -80,10 +64,7 @@ class PublicController extends BaseController {
                 $login_time = time();
                 $data['login_time'] = $login_time;
                 $this->insAndUpdate('user', $where, $data);
-
                 $post['user_type'] = $user_info['user_type'];
-                $userController = new UserController();
-                $extension_code = $userController->getExtensionCode($post);//推广码
 
                 $return = array(
                     'state'=>1,
@@ -92,7 +73,6 @@ class PublicController extends BaseController {
                         'login_time'=>$login_time,
                         'id'=>$user_info['id'],
                         'father_id'=>$user_info['father_id'],
-//                        'grandfather_id'=>$user_info['grandfather_id'],
                         'realname_check'=>$realname_check,
                         'is_admin'=>$user_info['is_admin'],
                     ),
@@ -106,7 +86,6 @@ class PublicController extends BaseController {
                 'data'=>array(
                     'id'=>$user_info['id'],
                     'father_id'=>$user_info['father_id'],
-//                    'grandfather_id'=>$user_info['grandfather_id'],
                     'is_admin'=>$user_info['is_admin'],
                     'realname_check'=>$realname_check,
                 ),
@@ -165,8 +144,13 @@ class PublicController extends BaseController {
         $password = base64_encode($http_request_data['password']);//密码
         $phone = $http_request_data['phone'];//手机
 
+        if(!$phone){
+            $return = array('state'=>0,'msg'=>'注册失败，手机号不能为空！','data'=>NULL);
+            return $return;
+        }
+
         //帐号唯一性验证
-        $aWhere['account'] = $account;
+        $aWhere['phone'] = $account;
         $account_exists = $this->getAll('user',$aWhere);
         if($account_exists){
             $return = array('state'=>0,'msg'=>'注册失败，该帐号已被注册！','data'=>NULL);
@@ -186,8 +170,8 @@ class PublicController extends BaseController {
             'account'=>$account,
             'password'=>$password,
             'register_time'=>time(),
+            'phone'=>$phone,
         );
-        $phone?$data['phone'] = $phone:'';//手机，有则添加，没有则不需要
 
         $res = $this->insAndUpdate('user','',$data);
         if($res['state']){
@@ -311,13 +295,6 @@ class PublicController extends BaseController {
         $key_info = current($key_info);
         $gid = $key_info['gid'];//礼包id
 
-        //礼包状态
-//        $gift_state = $key_info['state'];
-//        if(!$gift_state){
-//            $return = array('state'=>0,'msg'=>'验证失败，该礼包已禁用！','data'=>NULL);
-//            return $return;
-//        }
-
         //每个用户相对与每个礼包只能使用一次
         $uWhere['uid'] = $uid;
         $uWhere['gid'] = $gid;
@@ -379,8 +356,6 @@ class PublicController extends BaseController {
         if($post){
             $username = trim($post['username']);
             $password = base64_encode($post['password']);
-//            $where['username'] = $username;
-//            $where['password'] = base64_encode($password);
 
             $where['_string']='BINARY username = "'.$username.'" AND password = "'.$password.'"';
 
@@ -389,10 +364,7 @@ class PublicController extends BaseController {
                 die;
             }
 
-//            var_dump($password,base64_encode($password));
             $user_exists = $this->getAll('admin',$where);
-//var_dump($user_exists);
-//            die;
 
             if(!$user_exists){
                 $this->error('用户名或密码错误！');

@@ -26,23 +26,12 @@ class CommonController extends Controller
         if($post){
             $username = $post['phone'];
             $password = base64_encode($post['password']);
-            //帐号或用户名或手机号
-            $where1['account'] = $username;
-            $where1['username'] = $username;
-            $where1['phone'] = $username;
-            $where1['_logic'] = 'or';
 
-            //密码
-            $where2['password'] = $password;
+            $where['phone'] = $username;//手机号
+            $where['password'] = $password;//密码
 
-            //条件逻辑
-            $where_main['_complex'] = array(
-                $where1, $where2,
-                '_logic' => 'and'
-            );
+            $is_true = D('user')->where($where)->select();
 
-            $is_true = D('user')->where($where_main)->select();
-//            echo D('user')->_sql();die;
             if($is_true){
                 $is_true = current($is_true);
                 session('user_bindInfo_login_page',array('is_login'=>1,'uid'=>$is_true['id']));

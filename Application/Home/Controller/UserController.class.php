@@ -7,91 +7,8 @@ class UserController extends BaseController {
     public function getHTTPData($url){
         $openssl = new OpenSSLController();
         $data = $openssl->getData($url);
-//        var_dump($data);
         $return = json_decode($data,true);
         return $return;
-    }
-
-    public function downUserList(){
-        $search = I('get.search','','trim');
-        $table = I('get.table');
-        $page = I('get.page', 1);
-        $pager = array('page' => $page, 'pageSize' => 20);
-
-        //模糊搜索
-        if($search){
-            $where['id'] = array('like','%'.$search.'%');
-            $where['username'] = array('like','%'.$search.'%');
-            $where['account'] = array('like','%'.$search.'%');
-            $where['phone'] = array('like','%'.$search.'%');
-            $where['idcard'] = array('like','%'.$search.'%');
-            $where['_logic'] = 'or';
-        }
-
-        $users = $this->getAll('user',$where, 'id', '', '', $pager);
-
-        $user_ids = $this->sortInfoById($users['data'],'id','id');
-
-        $uid_string = join('_', $user_ids);
-
-        $url = 'http://'.C('SERVER_IP').'/GetUserData';
-
-        $params = 'showIds=' . $uid_string . '&type=0';
-        $params = $this->publicEncrypt($params);
-        $url .= '?data='.$params;
-
-        $lists = $this->getHTTPData($url);
-
-        //序列化接口请求的数据
-        $http_user_data = $this->sortInfoById($lists['users'],'showId');
-
-        $state_array = array('正常','封号','永久封号');
-
-        //组装数据
-        foreach ($users['data'] as $k=>$v){
-            $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?round($http_user_data[$v['id']]['gold'],2):0;//金币
-            $users['data'][$k]['father_id'] = $http_user_data[$v['id']]['generalizeId1']?$http_user_data[$v['id']]['generalizeId1']:0;//一级推广id
-            $users['data'][$k]['grandfather_id'] = $http_user_data[$v['id']]['generalizeId2']?$http_user_data[$v['id']]['generalizeId2']:0;//二级推广id
-            $users['data'][$k]['login_time'] = $http_user_data[$v['id']]['lastLoginTime']?$http_user_data[$v['id']]['lastLoginTime']:0;//上次登陆时间
-            $users['data'][$k]['mid'] = $http_user_data[$v['id']]['id']?$http_user_data[$v['id']]['id']:0;//mongodb的id
-//                $users['data'][$k]['idcard'] = $http_user_data[$v['id']]['idcard']?$http_user_data[$v['id']]['idcard']:'';//身份证
-            $users['data'][$k]['idcard'] = $v['idcard']?$v['idcard']:'';//身份证
-
-            $users['data'][$k]['username'] = $v['username']?$v['username']:'';//用户名
-            $users['data'][$k]['phone'] = $v['phone']?$v['phone']:'';//手机
-//                var_dump($users['data'][$k]['state'],$v['state']);
-//                $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?$http_user_data[$v['id']]['gold']:0;//注册时间
-        }
-
-        //字段翻译
-        $translate_fields = C('TRANSLATE_FIELDS');
-        $translate = $translate_fields[$table];
-        $excel_field = array('id',	'username',	'phone',	'idcard',	'state',	'father_id',	'grandfather_id',	'user_type',	'gold',	'login_time',	'register_time');
-        //处理状态数据
-        foreach ($users['data'] as $k=>$v){
-            $temp2 = array();
-
-            $temp = $v;
-            foreach ($translate as $field=>$string){
-                if($string == 'to_time'){
-                    $temp[$field] = date('Y-m-d',$v[$field]);
-                }else {
-                    $temp[$field] = $string[$v[$field]];
-                }
-            }
-
-            foreach ($excel_field as $val){
-                $temp2[] = $temp[$val];
-            }
-            $data[] = $temp2;
-        }
-//        echo '<pre>';
-//        print_r($data);
-//        echo '</pre>';
-//        die;
-
-        $title = array('UID',	'用户名',	'手机号',	'身份证',	'状态',	'所属一级推广ID ',	'所属二级推广ID ',	'用户',	'金币',	'上次登录时间',	'注册时间');
-        $this->downLoadExcel('UserList',$title,$data);
     }
 
     //用户列表
@@ -99,12 +16,6 @@ class UserController extends BaseController {
         $post = I('post.');
 
         if($post) {
-//            echo microtime().'-----------'.time().'<br/>';
-
-
-//            $debug_start_time = microtime();//起始时间
-//            echo '起始执行时间'.$debug_start_time.'<br/>';
-
             $search = I('post.search','','trim');
             $table = I('post.table');
             $page = I('post.page', 1);
@@ -114,7 +25,6 @@ class UserController extends BaseController {
             if($search){
                 $where['id'] = array('like','%'.$search.'%');
                 $where['username'] = array('like','%'.$search.'%');
-                $where['account'] = array('like','%'.$search.'%');
                 $where['phone'] = array('like','%'.$search.'%');
                 $where['idcard'] = array('like','%'.$search.'%');
                 $where['_logic'] = 'or';
@@ -123,7 +33,6 @@ class UserController extends BaseController {
             $users = $this->getAll('user',$where, 'id', '', '', $pager);
 
             $user_ids = $this->sortInfoById($users['data'],'id','id');
-//            $user_ids = array_keys($users['data']);
             $uid_string = join('_', $user_ids);
 
             $url = 'http://'.C('SERVER_IP').'/GetUserData';
@@ -131,36 +40,23 @@ class UserController extends BaseController {
             $params = 'showIds=' . $uid_string . '&type=0';
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
-//            $debug_time2 = microtime();//PHP前面执行时间
-//            echo 'PHP前置执行时间：'.$debug_time2.'<br/>';//PHP前面执行时间
-//            var_dump($url);die;
             $lists = $this->getHTTPData($url);
 
-//            $debug_time3 = microtime();//接口请求时间
-//            echo '接口请求时间'.$debug_time3.'<br/>';//接口请求时间
 
             //序列化接口请求的数据
             $http_user_data = $this->sortInfoById($lists['users'],'showId');
-
-            $state_array = array('正常','封号','永久封号');
 
             //组装数据
             foreach ($users['data'] as $k=>$v){
                 $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?floor($http_user_data[$v['id']]['gold']):0;//金币
 //                $users['data'][$k]['father_id'] = $http_user_data[$v['id']]['generalizeId1']?$http_user_data[$v['id']]['generalizeId1']:0;//一级推广id
                 $users['data'][$k]['father_id'] = $v['father_id']?$v['father_id']:0;//改为自表查询，不再显示接口的数据
-//                $users['data'][$k]['grandfather_id'] = $http_user_data[$v['id']]['generalizeId2']?$http_user_data[$v['id']]['generalizeId2']:0;//二级推广id
                 $users['data'][$k]['login_time'] = $http_user_data[$v['id']]['lastLoginTime']?$http_user_data[$v['id']]['lastLoginTime']:0;//上次登陆时间
                 $users['data'][$k]['mid'] = $http_user_data[$v['id']]['id']?$http_user_data[$v['id']]['id']:0;//mongodb的id
-//                $users['data'][$k]['idcard'] = $http_user_data[$v['id']]['idcard']?$http_user_data[$v['id']]['idcard']:'';//身份证
                 $users['data'][$k]['idcard'] = $v['idcard']?$v['idcard']:'';//身份证
-
                 $users['data'][$k]['username'] = $v['username']?$v['username']:'';//用户名
                 $users['data'][$k]['phone'] = $v['phone']?$v['phone']:'';//手机
                 $users['data'][$k]['state'] = ($v['state'] == -1)?2:$v['state'];//状态
-//                $users['data'][$k]['state'] = $v['state'];//状态
-//                var_dump($users['data'][$k]['state'],$v['state']);
-//                $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?$http_user_data[$v['id']]['gold']:0;//注册时间
             }
 
             //字段翻译
@@ -180,14 +76,6 @@ class UserController extends BaseController {
                 $data[$k] = $temp;
             }
             $users['data'] = $data;
-
-//            $debug_time4 = microtime();//后续PHP执行时间
-//            echo '后续PHP执行时间'.$debug_time4.'<br/>';//后续PHP执行时间
-//            die;
-
-//            echo microtime().'-----------'.time().'<br/>';
-//            die;
-
 
             echo json_encode($users);die;
         }
@@ -218,13 +106,16 @@ class UserController extends BaseController {
     public function addUser(){
         $post = I('post.');
         if($post){
-            if(!$post['password'] || !$post['account']){
-                $this->error('用户名或密码不能为空！');
+            if(!$post['password'] || !$post['phone']){
+                $this->error('帐号或密码不能为空！');
                 die;
             }
 
+            $post['username'] = $post['phone'];
             //帐号唯一性验证
-            $eWhere['account'] = $post['account'];
+            $eWhere['phone'] = $post['phone'];
+            $eWhere['username'] = $post['username'];
+            $eWhere['_logic'] = 'or';
             $account_exists = $this->getAll('user',$eWhere);
             if($account_exists){
                 $this->error('该帐号已经被注册！');
@@ -232,38 +123,6 @@ class UserController extends BaseController {
             }
 
             $post['password'] = base64_encode($post['password']);
-
-////            身份证验证
-//            $is_true = validation_filter_id_card($post['idcard']);
-//            if(!$is_true){
-//                $this->error('身份证格式不正确！');
-//                die;
-//            }
-
-            $temp_code = $post['extension_code'];
-            unset($post['extension_code']);
-            if(!$post['extension_code']) {//如果有post过来的推广码则该用户不生成推广码
-                //推广码
-                $code = $this->getExtensionCode($post);
-                $post['extension_code'] = $code;
-            }
-
-            //绑定层级关系
-            //获取推广码对应的uid
-            $uWhere['extension_code'] = $temp_code;
-            $user_info = $this->getAll('user',$uWhere);
-            $user_info = current($user_info);
-            $uid = $user_info['id'];
-//            var_dump($post,$user_info,$uid);die;
-
-            //绑定father_id
-            $post['father_id'] = $uid;
-            //绑定grandfather_id
-            $grandfather_exists = $this->getAll('user',array('id'=>$uid));
-            if($grandfather_exists[0]['father_id']){
-                $post['grandfather_id'] = $grandfather_exists[0]['father_id'];
-            }
-
             $post['register_time'] = time();
             $res = $this->insAndUpdate('user','',$post);
             if($res['state']){
@@ -274,9 +133,6 @@ class UserController extends BaseController {
                 die;
             }
         }else{
-            $extension_code = I('get.extension_code','');
-//            var_dump($extension_code);
-            $this->assign('extension_code',$extension_code);
             $this->assign('url',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             $this->display();
         }
@@ -288,16 +144,9 @@ class UserController extends BaseController {
         $id = I('get.uid');
         $where['id'] = $id;
 
-        //日志记录
-        //获取用户信息
-
-        //获取POST信息
-        //记录到表中
-        //===记录到文件中
-
         if($post){
-//            var_dump($_SESSION);die;
-            $uWhere['id'] = $post['uid'];
+            $uid = $post['uid'];
+            $uWhere['id'] = $uid;
             unset($post['uid']);
 
             //密码为空则不修改密码
@@ -307,32 +156,35 @@ class UserController extends BaseController {
                 unset($post['password']);
             }
 
-//            //身份证验证
-//            $is_true = validation_filter_id_card($post['idcard']);
-//            if(!$is_true){
-//                echo json_encode(array('state'=>1,'msg'=>'身份证格式不正确！'));
-//                die;
-//            }
-
-//            //封号状态与时间，永久为-1
-//            if($post['state']){
-//                $post['close_time'] = $post['close_time'];//封号时间
-//            }
-
             $user_info = $this->getAll('user',$where);
             $user_info = current($user_info);
+
             //当用户被修改为代理商层级且用户之前不是代理商层级[没有推广码]时获取新的推广码
             if(in_array($user_info['user_type'],array(1,2)) && !$user_info['extension_code']){
                 //推广码
                 $code = $this->getExtensionCode($post);
                 $post['extension_code'] = $code;
+            }else{
+                //代理商被修改为普通用户删除代理关系
+                $model = D();
+                $model->startTrans();
+                $dWhere['father_id'] = $uid;
+                $dData['father_id'] = 0;
+                $res1 = $this->insAndUpdate('user',$dWhere,$dData);
+                if(!$res1['state']){
+                    $model->rollback();
+                    echo json_encode(array('state'=>0,'msg'=>'修改失败！'));
+                    die;
+                }
             }
 
             $res = $this->insAndUpdate('user',$uWhere,$post);
             if($res['state']){
+                $model->commit();
                 echo json_encode(array('state'=>1,'msg'=>'修改成功！'));
                 die;
             }else{
+                $model->rollback();
                 echo json_encode(array('state'=>0,'msg'=>'修改失败！'));
                 die;
             }
@@ -483,7 +335,7 @@ class UserController extends BaseController {
             //字段翻译
             $translate_fields = C('TRANSLATE_FIELDS');
             $translate = $translate_fields['user'];
-//var_dump($translate,current($data));die;
+
             //处理状态数据
             foreach ($data as $k=>$v){
                 $temp = $v;
@@ -500,7 +352,6 @@ class UserController extends BaseController {
             ksort($data);
             $data = array_values($data);
             $json = array('data'=>$data,'page'=>array('page'=>$page,'totalPage'=>ceil($lists['totalNum']/$pageSize)));
-
 
             echo json_encode($json);
             die;
@@ -551,7 +402,6 @@ class UserController extends BaseController {
 
             $lists = $this->getHTTPData($url);
             $items = $lists['items'];
-//            var_dump($items);die;
             $json = array('data'=>$items,'page'=>array());
             echo json_encode($json);
             die;
@@ -592,7 +442,6 @@ class UserController extends BaseController {
                     $url = 'http://'.C('SERVER_IP').'/GetOldGeneralizeList';
                     $params = $this->publicEncrypt($params);
                     $url .= '?data='.$params;
-//                    var_dump($url);die;
                     $lists = $this->getHTTPData($url);
                 }else{//查新数据
                     //周的时间处理

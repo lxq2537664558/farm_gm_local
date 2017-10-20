@@ -82,7 +82,7 @@
     $('#collapse-nav8').addClass('am-in');
 
 
-    // 进页面判断
+    // 进页面判断是否显示uid区域
     if($('.finally_uid_input').val()!=""){
         $('.set_isall').val("1");
         $('.isdisplay_setuid_area').show();
@@ -91,15 +91,11 @@
         $('.isdisplay_setuid_area').hide();
     }
 
-    // alert($('.finally_uid_input').val())
+    // 生成uid输入框
     var uid_arr = $('.finally_uid_input').val().split(',');
-    // alert(uid_arr[1]);
-    // for()
-
     for(var i = 0; i < uid_arr.length; i++) {
-        // console.log(uid_arr[0])
         $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px;">');
-        $('.uid_input').eq(i).val(uid_arr[0])
+        $('.uid_input').eq(i).val(uid_arr[i]);
     }
 
     $('.set_isall').change(function(){

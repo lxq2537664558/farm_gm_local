@@ -65,7 +65,8 @@ function checktable(issearch){
 
                                 $('.user_edit').find('.change_uid input').val(data.id);
                                 $('.user_edit').find('.change_username input').val(data.username);
-                                $('.user_edit').find('.change_idcard input').val(data.idcard);
+                                $('.user_edit').find('.change_username input').attr('readonly',true);
+                                // $('.user_edit').find('.change_idcard input').val(data.idcard);
                                 if(data.user_type==0){
                                     $('.type_select').val('putong');
                                 }else if(data.user_type==1){
@@ -124,7 +125,7 @@ function checktable(issearch){
                                         data: {
                                             uid : $('.change_uid input').val(),
                                             username: $('.change_username input').val(),
-                                            idcard : $('.change_idcard input').val(),
+                                            // idcard : $('.change_idcard input').val(),
                                             password : $('.change_password input').val(),
                                             user_type : user_type,
                                             state : state,

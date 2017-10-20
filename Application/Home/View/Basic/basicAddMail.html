@@ -238,6 +238,20 @@ console.log(1)
             }
         }
 
+        for(var i = 0; i < $('.uid_input').length; i++){
+            if($('.uid_input').eq(i).val()==""){
+                alert("礼品数量不能为空");
+                a = false;
+                return a;
+            }else if(!reg.test($('.uid_input').eq(i).val())){
+                alert("uid必须为正整数");
+                a = false;
+                return a;
+            }else{
+                a = true;
+            }
+        }
+
         if($('.mail_title').val()==""){
             alert("邮件标题不能为空");
             a = false;

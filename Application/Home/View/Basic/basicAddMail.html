@@ -33,7 +33,7 @@
 
                 <p>
                     <span style="display: inline-block; width: 150px; margin-top: 15px;">是否全服发送</span>
-                    <select class="set_isall">
+                    <select class="set_isall" name="whole">
                         <option value="1">否</option>
                         <option value="2">是</option>
                     </select>
@@ -42,7 +42,6 @@
                 <p class="isdisplay_setuid_area">
                     <span style="display: inline-block; width: 150px;">设置邮件接收UID</span>
                     <span class="set_uid_area">
-                        <!-- <input class="uid_input1" type="text" style="width: 60px;"> -->
                         <!-- <input class="uid_input" type="text" style="width: 65px;"> -->
                     </span>
                     <button class="add_uid_input" type="button" style="cursor: pointer;">点击添加uid输入框</button>
@@ -51,13 +50,12 @@
                 <p>
                     <span style="display: inline-block; width: 150px; margin-top: 20px;">邮件接收UID</span>
                     <!-- <input class="finally_uid_input" type="text" name="uid" value="{$info['uid']}"> -->
-                    <!-- <textarea class="finally_uid_input" type="text" name="uid" value="{$info['uid']}"></textarea> -->
                     <textarea class="finally_uid_input" name="uid" style="width: 300px;" readonly>{$info['uid']}</textarea>
                 </p>
                 <p>
                     <span style="display: inline-block; width: 150px; margin-top: 20px;">礼品ID</span>
                     <input style="width: 180px;" type="item_ids" name="item_ids" readonly="readonly" id="itemid_input" required="required" placeholder="下拉框选择(不能为空)" value="{$info['item_ids']}">
-                    <select id="select_itemid" style="margin-left: 10px;" name="whole">
+                    <select id="select_itemid" style="margin-left: 10px;">
                         <option>请选择礼品</option>
                         <foreach name="products" item="p">
                             <option value="{$p['pid']}">{$p['name']}</option>
@@ -66,7 +64,7 @@
                     <span id="clear_itemid" style="display: inline-block; font-size: 12px; cursor: pointer; border: 1px solid gray; border-radius: 5px; width: 40px; text-align: center;">清空</span>
                 </p>
                 <p>
-                    <span class="item_number_span" style="display: inline-block; width: 90px; margin-top: 20px;">礼品数量</span>
+                    <span class="item_number_span" style="display: inline-block; width: 150px; margin-top: 20px;">礼品数量</span>
                     <input class="item_number" type="hidden" name="item_number" value="{$info['item_number']}" placeholder="与礼品ID一一对应" />
                 </p>
                 <p>
@@ -92,6 +90,7 @@ console.log(1)
     //     $('.isdisplay_setuid_area').hide();
     // }
 
+    // 判断进也米娜是否显示uid输入区域
     if(href.indexOf("id") == -1 || (href.indexOf("id") != -1 && $('.finally_uid_input').val()!="")){
         $('.set_isall').val("1");
         $('.isdisplay_setuid_area').show();
@@ -106,10 +105,11 @@ console.log(1)
     var uid_arr = $('.finally_uid_input').val().split(',');
     for(var i = 0; i < uid_arr.length; i++) {
         $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px; margin-left: 10px;">');
+        $('.uid_input').eq(0).css('margin-left','0');
         $('.uid_input').eq(i).val(uid_arr[i]);
     }
 
-
+    // 是否全服发送选择框
     $('.set_isall').change(function(){
         if($(this).val()=="2"){
             $('.isdisplay_setuid_area').hide();
@@ -121,8 +121,8 @@ console.log(1)
         }
     })
 
+    // 添加uid输入框
     $('.add_uid_input').click(function(){
-
         $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px; margin-left: 10px;">');
     });
 
@@ -142,7 +142,6 @@ console.log(1)
 
     if($('.item_number').val()!=""){
         // console.log($('.item_number').val());
-
         var item_number = $('.item_number').val();
         var item_number = item_number.split(",");
         var change_num = item_number.length;
@@ -189,6 +188,7 @@ console.log(1)
         if(change_num == 0){
             $('#itemid_input').val($(this).val());
             $('.item_number_span').after('<input class="item_number_input" type="text" value="" style="width: 50px; margin-left: 10px;">');
+            $('.item_number_input').eq(0).css('margin-left','0');
         }else if(change_num==1){
             $('#itemid_input').val($('#itemid_input').val()+","+$(this).val());
             $('.item_number_input').eq(0).after('<input class="item_number_input" type="text" value="" style="width: 50px; margin-left: 10px;">');

@@ -81,15 +81,6 @@ console.log(1)
     $('#collapse-nav8').addClass('am-in');
     var href = window.location.href;
 
-    // 进页面判断是否显示uid区域
-    // if($('.finally_uid_input').val()!=""){
-    //     $('.set_isall').val("1");
-    //     $('.isdisplay_setuid_area').show();
-    // }else{
-    //     $('.set_isall').val("0");
-    //     $('.isdisplay_setuid_area').hide();
-    // }
-
     // 判断进也米娜是否显示uid输入区域
     if(href.indexOf("id") == -1 || (href.indexOf("id") != -1 && $('.finally_uid_input').val()!="")){
         $('.set_isall').val("1");
@@ -98,8 +89,6 @@ console.log(1)
         $('.set_isall').val("2");
         $('.isdisplay_setuid_area').hide();
     }
-
-
 
     // 生成uid输入框
     var uid_arr = $('.finally_uid_input').val().split(',');

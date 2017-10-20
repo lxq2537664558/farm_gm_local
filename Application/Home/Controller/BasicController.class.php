@@ -755,6 +755,7 @@ class BasicController extends BaseController {
                 //处理特殊字符
                 $this->assign('info',$info);
             }
+//            var_dump($info);die;
 
             //物品列表
             $products = $this->getAll('product');
@@ -792,7 +793,7 @@ class BasicController extends BaseController {
 //        var_dump($info['content']);die;
         $url = 'http://'.C('SERVER_IP').'/SendNotice';
 
-        $params = 'Title='.$info['title'].'&Text='.$info['content'].'&time='.time();
+        $params = 'Title='.$info['title'].'&Text='.$info['content'].'&time='.time().'&whole='.$info['whole'];
 
         //id-数量，id-数量 的格式
         $gift_id = explode(',',$info['item_ids']);

@@ -156,34 +156,50 @@ class UserController extends BaseController {
                 unset($post['password']);
             }
 
-            $user_info = $this->getAll('user',$where);
+            $user_info = $this->getAll('user',$uWhere);
             $user_info = current($user_info);
 
+            $model = D();
+            $model->startTrans();
+
+//            var_dump($user_info);
+//            var_dump(in_array($post['user_type'],array(1,2)) && (!$user_info['extension_code']));
             //当用户被修改为代理商层级且用户之前不是代理商层级[没有推广码]时获取新的推广码
-            if(in_array($user_info['user_type'],array(1,2)) && !$user_info['extension_code']){
+            if(in_array($post['user_type'],array(1,2)) && (!$user_info['extension_code'])){
                 //推广码
                 $code = $this->getExtensionCode($post);
                 $post['extension_code'] = $code;
-            }else{
-                //代理商被修改为普通用户删除代理关系
-                $model = D();
-                $model->startTrans();
-                $dWhere['father_id'] = $uid;
-                $dData['father_id'] = 0;
-                $res1 = $this->insAndUpdate('user',$dWhere,$dData);
-                if(!$res1['state']){
-                    $model->rollback();
-                    echo json_encode(array('state'=>0,'msg'=>'修改失败！'));
-                    die;
-                }
             }
+//            var_dump($post);die;
 
+            if(($post['user_type'] == 0) && $user_info['extension_code']){
+                //检测代理商关系
+                $aWhere['father_id'] = $uid;
+                $counts = D('user')->where($aWhere)->count();
+                if($counts>0) {
+                    //代理商被修改为普通用户删除代理关系
+                    $dWhere['father_id'] = $uid;
+                    $dData['father_id'] = 0;
+                    $res1 = $this->insAndUpdate('user', $dWhere, $dData);
+                    if (!$res1['state']) {
+                        $model->rollback();
+                        echo json_encode(array('state' => 0, 'msg' => '修改失败！'));
+                        die;
+                    }
+                }
+                $post['extension_code'] = '';
+            }
+//            die;
             $res = $this->insAndUpdate('user',$uWhere,$post);
+//            echo D('user')->_sql();
+//            die;
             if($res['state']){
                 $model->commit();
                 echo json_encode(array('state'=>1,'msg'=>'修改成功！'));
                 die;
             }else{
+//                echo D('user')->_sql();
+//                var_dump($res1);
                 $model->rollback();
                 echo json_encode(array('state'=>0,'msg'=>'修改失败！'));
                 die;

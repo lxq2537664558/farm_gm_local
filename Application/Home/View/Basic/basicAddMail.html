@@ -34,8 +34,8 @@
                 <p>
                     <span style="display: inline-block; width: 150px; margin-top: 15px;">是否全服发送</span>
                     <select class="set_isall">
-                        <option value="0">是</option>
                         <option value="1">否</option>
+                        <option value="2">是</option>
                     </select>
                 </p>
 
@@ -57,7 +57,7 @@
                 <p>
                     <span style="display: inline-block; width: 150px; margin-top: 20px;">礼品ID</span>
                     <input style="width: 180px;" type="item_ids" name="item_ids" readonly="readonly" id="itemid_input" required="required" placeholder="下拉框选择(不能为空)" value="{$info['item_ids']}">
-                    <select id="select_itemid" style="margin-left: 10px;">
+                    <select id="select_itemid" style="margin-left: 10px;" name="whole">
                         <option>请选择礼品</option>
                         <foreach name="products" item="p">
                             <option value="{$p['pid']}">{$p['name']}</option>
@@ -79,27 +79,39 @@
 <script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
 <script type="text/javascript">
+console.log(1)
     $('#collapse-nav8').addClass('am-in');
-
+    var href = window.location.href;
 
     // 进页面判断是否显示uid区域
-    if($('.finally_uid_input').val()!=""){
+    // if($('.finally_uid_input').val()!=""){
+    //     $('.set_isall').val("1");
+    //     $('.isdisplay_setuid_area').show();
+    // }else{
+    //     $('.set_isall').val("0");
+    //     $('.isdisplay_setuid_area').hide();
+    // }
+
+    if(href.indexOf("id") == -1 || (href.indexOf("id") != -1 && $('.finally_uid_input').val()!="")){
         $('.set_isall').val("1");
         $('.isdisplay_setuid_area').show();
     }else{
-        $('.set_isall').val("0");
+        $('.set_isall').val("2");
         $('.isdisplay_setuid_area').hide();
     }
+
+
 
     // 生成uid输入框
     var uid_arr = $('.finally_uid_input').val().split(',');
     for(var i = 0; i < uid_arr.length; i++) {
-        $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px;">');
+        $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px; margin-left: 10px;">');
         $('.uid_input').eq(i).val(uid_arr[i]);
     }
 
+
     $('.set_isall').change(function(){
-        if($(this).val()=="0"){
+        if($(this).val()=="2"){
             $('.isdisplay_setuid_area').hide();
             $('.uid_input').hide();
             $('.uid_input').val("");
@@ -109,17 +121,15 @@
         }
     })
 
-
-
     $('.add_uid_input').click(function(){
-        $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px;">');
+
+        $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px; margin-left: 10px;">');
     });
 
     $('.set_uid_area').on('input propertychange','.uid_input', function() {
         var finally_uid = "";
         for(var i = 0; i < $('.uid_input').length; i++) {
             if($('.uid_input').eq(i).val()==""){
-                // return false;
                 finally_uid = finally_uid;
             }else{
                 finally_uid += $('.uid_input').eq(i).val()+","
@@ -213,6 +223,18 @@
     $('.submit').click(function(){
         var reg = new RegExp("^[0-9]*$");
         var a = false;
+        var b;
+        var finally_uid_arr = $('.finally_uid_input').val().split(',').sort();
+        console.log(finally_uid_arr)
+        for(var i=0; i < finally_uid_arr.length; i++){
+            if (finally_uid_arr[i]==finally_uid_arr[i+1]){
+                b = false;
+                break;
+            }else{
+                b =true;
+            }
+        }
+
         for(var i = 0; i < $('.item_number_input').length; i++){
             if($('.item_number_input').eq(i).val()==""){
                 alert("礼品数量不能为空");
@@ -231,6 +253,12 @@
             alert("邮件标题不能为空");
             a = false;
             return a;
+        }
+
+        if(b == false){
+            alert("uid不能重复");
+            a = false;
+            return a
         }
 
         if(a==true){

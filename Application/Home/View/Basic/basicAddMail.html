@@ -115,6 +115,7 @@ console.log(1)
         $(".set_uid_area").append('<input class="uid_input" type="text" style="width: 65px; margin-left: 10px;">');
     });
 
+    // 输入uid实时运算
     $('.set_uid_area').on('input propertychange','.uid_input', function() {
         var finally_uid = "";
         for(var i = 0; i < $('.uid_input').length; i++) {
@@ -129,6 +130,7 @@ console.log(1)
         $('.finally_uid_input').val(finally_uid);
     })
 
+    // 拼接礼物id
     if($('.item_number').val()!=""){
         // console.log($('.item_number').val());
         var item_number = $('.item_number').val();
@@ -138,6 +140,7 @@ console.log(1)
             if(i==1){
                 $('.item_number_span').after('<input class="item_number_input" type="text" value="" style="width: 50px; margin-left: 10px;">');
                 $('.item_number_input').eq(0).val(item_number[i-1]);
+                $('.item_number_input').eq(0).css("margin-left",0);
             }else if(i==2){
                 $('.item_number_input').eq(0).after('<input class="item_number_input" type="text" value="" style="width: 50px; margin-left: 10px;">');
                 $('.item_number_input').eq(1).val(item_number[i-1]);
@@ -205,6 +208,7 @@ console.log(1)
         $('.item_number_input').remove();
         $('.item_number').val("");
         $('#select_itemid').attr('disabled',false);
+        $('#select_itemid').val("请选择礼品");
         // $('#itemid_input').css('width',180+"px")
     })
 

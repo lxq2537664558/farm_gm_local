@@ -10,7 +10,7 @@ class ProductController extends BaseController {
         $return = json_decode($data,true);
         return $return;
     }
-    
+
     //产品列表
     public function index(){
         $url = 'http://'.C('SERVER_IP').'/GetTradeItemList';
@@ -107,8 +107,7 @@ class ProductController extends BaseController {
             $trade_state = array('挂单','完成','撤销');
 
             foreach ($lists['trades'] as $v){
-//                var_dump($v['userId']);
-                $data[] = array(
+                $data[$v['userId']] = array(
                     'uid'=>$v['userId'],
                     'itemId'=>$v['itemId'],
                     'itemName'=>$v['itemName'],
@@ -123,6 +122,8 @@ class ProductController extends BaseController {
                 );
             }
 
+            ksort($data);
+            $data = array_values($data);
             $json = array('data'=>$data,'page'=>array('page'=>$page,'totalPage'=>ceil($lists['totalNum']/$pageSize)));
             echo json_encode($json);
             die;

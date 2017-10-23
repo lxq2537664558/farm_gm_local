@@ -30,7 +30,9 @@ class UserController extends BaseController {
                 $where['_logic'] = 'or';
             }
 
-            $users = $this->getAll('user',$where, 'id', '', '', $pager);
+            $users = $this->getAll('user',$where, 'id', '','id asc', $pager);
+//            var_dump(is_array(array('o'=>'id')));
+//            die;
 
             $user_ids = $this->sortInfoById($users['data'],'id','id');
             $uid_string = join('_', $user_ids);
@@ -75,6 +77,7 @@ class UserController extends BaseController {
                 }
                 $data[$k] = $temp;
             }
+            ksort($data);
             $users['data'] = $data;
 
             echo json_encode($users);die;
@@ -323,7 +326,7 @@ class UserController extends BaseController {
 //            $mid = '59968489da19462530deacf8';//测试固定数据
             $url = 'http://'.C('SERVER_IP').'/GetTradeRecord';
 
-            $params = 'index='. $start .'&num=' . $pageSize  . '&owner=' . $mid . '&sort=price&type=2';
+            $params = 'index='. $start .'&num=' . $pageSize  . '&owner=' . $mid . '&sort=startTime&type=2';
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
 
@@ -448,6 +451,7 @@ class UserController extends BaseController {
             $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
             $first_week_end_timestamp = strtotime('2017-10-15');//第一周结束时间
 
+//            var_dump($_POST,$week);die;
             //时间处理
             if($week){
                 //如果有周，以周为准
@@ -461,9 +465,9 @@ class UserController extends BaseController {
                     $lists = $this->getHTTPData($url);
                 }else{//查新数据
                     //周的时间处理
-                    $week -= 1;
-                    $start_time = strtotime('+'.$week.' week',$first_week_start_timestamp);
-                    $end_time = strtotime('+'.$week.' week',$first_week_end_timestamp);
+                    $search_week = $week-1;
+                    $start_time = strtotime('+'.$search_week.' week',$first_week_start_timestamp);
+                    $end_time = strtotime('+'.$search_week.' week',$first_week_end_timestamp);
 
                     $url = 'http://'.C('SERVER_IP').'/GetGeneralizeList';
 
@@ -504,7 +508,7 @@ class UserController extends BaseController {
                     $start_time = strtotime($start_year . $start_month . $start_day);//开始时间
                     $end_time = strtotime($end_year . $end_month . $end_day . ' 23:59');//结束时间
 
-                    $mid = I('post.mid');
+//                    $mid = I('post.mid');
                     $uid = I('post.uid');
                     $url = 'http://' . C('SERVER_IP') . '/GetGeneralizeList';
 
@@ -514,7 +518,6 @@ class UserController extends BaseController {
                     if ($start_time) {
                         $params .= '&startTime=' . $start_time . '&endTime=' . $end_time;
                     }
-//            var_dump($params);die;
                     $params = $this->publicEncrypt($params);
                     $url .= '?data=' . $params;
 
@@ -522,9 +525,7 @@ class UserController extends BaseController {
                 }
             }
 
-
-
-            $current_user_info = $lists['self'];
+//            $current_user_info = $lists['self'];
             $data = $lists['users'];
 
             foreach ($data as $v){
@@ -537,42 +538,19 @@ class UserController extends BaseController {
             //用户等级
             $user_level = 1;
             $user_level_string = array(0,'普通代理商','中级代理商','高级代理商');
-            $cost_commission_point = array(0,0.08,0.09,0.1);//消费佣金比例
-            $service_commission_point = array(0,0.8,0.9,1);//手续费佣金比例
+            $cost_commission_point2 = array(0,0.08,0.09,0.1);//消费佣金比例
+            $service_commission_point2 = array(0,0.8,0.9,1);//手续费佣金比例----手续费暂时不分
 
+//            var_dump($week);die;
             //数据组装计算
             if($week == 1){
                 $users = array();
-
-//            //参与计算的重要数据
-//            $cost_total_money = $current_user_info['cost']?$current_user_info['cost']:0;//消费总额
-//            $service_money = $current_user_info['serviceCharge']?$current_user_info['serviceCharge']:0;//手续费
-//            $cost_commission_money = $cost_total_money*$cost_commission_point[$user_level];//消费佣金
-//            $service_commission_money = $service_money*$service_commission_point[$user_level];//手续费佣金
-
-//            $users[] = array(
-//                'uid'=>$uid,
-//                'username'=>$user_info[$uid]['username'],
-//                'register_time'=>date('Y-m-d H:i:s',$user_info[$uid]['register_time']),
-//                'recharge'=>$current_user_info['recharge']?$current_user_info['recharge']:0,//充值总额
-//                'cost'=>$cost_total_money,//消费总额
-//                'cost_commission'=>$cost_commission_money,//消费佣金
-//                'serviceCharge'=>$service_money,//手续费
-//                'service_commission'=>$service_commission_money,//手续费佣金
-//                'commission'=>$service_money+$service_commission_money,//佣金总额
-////                'commission1'=>$current_user_info['commission1']?$current_user_info['commission1']:0,//佣金总额
-////                'commission2'=>$current_user_info['commission2']?$current_user_info['commission2']:0,//佣金总额
-//            );
                 $recharge = $serviceCharge = $cost = $commission = $commission1 = $commission2 = $cost_money = $service = 0;
                 foreach($data as $i=>$v){
                     $temp_recharge = $data[$i]['recharge']?$data[$i]['recharge']:0;
                     $temp_serviceCharge = $data[$i]['serviceCharge']?$data[$i]['serviceCharge']:0;
                     $temp_cost = $data[$i]['cost']?$data[$i]['cost']:0;
-                    $temp_commission = $data[$i]['commission']?$data[$i]['commission']:0;
-//                $temp_commission1 = $data[$i]['commission1']?$data[$i]['commission1']:0;
-//                $temp_commission2 = $data[$i]['commission2']?$data[$i]['commission2']:0;
                     $temp_cost_money = $temp_cost*0.06;
-//                    $temp_cost_money = $temp_cost * $cost_commission_point[$user_level];
                     $temp_service_money = $temp_serviceCharge*0.8;
 
                     $users[] = array(
@@ -580,15 +558,11 @@ class UserController extends BaseController {
                         'username'=>$user_info[$v['id']]['username'],
                         'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
                         'recharge'=>$temp_recharge,//充值总额
-
                         'cost'=>$temp_cost,//消费总额
                         'cost_commission'=>$temp_cost_money,//消费佣金
-                        'serviceCharge'=>$temp_serviceCharge,//手续费
+                        'serviceCharge'=>$temp_serviceCharge,//交易手续费总额
                         'service_commission'=>$temp_service_money,//手续费佣金
                         'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
-
-//                    'commission1'=>$temp_commission1,//佣金总额
-//                    'commission2'=>$temp_commission2,//佣金总额
                     );
                     $recharge += $temp_recharge;
                     $cost += $temp_cost;
@@ -596,8 +570,6 @@ class UserController extends BaseController {
                     $serviceCharge += $temp_serviceCharge;
                     $service += $temp_service_money;
                     $commission += ($temp_cost_money+$temp_service_money);
-//                $commission1 += $temp_commission1;
-//                $commission2 += $temp_commission2;
                 }
 
                 $users[] = array(
@@ -610,56 +582,27 @@ class UserController extends BaseController {
                     'serviceCharge'=>$serviceCharge,//手续费
                     'service_commission'=>$service,//手续费佣金
                     'commission'=>$commission?$commission:0,//佣金总额
-//                'commission1'=>$commission1,//佣金总额
-//                'commission2'=>$commission2?$commission2:0,//佣金总额
                 );
             }else {
                 $users = array();
-
-//            //参与计算的重要数据
-//            $cost_total_money = $current_user_info['cost']?$current_user_info['cost']:0;//消费总额
-//            $service_money = $current_user_info['serviceCharge']?$current_user_info['serviceCharge']:0;//手续费
-//            $cost_commission_money = $cost_total_money*$cost_commission_point[$user_level];//消费佣金
-//            $service_commission_money = $service_money*$service_commission_point[$user_level];//手续费佣金
-
-//            $users[] = array(
-//                'uid'=>$uid,
-//                'username'=>$user_info[$uid]['username'],
-//                'register_time'=>date('Y-m-d H:i:s',$user_info[$uid]['register_time']),
-//                'recharge'=>$current_user_info['recharge']?$current_user_info['recharge']:0,//充值总额
-//                'cost'=>$cost_total_money,//消费总额
-//                'cost_commission'=>$cost_commission_money,//消费佣金
-//                'serviceCharge'=>$service_money,//手续费
-//                'service_commission'=>$service_commission_money,//手续费佣金
-//                'commission'=>$service_money+$service_commission_money,//佣金总额
-////                'commission1'=>$current_user_info['commission1']?$current_user_info['commission1']:0,//佣金总额
-////                'commission2'=>$current_user_info['commission2']?$current_user_info['commission2']:0,//佣金总额
-//            );
                 $recharge = $serviceCharge = $cost = $commission = $commission1 = $commission2 = $cost_money = $service = 0;
                 foreach ($data as $i => $v) {
-                    $temp_recharge = $data[$i]['recharge'] ? $data[$i]['recharge'] : 0;
-                    $temp_serviceCharge = $data[$i]['serviceCharge'] ? $data[$i]['serviceCharge'] : 0;
-                    $temp_cost = $data[$i]['cost'] ? $data[$i]['cost'] : 0;
-                    $temp_commission = $data[$i]['commission'] ? $data[$i]['commission'] : 0;
-//                $temp_commission1 = $data[$i]['commission1']?$data[$i]['commission1']:0;
-//                $temp_commission2 = $data[$i]['commission2']?$data[$i]['commission2']:0;
-                    $temp_cost_money = $temp_cost * $cost_commission_point[$user_level];
-                    $temp_service_money = $temp_serviceCharge * $cost_commission_point[$user_level];
+                    $temp_recharge = $data[$i]['recharge'] ? $data[$i]['recharge'] : 0;//充值总额
+                    $temp_serviceCharge = $data[$i]['serviceCharge'] ? $data[$i]['serviceCharge'] : 0;//交易手续费总额
+                    $temp_cost = $data[$i]['cost'] ? $data[$i]['cost'] : 0;//消费总额
+                    $temp_cost_money = $temp_cost * $cost_commission_point2[$user_level];//消费佣金
+                    $temp_service_money = $temp_serviceCharge * $service_commission_point2[$user_level];//手续费佣金
 
-                    $users[] = array(
+                    $users[$v['id']] = array(
                         'uid' => $v['id'],
                         'username' => $user_info[$v['id']]['username'],
                         'register_time' => date('Y-m-d H:i:s', $user_info[$v['id']]['register_time']),
                         'recharge' => $temp_recharge,//充值总额
-
                         'cost' => $temp_cost,//消费总额
                         'cost_commission' => $temp_cost_money,//消费佣金
-                        'serviceCharge' => $temp_serviceCharge,//手续费
+                        'serviceCharge' => $temp_serviceCharge,//交易手续费总额
                         'service_commission' => $temp_service_money,//手续费佣金
                         'commission' => $temp_cost_money + $temp_service_money,//佣金总额
-
-//                    'commission1'=>$temp_commission1,//佣金总额
-//                    'commission2'=>$temp_commission2,//佣金总额
                     );
                     $recharge += $temp_recharge;
                     $cost += $temp_cost;
@@ -667,10 +610,9 @@ class UserController extends BaseController {
                     $serviceCharge += $temp_serviceCharge;
                     $service += $temp_service_money;
                     $commission += ($temp_cost_money + $temp_service_money);
-//                $commission1 += $temp_commission1;
-//                $commission2 += $temp_commission2;
                 }
-
+                ksort($users);
+                $users = array_values($users);
                 $users[] = array(
                     'uid' => '总计：',
                     'username' => '-',
@@ -681,8 +623,6 @@ class UserController extends BaseController {
                     'serviceCharge' => $serviceCharge,//手续费
                     'service_commission' => $service,//手续费佣金
                     'commission' => $commission ? $commission : 0,//佣金总额
-//                'commission1'=>$commission1,//佣金总额
-//                'commission2'=>$commission2?$commission2:0,//佣金总额
                 );
             }
             $json = array('data'=>$users,'page'=>array('page'=>$page,'totalPage'=>ceil($lists['totalNum']/$pageSize)),'level'=>$user_level_string[$user_level]);
@@ -720,7 +660,8 @@ class UserController extends BaseController {
             $sort_data = $this->sortInfoById($http_data,'showId');
 
             foreach ($users['data'] as $k=>$v){
-                $combine[$k] = array(
+//                $combine[$k] = array(
+                $combine[$v['id']] = array(
                     'uid'=>$v['id'],
                     'username'=>$sort_data[$v['id']]['userName'],
                     'diamond'=>floor($sort_data[$v['id']]['diamond']),
@@ -748,6 +689,8 @@ class UserController extends BaseController {
                     }
                 }
             }
+            ksort($combine);
+            $combine = array_values($combine);
 //            var_dump($http_data,$sort_data);die;
 
             $json = array('data'=>$combine,'page'=>$users['page']);

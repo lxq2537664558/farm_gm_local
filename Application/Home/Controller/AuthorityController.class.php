@@ -35,6 +35,8 @@ class AuthorityController extends BaseController {
             $uid = I('post.uid',0);
             $gte = I('post.gt','');//大于
             $lte = I('post.lt','');//小于
+            $gte *= 100;
+            $lte *= 100;
 
             //处理分页
             $page = I('post.page',1);
@@ -59,6 +61,7 @@ class AuthorityController extends BaseController {
             $gte?$params.='&gte='.$gte:'';
             $lte?$params.='&lte='.$lte:'';
 
+//            var_dump($params);die;
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
 

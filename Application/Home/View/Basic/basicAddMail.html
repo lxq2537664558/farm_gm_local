@@ -81,7 +81,7 @@ console.log(1)
     $('#collapse-nav8').addClass('am-in');
     var href = window.location.href;
 
-    // 判断进也米娜是否显示uid输入区域
+    // 判断进页面是否显示uid输入区域
     if(href.indexOf("id") == -1 || (href.indexOf("id") != -1 && $('.finally_uid_input').val()!="")){
         $('.set_isall').val("1");
         $('.isdisplay_setuid_area').show();
@@ -102,7 +102,7 @@ console.log(1)
     $('.set_isall').change(function(){
         if($(this).val()=="2"){
             $('.isdisplay_setuid_area').hide();
-            $('.uid_input').hide();
+            $('.uid_input:gt(0)').hide();
             $('.uid_input').val("");
             $('.finally_uid_input').val("");
         }else if($(this).val()=="1"){
@@ -239,11 +239,7 @@ console.log(1)
         }
 
         for(var i = 0; i < $('.uid_input').length; i++){
-            if($('.uid_input').eq(i).val()==""){
-                alert("礼品数量不能为空");
-                a = false;
-                return a;
-            }else if(!reg.test($('.uid_input').eq(i).val())){
+            if(!reg.test($('.uid_input').eq(i).val())){
                 alert("uid必须为正整数");
                 a = false;
                 return a;

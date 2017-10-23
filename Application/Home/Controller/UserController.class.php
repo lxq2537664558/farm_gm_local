@@ -449,7 +449,7 @@ class UserController extends BaseController {
             //周的处理
             $week = I('post.week');//周的序号
             $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
-            $first_week_end_timestamp = strtotime('2017-10-15');//第一周结束时间
+            $first_week_end_timestamp = strtotime('2017-10-15 23:59');//第一周结束时间
 
 //            var_dump($_POST,$week);die;
             //时间处理
@@ -475,7 +475,7 @@ class UserController extends BaseController {
                     $end = $pageSize;
                     $params = 'index='.$start.'&num='.$end.'&showId='.$uid;
                     $params .= '&startTime='.$start_time.'&endTime='.$end_time;
-
+//                    var_dump($params);die;
                     $params = $this->publicEncrypt($params);
                     $url .= '?data='.$params;
 
@@ -505,9 +505,9 @@ class UserController extends BaseController {
                             die;
                         }
                     }
+
                     $start_time = strtotime($start_year . $start_month . $start_day);//开始时间
                     $end_time = strtotime($end_year . $end_month . $end_day . ' 23:59');//结束时间
-
 //                    $mid = I('post.mid');
                     $uid = I('post.uid');
                     $url = 'http://' . C('SERVER_IP') . '/GetGeneralizeList';
@@ -518,6 +518,7 @@ class UserController extends BaseController {
                     if ($start_time) {
                         $params .= '&startTime=' . $start_time . '&endTime=' . $end_time;
                     }
+
                     $params = $this->publicEncrypt($params);
                     $url .= '?data=' . $params;
 

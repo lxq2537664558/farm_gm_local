@@ -8,7 +8,7 @@ function checktable(isstart_year,isstart_month,isstart_day,isend_year,isend_mont
     $.ajax({
          url:ipaddress+"index.php?m=Agent&c=User&a=promotionList",
          data : {
-            "uid" : uid,    
+            "uid" : uid,
             "mid" : mid,
             "page_name" : "channelManagement",
             // "search" : issearch,
@@ -73,11 +73,11 @@ $('#start_year').change(function(){
         $('#start_month').attr("disabled", false);
         if($(this).val()=="2017"){
             for(var i=1; i<10; i++){
-                $('.startmonth'+i).attr("disabled",true);           
+                $('.startmonth'+i).attr("disabled",true);
             }
         }else{
             for(var i=1; i<10; i++){
-                $('.startmonth'+i).attr("disabled",false);           
+                $('.startmonth'+i).attr("disabled",false);
             }
         }
     }else{
@@ -92,11 +92,11 @@ $('#start_month').change(function(){
         $('#start_day').attr("disabled", false);
         if($(this).val()=="-10"){
             for(var i=0; i<16; i++){
-                $('.startday'+i).attr("disabled",true);           
+                $('.startday'+i).attr("disabled",true);
             }
         }else{
             for(var i=0; i<16; i++){
-                $('.startday'+i).attr("disabled",false);           
+                $('.startday'+i).attr("disabled",false);
             }
         }
     }else{
@@ -112,11 +112,11 @@ $('#end_year').change(function(){
         $('#end_month').attr("disabled", false);
         if($(this).val()=="2017"){
             for(var i=1; i<10; i++){
-                $('.endmonth'+i).attr("disabled",true);           
+                $('.endmonth'+i).attr("disabled",true);
             }
         }else{
             for(var i=1; i<10; i++){
-                $('.endmonth'+i).attr("disabled",false);           
+                $('.endmonth'+i).attr("disabled",false);
             }
         }
     }else{
@@ -131,11 +131,11 @@ $('#end_month').change(function(){
         $('#end_day').attr("disabled", false);
         if($(this).val()=="-10"){
             for(var i=0; i<16; i++){
-                $('.endday'+i).attr("disabled",true);           
+                $('.endday'+i).attr("disabled",true);
             }
         }else{
             for(var i=0; i<16; i++){
-                $('.endday'+i).attr("disabled",false);           
+                $('.endday'+i).attr("disabled",false);
             }
         }
     }else{
@@ -174,7 +174,7 @@ $('#prev').click(function(){
 $('#search_btn').click(function(){
     page = 1;
     $('#prev').attr('disabled',true).css('background','gray');
-    checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#start_day').val(),$('.select_week').val());
+    checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
     // 若最大页为1，设置下一页不可点
     if($('#largest_page').text()==1){
         $('#next').attr('disabled',true).css('background','gray');
@@ -190,7 +190,7 @@ $('#search_btn').click(function(){
         if(page==$('#largest_page').text()){
             $(this).attr('disabled',true).css('background','gray');
         }
-        checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#start_day').val(),$('.select_week').val());
+        checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
     });
     $('#prev').click(function(){
         page--;
@@ -198,7 +198,7 @@ $('#search_btn').click(function(){
             $('#prev').attr('disabled',true).css('background','gray');
         }
         $('#next').attr('disabled',false).css('background','#4B97EB');
-        checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#start_day').val(),$('.select_week').val());
+        checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
     });
     $('#jump').click(function(){
     if(isNaN($('#jump_val').val())){
@@ -229,7 +229,7 @@ $('#search_btn').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#start_day').val(),$('.select_week').val());
+        checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
     }
 })
 })

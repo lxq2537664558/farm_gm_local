@@ -460,4 +460,25 @@ class PublicController extends BaseController {
         echo json_encode($return);
     }
 
+    //获取用户实名认证信息
+    public function getUserRealInfo($http_request_data){
+        $uid = $http_request_data['uid'];
+
+        //获取用户信息
+        $where['id'] = $uid;
+        $user_info = D('user')->where($where)->select();
+
+        $user_info = current($user_info);
+        $idcard = $user_info['idcard'];
+        $realname = $user_info['realname'];
+
+        if ($idcard && $realname) {
+            $return = array('state'=>1,'msg'=>'该用户已实名认证！');
+        }else{
+            $return = array('state'=>0,'msg'=>'该用户未实名认证！');
+        }
+
+        return $return;
+    }
+
 }

@@ -636,13 +636,16 @@ class UserController extends BaseController {
     //获取用户游戏数据
     public function gameData(){
         $post = I('post.');
-        if($post){
-            $uid = I('post.uid',0);
-            $page = I('post.page',1);
-            $pager = array('page' => $page, 'pageSize' => 20);
 
+        $uid = I('post.uid',0);
+        $page = I('post.page',1);
+        $pager = array('page' => $page, 'pageSize' => 20);
+        $search = I('post.search','','trim');
+
+        if($search){
             //用户分页列表
-            $where = $uid?array('id'=>$uid):'';
+//            $where = $uid?array('id'=>$uid):'';
+            $where['id'] = $search;
             $users = $this->getAll('user',$where, '', '', '', $pager);
             $user_ids = $this->sortInfoById($users['data'],'id','id');
             $ids_string = join('_',array_values($user_ids));
@@ -650,54 +653,61 @@ class UserController extends BaseController {
             $url = 'http://'.C('SERVER_IP').'/GetUserGameData';
 
             $params = 'showIds='.$ids_string;
+//            var_dump($params);
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
 
 //            $url = 'http://'.C('SERVER_IP').'/GetUserGameData?showIds=64_67';//测试数据
-//            var_dump($url);die;
             $lists = $this->getHTTPData($url);
+//            var_dump($lists);die;
             $http_data = $lists['data'];
+            if($http_data) {
 
-            $sort_data = $this->sortInfoById($http_data,'showId');
+                $sort_data = $this->sortInfoById($http_data, 'showId');
 
-            foreach ($users['data'] as $k=>$v){
+                foreach ($users['data'] as $k => $v) {
 //                $combine[$k] = array(
-                $combine[$v['id']] = array(
-                    'uid'=>$v['id'],
-                    'username'=>$sort_data[$v['id']]['userName'],
-                    'diamond'=>floor($sort_data[$v['id']]['diamond']),
-                    'treasure'=>$sort_data[$v['id']]['treasure'],
-                    'recharge'=>$sort_data[$v['id']]['recharge'],//充值总额
-                    'cost'=>$sort_data[$v['id']]['cost'],//下线总额cost
-                    'difference'=>$sort_data[$v['id']]['recharge']-$sort_data[$v['id']]['cost'],//上下差值
-                    'depotLevel'=>$sort_data[$v['id']]['depotLevel'],
-                    'stealTotalValue'=>$sort_data[$v['id']]['stealTotalValue'],
-                    'beStolenTotalValue'=>$sort_data[$v['id']]['beStolenTotalValue'],
-                    'steal_difference'=>$sort_data[$v['id']]['stealTotalValue']-$sort_data[$v['id']]['beStolenTotalValue'],//偷取差值
-                    'dogNum'=>$sort_data[$v['id']]['dogNum'],
-                    'dogFoodNum'=>$sort_data[$v['id']]['dogFoodNum'],
-                    'speedUpItemNum'=>$sort_data[$v['id']]['speedUpItemNum'],
-                    'consecrateNum'=>$sort_data[$v['id']]['consecrateNum'],
-                    'farms'=>join(',',$sort_data[$v['id']]['farms']),
-                    'fishs'=>join(',',$sort_data[$v['id']]['fishs']),
-                    'forests'=>join(',',$sort_data[$v['id']]['forests']),
-                    'mines'=>join(',',$sort_data[$v['id']]['mines']),
-                );
+                    $combine[$v['id']] = array(
+                        'uid' => $v['id'],
+                        'username' => $sort_data[$v['id']]['userName'],
+                        'diamond' => floor($sort_data[$v['id']]['diamond']),
+                        'treasure' => $sort_data[$v['id']]['treasure'],
+                        'recharge' => $sort_data[$v['id']]['recharge'],//充值总额
+                        'cost' => $sort_data[$v['id']]['cost'],//下线总额cost
+                        'difference' => $sort_data[$v['id']]['recharge'] - $sort_data[$v['id']]['cost'],//上下差值
+                        'depotLevel' => $sort_data[$v['id']]['depotLevel'],
+                        'stealTotalValue' => $sort_data[$v['id']]['stealTotalValue'],
+                        'beStolenTotalValue' => $sort_data[$v['id']]['beStolenTotalValue'],
+                        'steal_difference' => $sort_data[$v['id']]['stealTotalValue'] - $sort_data[$v['id']]['beStolenTotalValue'],//偷取差值
+                        'dogNum' => $sort_data[$v['id']]['dogNum'],
+                        'dogFoodNum' => $sort_data[$v['id']]['dogFoodNum'],
+                        'speedUpItemNum' => $sort_data[$v['id']]['speedUpItemNum'],
+                        'consecrateNum' => $sort_data[$v['id']]['consecrateNum'],
+                        'farms' => join(',', $sort_data[$v['id']]['farms']),
+                        'fishs' => join(',', $sort_data[$v['id']]['fishs']),
+                        'forests' => join(',', $sort_data[$v['id']]['forests']),
+                        'mines' => join(',', $sort_data[$v['id']]['mines']),
+                    );
 
-                foreach ($combine[$k] as $key=>$val){
-                    if(!$val){
-                        $combine[$k][$key] = 0;
+                    foreach ($combine[$k] as $key => $val) {
+                        if (!$val) {
+                            $combine[$k][$key] = 0;
+                        }
                     }
                 }
+                ksort($combine);
+                $combine = array_values($combine);
+            }else{
+                $combine = NULL;
             }
-            ksort($combine);
-            $combine = array_values($combine);
+
 //            var_dump($http_data,$sort_data);die;
 
             $json = array('data'=>$combine,'page'=>$users['page']);
             echo json_encode($json);
             die;
         }
+
         $this->display();
     }
 

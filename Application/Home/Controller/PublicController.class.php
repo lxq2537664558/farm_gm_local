@@ -80,6 +80,11 @@ class PublicController extends BaseController {
                 return $return;
             }
 
+            //获取上一级的邀请码
+            $fWhere['id'] = $user_info['father_id'];
+            $father_info = $this->getAll('user',$fWhere);
+            $father_info = current($father_info);
+
             $return = array(
                 'state'=>1,
                 'msg'=>'登录成功！',
@@ -88,6 +93,7 @@ class PublicController extends BaseController {
                     'father_id'=>$user_info['father_id'],
                     'is_admin'=>$user_info['is_admin'],
                     'realname_check'=>$realname_check,
+                    'father_extension_code'=>$father_info['extension_code'],
                 ),
             );
             return $return;

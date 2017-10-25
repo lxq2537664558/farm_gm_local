@@ -52,6 +52,7 @@ class BasicController extends BaseController {
         //获取供奉清单
         $where['area'] = 1;
         $worship = $this->getAll('worship',$where,'','','id');
+//        var_dump($worship);die;
         $this->assign('worship',$worship);
 
         //获取物品清单

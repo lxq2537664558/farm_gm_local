@@ -17,16 +17,16 @@ class BasicController extends BaseController {
 //        1农场，2鱼塘,3伐木场，4矿场
         $post = I("post.");
 
-        //获得当前服务器供奉期次
-        $url = 'http://'.C('SERVER_IP').'/GetCurrentOblation';
-
-        $params = 'Type=1';
-        $params = $this->publicEncrypt($params);
-        $url .= '?data='.$params;
-
-        $lists = $this->getHTTPData($url);
-        $selectid = $lists['selectid']?$lists['selectid']:0;
-        $this->assign('selectid',$selectid);
+//        //获得当前服务器供奉期次
+//        $url = 'http://'.C('SERVER_IP').'/GetCurrentOblation';
+//
+//        $params = 'Type=1';
+//        $params = $this->publicEncrypt($params);
+//        $url .= '?data='.$params;
+//
+//        $lists = $this->getHTTPData($url);
+//        $selectid = $lists['selectid']?$lists['selectid']:0;
+//        $this->assign('selectid',$selectid);
 
         //获得序列号,最大序列号，且当前期次未完结
         $sql = 'select max(serial) from worship where state = 0 and area = 1';
@@ -48,6 +48,7 @@ class BasicController extends BaseController {
             $data = array(
                 'name'=>$post['name'],
                 'number'=>$post['number'],
+                'price'=>$post['price'],
                 'day'=>$post['day'],
                 'area'=>1,
                 'serial'=>$post['max_sid'],
@@ -58,10 +59,10 @@ class BasicController extends BaseController {
             die;
         }
 
-        //获取收盘价        
-        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
-        $lists = $this->getHTTPData($url);
-        $this->assign('close_price',$lists['items']);
+//        //获取收盘价
+//        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
+//        $lists = $this->getHTTPData($url);
+//        $this->assign('close_price',$lists['items']);
 
         //获取供奉清单
         $where['area'] = 1;
@@ -95,7 +96,8 @@ class BasicController extends BaseController {
 
             foreach ($sets as $v){
                 $names = explode(',',str_replace('，',',',$v['name']));
-                $numbers = explode(',',str_replace('，',',',$v['number']));
+//                $numbers = explode(',',str_replace('，',',',$v['number']));
+                $numbers = explode(',',str_replace('，',',',$v['price']));//被改成了价格，数据组成格式不变
 
                 $all_name[] = array('data'=>array($names[0],$numbers[0],$names[1],$numbers[1],$names[2],$numbers[2]));
 //                $all_name[] = array($names[0],$numbers[0],$names[1],$numbers[1],$names[2],$numbers[2]);
@@ -179,12 +181,12 @@ class BasicController extends BaseController {
         $this->assign('max_sid',$max_sid);
 
         if($post){
-//            var_dump($post);die;
             $data = array(
                 'name'=>$post['name'],
                 'number'=>$post['number'],
+                'price'=>$post['price'],
                 'day'=>$post['day'],
-                'area'=>2,
+                'area'=>1,
                 'serial'=>$post['max_sid'],
             );
 //            var_dump($post);die;
@@ -193,10 +195,10 @@ class BasicController extends BaseController {
             die;
         }
 
-        //获取收盘价
-        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
-        $lists = $this->getHTTPData($url);
-        $this->assign('close_price',$lists['items']);
+//        //获取收盘价
+//        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
+//        $lists = $this->getHTTPData($url);
+//        $this->assign('close_price',$lists['items']);
 
         //获取供奉清单
         $where['area'] = 2;
@@ -246,12 +248,12 @@ class BasicController extends BaseController {
         $this->assign('max_sid',$max_sid);
 
         if($post){
-//            var_dump($post);die;
             $data = array(
                 'name'=>$post['name'],
                 'number'=>$post['number'],
+                'price'=>$post['price'],
                 'day'=>$post['day'],
-                'area'=>3,
+                'area'=>1,
                 'serial'=>$post['max_sid'],
             );
 //            var_dump($post);die;
@@ -260,10 +262,10 @@ class BasicController extends BaseController {
             die;
         }
 
-        //获取收盘价
-        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
-        $lists = $this->getHTTPData($url);
-        $this->assign('close_price',$lists['items']);
+//        //获取收盘价
+//        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
+//        $lists = $this->getHTTPData($url);
+//        $this->assign('close_price',$lists['items']);
 
         //获取供奉清单
         $where['area'] = 3;
@@ -313,12 +315,12 @@ class BasicController extends BaseController {
         $this->assign('max_sid',$max_sid);
 
         if($post){
-//            var_dump($post);die;
             $data = array(
                 'name'=>$post['name'],
                 'number'=>$post['number'],
+                'price'=>$post['price'],
                 'day'=>$post['day'],
-                'area'=>4,
+                'area'=>1,
                 'serial'=>$post['max_sid'],
             );
 //            var_dump($post);die;
@@ -327,10 +329,10 @@ class BasicController extends BaseController {
             die;
         }
 
-        //获取收盘价
-        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
-        $lists = $this->getHTTPData($url);
-        $this->assign('close_price',$lists['items']);
+//        //获取收盘价
+//        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
+//        $lists = $this->getHTTPData($url);
+//        $this->assign('close_price',$lists['items']);
         
         //获取供奉清单
         $where['area'] = 4;

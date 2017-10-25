@@ -229,20 +229,20 @@ $('#cancel_add').click(function(){
 // 确定添加
 $('.add_worship').click(function(){
 	var reg = new RegExp("^[0-9]*$");
-    var a = false;
-    for(var i = 0; i < $('.input_number').length; i++){
-        if($('.input_number').eq(i).val()==""){
-            alert("供奉数量不能为空");
-            a = false;
-            return a;
-        }else if(!reg.test($('.input_number').eq(i).val())){
-            alert("供奉数量必须为正整数");
-            a = false;
-            return a;
-        }else{
-            a = true;
-        }
-    }
+    var a = true;
+    // for(var i = 0; i < $('.input_number').length; i++){
+    //     if($('.input_number').eq(i).val()==""){
+    //         alert("供奉数量不能为空");
+    //         a = false;
+    //         return a;
+    //     }else if(!reg.test($('.input_number').eq(i).val())){
+    //         alert("供奉数量必须为正整数");
+    //         a = false;
+    //         return a;
+    //     }else{
+    //         a = true;
+    //     }
+    // }
 
     if($('#itemid_input').val()==""){
         alert("供奉物品不能为空");
@@ -265,6 +265,7 @@ $('.add_worship').click(function(){
 			// $('.worship_number_input').val($('.input_number').eq(0).val());
 			// $('.closing_price_input').val($('.input_closing_price').eq(0).val());
 			$('.pricing_input').val($('.input_price').eq(0).val());
+			// alert($('.pricing_input').val());
 	 	}else if(change_num==2){
 			// 	$('.worship_number_input').val($('.input_number').eq(0).val()+','+$('.input_number').eq(1).val());
 			// 	$('.closing_price_input').val($('.input_closing_price').eq(0).val()+','+$('.input_closing_price').eq(1).val());
@@ -274,7 +275,7 @@ $('.add_worship').click(function(){
 			// 	$('.closing_price_input').val($('.input_closing_price').eq(0).val()+','+$('.input_closing_price').eq(1).val()+','+$('.input_closing_price').eq(2).val());
 		 	$('.pricing_input').val($('.input_price').eq(0).val()+','+$('.input_price').eq(1).val()+','+$('.input_price').eq(2).val());
 	 	}
-	 	return true;
+		return true;
     }
 })
 

@@ -48,14 +48,29 @@
             </table>
 
 
-            <table id="closing_price_table" style="display: none;">
+            <!-- <div style="margin-top: 10px;">
+                <span id="btn0"></span>
+                <input id="pageSize" type="text" size="1" maxlength="2" value="getDefaultValue()" style="margin-top: -5px;" /><span> 条 </span> <a href="#" id="pageSizeSet">设置</a>
+                <span id="sjzl"></span>
+                <a  href="#" id="btn1">首页</a>
+                <a  href="#" id="btn2">上一页</a>
+                <a  href="#" id="btn3">下一页</a>
+                <a  href="#" id="btn4">尾页</a>
+                <span>转到 </span>
+                <input id="changePage" type="text" size="1" maxlength="4" style="margin-top: -5px;" />
+                <span>页 </span>
+                <a  href="#" id="btn5">跳转</a>
+            </div> -->
+
+
+            <!-- <table id="closing_price_table" style="display: none;">
                 <foreach name="close_price" item="cp">
                     <tr>
                         <td>{$cp['id']}</td>
                         <td>{$cp['closePrice']/10}</td>
                     </tr>
                 </foreach>
-            </table>
+            </table> -->
 
 
             <span>当前服务器供奉期次为 <b style="color: red;">{$selectid}</b></span>
@@ -77,20 +92,20 @@
                             <span id="clear_itemid" style="display: inline-block; font-size: 12px; cursor: pointer; border: 1px solid gray; border-radius: 5px; width: 40px; text-align: center;">清空</span>
                         </p>
 
-                        <p>
+                        <!-- <p>
                             <span class="closing_price" style="display: inline-block; width: 120px;">收盘价</span>
                             <input class="closing_price_input" type="hidden" name="close_price" value="">
-                        </p>
+                        </p> -->
 
                         <p>
                             <span class="pricing" style="display: inline-block; width: 120px;">定价</span>
                             <input class="pricing_input" type="hidden" name="price" value="">
                         </p>
 
-                        <p>
+                        <!-- <p>
                             <span class="worship_number" style="display: inline-block; width: 120px;">农地供奉数量</span>
                             <input class="worship_number_input" type="hidden" name="number" value="">
-                        </p>
+                        </p> -->
                         <p>
                             <span style="display: inline-block; width: 120px;">供奉天数</span>
                             <input class="worship_days" type="" name="day" style="margin-left: 5px;">

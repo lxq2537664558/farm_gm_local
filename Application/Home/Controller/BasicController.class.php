@@ -17,17 +17,6 @@ class BasicController extends BaseController {
 //        1农场，2鱼塘,3伐木场，4矿场
         $post = I("post.");
 
-//        //获得当前服务器供奉期次
-//        $url = 'http://'.C('SERVER_IP').'/GetCurrentOblation';
-//
-//        $params = 'Type=1';
-//        $params = $this->publicEncrypt($params);
-//        $url .= '?data='.$params;
-//
-//        $lists = $this->getHTTPData($url);
-//        $selectid = $lists['selectid']?$lists['selectid']:0;
-//        $this->assign('selectid',$selectid);
-
         //获得序列号,最大序列号，且当前期次未完结
         $sql = 'select max(serial) from worship where state = 0 and area = 1';
         $mRes = D('worship')->query($sql);
@@ -54,15 +43,11 @@ class BasicController extends BaseController {
                 'serial'=>$post['max_sid'],
             );
 
+//            var_dump($data);die;
             $this->insAndUpdate('worship','',$data);
             $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             die;
         }
-
-//        //获取收盘价
-//        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
-//        $lists = $this->getHTTPData($url);
-//        $this->assign('close_price',$lists['items']);
 
         //获取供奉清单
         $where['area'] = 1;
@@ -151,17 +136,6 @@ class BasicController extends BaseController {
 //        1农场，2鱼塘,3伐木场，4矿场
         $post = I("post.");
 
-        //获得当前服务器供奉期次
-        $url = 'http://'.C('SERVER_IP').'/GetCurrentOblation';
-
-        $params = 'Type=2';
-        $params = $this->publicEncrypt($params);
-        $url .= '?data='.$params;
-
-        $lists = $this->getHTTPData($url);
-        $selectid = $lists['selectid']?$lists['selectid']:0;
-        $this->assign('selectid',$selectid);
-
         //获得序列号,最大序列号，且当前期次未完结
         $sql = 'select max(serial) from worship where state = 0 and area = 2';
         $mRes = D('worship')->query($sql);
@@ -176,8 +150,7 @@ class BasicController extends BaseController {
             $temp_sid = $mRes[0]['max(serial)'];
             $max_sid = $temp_sid+1;
         }
-//        var_dump($mRes,$max_sid);
-//        var_dump($max_sid);
+
         $this->assign('max_sid',$max_sid);
 
         if($post){
@@ -189,16 +162,11 @@ class BasicController extends BaseController {
                 'area'=>1,
                 'serial'=>$post['max_sid'],
             );
-//            var_dump($post);die;
+
             $this->insAndUpdate('worship','',$data);
             $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             die;
         }
-
-//        //获取收盘价
-//        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
-//        $lists = $this->getHTTPData($url);
-//        $this->assign('close_price',$lists['items']);
 
         //获取供奉清单
         $where['area'] = 2;
@@ -208,7 +176,6 @@ class BasicController extends BaseController {
         //获取物品清单
         $products = $this->getAll('product');
         $this->assign('products',$products);
-//        var_dump($worship);
 
         $this->display();
     }
@@ -217,17 +184,6 @@ class BasicController extends BaseController {
     public function basicWorshipForest(){
 //        1农场，2鱼塘,3伐木场，4矿场
         $post = I("post.");
-
-        //获得当前服务器供奉期次
-        $url = 'http://'.C('SERVER_IP').'/GetCurrentOblation';
-
-        $params = 'Type=3';
-        $params = $this->publicEncrypt($params);
-        $url .= '?data='.$params;
-
-        $lists = $this->getHTTPData($url);
-        $selectid = $lists['selectid']?$lists['selectid']:0;
-        $this->assign('selectid',$selectid);
 
         //获得序列号,最大序列号，且当前期次未完结
         $sql = 'select max(serial) from worship where state = 0 and area = 3';
@@ -243,8 +199,7 @@ class BasicController extends BaseController {
             $temp_sid = $mRes[0]['max(serial)'];
             $max_sid = $temp_sid+1;
         }
-//        var_dump($mRes,$max_sid);
-//        var_dump($max_sid);
+
         $this->assign('max_sid',$max_sid);
 
         if($post){
@@ -261,11 +216,6 @@ class BasicController extends BaseController {
             $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             die;
         }
-
-//        //获取收盘价
-//        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
-//        $lists = $this->getHTTPData($url);
-//        $this->assign('close_price',$lists['items']);
 
         //获取供奉清单
         $where['area'] = 3;
@@ -285,17 +235,6 @@ class BasicController extends BaseController {
 //        1农场，2鱼塘,3伐木场，4矿场
         $post = I("post.");
 
-        //获得当前服务器供奉期次
-        $url = 'http://'.C('SERVER_IP').'/GetCurrentOblation';
-
-        $params = 'Type=4';
-        $params = $this->publicEncrypt($params);
-        $url .= '?data='.$params;
-
-        $lists = $this->getHTTPData($url);
-        $selectid = $lists['selectid']?$lists['selectid']:0;
-        $this->assign('selectid',$selectid);
-
         //获得序列号,最大序列号，且当前期次未完结
         $sql = 'select max(serial) from worship where state = 0 and area = 4';
         $mRes = D('worship')->query($sql);
@@ -310,8 +249,7 @@ class BasicController extends BaseController {
             $temp_sid = $mRes[0]['max(serial)'];
             $max_sid = $temp_sid+1;
         }
-//        var_dump($mRes,$max_sid);
-//        var_dump($max_sid);
+
         $this->assign('max_sid',$max_sid);
 
         if($post){
@@ -323,17 +261,12 @@ class BasicController extends BaseController {
                 'area'=>1,
                 'serial'=>$post['max_sid'],
             );
-//            var_dump($post);die;
+
             $this->insAndUpdate('worship','',$data);
             $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             die;
         }
 
-//        //获取收盘价
-//        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
-//        $lists = $this->getHTTPData($url);
-//        $this->assign('close_price',$lists['items']);
-        
         //获取供奉清单
         $where['area'] = 4;
         $worship = $this->getAll('worship',$where,'','','id');
@@ -342,7 +275,6 @@ class BasicController extends BaseController {
         //获取物品清单
         $products = $this->getAll('product');
         $this->assign('products',$products);
-//        var_dump($worship);
 
         $this->display();
     }

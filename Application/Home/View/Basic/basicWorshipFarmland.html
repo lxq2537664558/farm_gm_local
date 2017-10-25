@@ -26,7 +26,7 @@
                     <th>id</th>
                     <th>农地供奉物品</th>
                     <th>定价</th>
-                    <th>持续时间</th>
+                    <!-- <th>持续时间</th> -->
                     <th>序列号</th>
                     <th>状态</th>
                     <th>操作</th>
@@ -38,7 +38,7 @@
                             <td class="worship_id">{$w['id']}</td>
                             <td>[{$w['name']}]</td>
                             <td>[{$w['price']}]</td>
-                            <td>{$w['day']}</td>
+                            <!-- <td>{$w['day']}</td> -->
                             <td>{$w['serial']}</td>
                             <td>未提交</td>
                             <td><button class="delete_worship" style="border: none; border: 1px solid gray; border-radius: 5px;">删除</button></td>
@@ -48,7 +48,7 @@
             </table>
 
 
-            <!-- <div style="margin-top: 10px;">
+            <div style="margin-top: 10px;">
                 <span id="btn0"></span>
                 <input id="pageSize" type="text" size="1" maxlength="2" value="getDefaultValue()" style="margin-top: -5px;" /><span> 条 </span> <a href="#" id="pageSizeSet">设置</a>
                 <span id="sjzl"></span>
@@ -60,17 +60,17 @@
                 <input id="changePage" type="text" size="1" maxlength="4" style="margin-top: -5px;" />
                 <span>页 </span>
                 <a  href="#" id="btn5">跳转</a>
-            </div> -->
+            </div>
 
 
-            <!-- <table id="closing_price_table" style="display: none;">
+            <table id="closing_price_table" style="display: none;">
                 <foreach name="close_price" item="cp">
                     <tr>
                         <td>{$cp['id']}</td>
                         <td>{$cp['closePrice']/10}</td>
                     </tr>
                 </foreach>
-            </table> -->
+            </table>
 
 
             <!-- <span>当前服务器供奉期次为 <b style="color: red;">{$selectid}</b></span> -->
@@ -106,11 +106,11 @@
                             <span class="worship_number" style="display: inline-block; width: 120px;">农地供奉数量</span>
                             <input class="worship_number_input" type="hidden" name="number" value="">
                         </p> -->
-                        <p>
+                        <!-- <p>
                             <span style="display: inline-block; width: 120px;">供奉天数</span>
                             <input class="worship_days" type="" name="day" style="margin-left: 5px;">
-                            <input type="hidden" value="{$max_sid}" name="max_sid" id="sid"><!--序列号-->
-                        </p>
+                            <input type="hidden" value="{$max_sid}" name="max_sid" id="sid">
+                        </p> -->
                         <input class="add_worship" type="submit" value="添加" style="margin-bottom: 10px;">
                         <input type="button" name="" value="取消" style="margin-left: 20px; margin-bottom: 10px;" id="cancel_add"><br>
                     </form>

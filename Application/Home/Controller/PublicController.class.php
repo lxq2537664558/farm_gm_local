@@ -53,7 +53,7 @@ class PublicController extends BaseController {
             }
 
             $realname_check = 0;
-            if($user_info['idcard'] && $user_info['realname'] && $user_info['collection_account']){
+            if($user_info['idcard'] && $user_info['realname']){
                 $realname_check = 1;
             }
 
@@ -477,8 +477,9 @@ class PublicController extends BaseController {
         $user_info = current($user_info);
         $idcard = $user_info['idcard'];
         $realname = $user_info['realname'];
+        $collection_account = $user_info['collection_account'];
 
-        if ($idcard && $realname) {
+        if ($idcard && $realname && $collection_account) {
             $return = array('state'=>1,'msg'=>'该用户已实名认证！');
         }else{
             $return = array('state'=>0,'msg'=>'该用户未实名认证！');

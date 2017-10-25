@@ -53,7 +53,7 @@ class PublicController extends BaseController {
             }
 
             $realname_check = 0;
-            if($user_info['idcard'] && $user_info['realname']){
+            if($user_info['idcard'] && $user_info['realname'] && $user_info['collection_account']){
                 $realname_check = 1;
             }
 

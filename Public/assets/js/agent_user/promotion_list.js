@@ -1,7 +1,7 @@
-var href = window.location.href;
-var href = href.split("&");
-var uid = href[3].slice(4);
-var mid = href[4].slice(4);
+// var href = window.location.href;
+// var href = href.split("&");
+// var uid = href[3].slice(4);
+// var mid = href[4].slice(4);
 
 function checktable(isstart_year,isstart_month,isstart_day,isend_year,isend_month,isend_day,isweek){
     // alert(start_year+'----'+start_month);

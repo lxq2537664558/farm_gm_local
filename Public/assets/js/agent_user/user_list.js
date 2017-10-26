@@ -39,6 +39,10 @@ function checktable(issearch){
                 // 用户编辑
                 if($('#group').val()!=2 && $('#group').val()!=3){
                     $('.edit').hide();
+                    $('.delete_user').hide();
+                    $('.pending_order').hide();
+                    $('.promotion_list').hide();
+                    $('.items_list').hide();
                     $('.edit').click(function(){
                         alert('您没有此权限');
                     })

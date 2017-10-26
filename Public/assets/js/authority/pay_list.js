@@ -1,10 +1,11 @@
-function checktable(issearch,isdata,isuid,isgt,islt){
+function checktable(ispagesize,issearch,isdata,isuid,isgt,islt){
     $.ajax({
          url:ipaddress+"index.php?m=Home&c=Authority&a=authorityPayList",
          data : {
             "page_name" : "channelManagement",
             "table" : "user",
             "page" : page,
+            "pageSize" :  ispagesize,
             "search" : issearch,
             "data" : isdata,
             "uid" : isuid,
@@ -38,6 +39,14 @@ function checktable(issearch,isdata,isuid,isgt,islt){
 
 var page = 1;
 checktable(null);
+
+
+$('.setting_display_num_btn').click(function(){
+    // console.log($('.setting_display_num_input').val());
+    checktable($('.setting_display_num_input').val());
+})
+
+
 // 下一页
 if($('#largest_page').text()==1){
     $('#next').attr('disabled',true).css('background','gray');
@@ -48,7 +57,7 @@ $('#next').click(function(){
     if(page==$('#largest_page').text()){
         $(this).attr('disabled',true).css('background','gray');
     }
-    checktable(null);
+    checktable($('.setting_display_num_input').val());
 })
 // 上一页
 $('#prev').attr('disabled',true).css('background','gray');
@@ -58,7 +67,7 @@ $('#prev').click(function(){
         $('#prev').attr('disabled',true).css('background','gray');
     }
     $('#next').attr('disabled',false).css('background','#4B97EB');
-    checktable(null);
+    checktable($('.setting_display_num_input').val());
 })
 
 var data = 1;
@@ -67,7 +76,7 @@ $('.search_btn').click(function(){
     console.log($('#search').val());
     page = 1;
     $('#prev').attr('disabled',true).css('background','gray');
-    checktable($('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
+    checktable($('.setting_display_num_input').val(),$('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
     // 若最大页为1，设置下一页不可点
     if($('#largest_page').text()==1){
         $('#next').attr('disabled',true).css('background','gray');
@@ -83,7 +92,7 @@ $('.search_btn').click(function(){
         if(page==$('#largest_page').text()){
             $(this).attr('disabled',true).css('background','gray');
         }
-        checktable($('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
+        checktable($('.setting_display_num_input').val(),$('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
     });
     $('#prev').click(function(){
         page--;
@@ -91,7 +100,7 @@ $('.search_btn').click(function(){
             $('#prev').attr('disabled',true).css('background','gray');
         }
         $('#next').attr('disabled',false).css('background','#4B97EB');
-        checktable($('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
+        checktable($('.setting_display_num_input').val(),$('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
     });
     $('#jump').click(function(){
     if(isNaN($('#jump_val').val())){
@@ -122,7 +131,7 @@ $('.search_btn').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable($('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
+        checktable($('.setting_display_num_input').val(),$('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
     }
 })
 })
@@ -157,6 +166,6 @@ $('#jump').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable(null);
+        checktable($('.setting_display_num_input').val());
     }
 })

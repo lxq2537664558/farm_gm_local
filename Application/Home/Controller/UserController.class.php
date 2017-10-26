@@ -434,13 +434,14 @@ class UserController extends BaseController {
     public function promotionList(){
         $post = I('post.');
         if($post){
-            $uid = I('post.uid');
             set_time_limit(0);
+            $uid = I('post.uid');
+
             //分页配置
             $page = I('post.page',1);
             $pageSize = 10;
 
-            //筛选条件
+            //搜索的筛选条件
             $start_year = I('post.start_year');
             $start_month = I('post.start_month');
             $end_year = I('post.end_year');
@@ -451,183 +452,119 @@ class UserController extends BaseController {
             //周的处理
             $week = I('post.week');//周的序号
             $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
-            $first_week_end_timestamp = strtotime('2017-10-15 23:59');//第一周结束时间
+            $first_week_end_timestamp = strtotime('2017-10-15');//第一周结束时间
 
-//            var_dump($_POST,$week);die;
-            //时间处理
-            if($week){
-                //如果有周，以周为准
-                if($week == 1){//查以前的数据
-                    $start = ($page-1)*$pageSize;
-                    $end = $pageSize;
-                    $params = 'index='.$start.'&num='.$end.'&showId='.$uid;
-                    $url = 'http://'.C('SERVER_IP').'/GetOldGeneralizeList';
-                    $params = $this->publicEncrypt($params);
-                    $url .= '?data='.$params;
-                    $lists = $this->getHTTPData($url);
-                }else{//查新数据
-                    //周的时间处理
-                    $search_week = $week-1;
-                    $start_time = strtotime('+'.$search_week.' week',$first_week_start_timestamp);
-                    $end_time = strtotime('+'.$search_week.' week',$first_week_end_timestamp);
-
-                    $url = 'http://'.C('SERVER_IP').'/GetGeneralizeList';
-
-                    $start = ($page-1)*$pageSize;
-                    $end = $pageSize;
-                    $params = 'index='.$start.'&num='.$end.'&showId='.$uid;
-                    $params .= '&startTime='.$start_time.'&endTime='.$end_time;
-//                    var_dump($params);die;
-                    $params = $this->publicEncrypt($params);
-                    $url .= '?data='.$params;
-
-                    $lists = $this->getHTTPData($url);
-                }
+            //如果有周，以周为准
+            if($week == 1){//只有第一周使用新接口
+                //使用新接口查以前的数据
+                $start = ($page-1)*$pageSize;
+                $end = $pageSize;
+                $params = 'index='.$start.'&num='.$end.'&showId='.$uid;
+                $url = 'http://'.C('SERVER_IP').'/GetOldGeneralizeList';
+                $params = $this->publicEncrypt($params);
+                $url .= '?data='.$params;
+                $lists = $this->getHTTPData($url);
             }else{
-                //否则处理日期
-                //查询16号以后的，使用老接口
-                if(!$start_year){
-                    $uid = I('post.uid');
-                    $url = 'http://' . C('SERVER_IP') . '/GetGeneralizeList';
-
-                    $start = ($page - 1) * $pageSize;
-                    $end = $pageSize;
-                    $params = 'index=' . $start . '&num=' . $end . '&showId=' . $uid;
-
-                    $params = $this->publicEncrypt($params);
-                    $url .= '?data=' . $params;
-
-                    $lists = $this->getHTTPData($url);
+                //其他全部走老接口
+                if($week){//周的时间处理
+                    $search_week = $week-1;//使用临时变量，week用于后面，不能参加计算
+                    $start_time = strtotime('+'.$search_week.' week',$first_week_start_timestamp);//开始时间
+                    $end_time = strtotime('+'.$search_week.' week',$first_week_end_timestamp);//结束时间
                 }else {
-                    //判断参数是否完整
-                    $time_params = array('start_year', 'start_month', 'start_day', 'end_year', 'end_month', 'end_day');
-                    foreach ($time_params as $v) {
-                        if (!$$v) {
-                            echo json_encode(array('msg' => '参数不完整'));
-                            die;
+                    //否则处理日期
+                    if($start_year) {//有日期处理日期，否则查询全部
+                        //判断参数是否完整
+                        $time_params = array('start_year', 'start_month', 'start_day', 'end_year', 'end_month', 'end_day');
+                        foreach ($time_params as $v) {
+                            if (!$$v) {
+                                echo json_encode(array('msg' => '参数不完整'));
+                                die;
+                            }
                         }
+                        $start_time = strtotime($start_year . $start_month . $start_day);//开始时间
+                        $end_time = strtotime($end_year . $end_month . $end_day . ' 23:59');//结束时间
                     }
-
-                    $start_time = strtotime($start_year . $start_month . $start_day);//开始时间
-                    $end_time = strtotime($end_year . $end_month . $end_day . ' 23:59');//结束时间
-//                    $mid = I('post.mid');
-                    $uid = I('post.uid');
-                    $url = 'http://' . C('SERVER_IP') . '/GetGeneralizeList';
-
-                    $start = ($page - 1) * $pageSize;
-                    $end = $pageSize;
-                    $params = 'index=' . $start . '&num=' . $end . '&showId=' . $uid;
-                    if ($start_time) {
-                        $params .= '&startTime=' . $start_time . '&endTime=' . $end_time;
-                    }
-
-                    $params = $this->publicEncrypt($params);
-                    $url .= '?data=' . $params;
-
-                    $lists = $this->getHTTPData($url);
                 }
+                $url = 'http://'.C('SERVER_IP').'/GetGeneralizeList';
+                $start = ($page-1)*$pageSize;
+                $end = $pageSize;
+                $params = 'index='.$start.'&num='.$end.'&showId='.$uid;//分页信息
+                $start_time?$params .= '&startTime='.$start_time.'&endTime='.$end_time:'';//时间信息，如果有才添加参数
+                $params = $this->publicEncrypt($params);//处理参数
+                $url .= '?data='.$params;
+                $lists = $this->getHTTPData($url);
             }
 
-//            $current_user_info = $lists['self'];
+            //处理接口数据
             $data = $lists['users'];
-
             foreach ($data as $v){
                 $ids[] = $v['id'];
             }
-            $ids[] = $uid;
+            $ids[] = $uid;//获取所有的UID
             $where['id'] = array('in',$ids);
-            $user_info = $this->getAll('user',$where,'id');
+            $user_info = $this->getAll('user',$where,'id');//根据UID获取本地用户的基本信息
 
             //用户等级
-            $user_level = 1;
+            $user_level = 1;//目前没有分，默认为1
             $user_level_string = array(0,'普通代理商','中级代理商','高级代理商');
             $cost_commission_point2 = array(0,0.08,0.09,0.1);//消费佣金比例
-            $service_commission_point2 = array(0,0.8,0.9,1);//手续费佣金比例----手续费暂时不分
+            $service_commission_point2 = array(0,0.8,0.9,1);//手续费佣金比例----手续费暂时不分，为1的情况为0.8
 
-//            var_dump($week);die;
             //数据组装计算
-            if($week == 1){
-                $users = array();
-                $recharge = $serviceCharge = $cost = $commission = $commission1 = $commission2 = $cost_money = $service = 0;
-                foreach($data as $i=>$v){
-                    $temp_recharge = $data[$i]['recharge']?$data[$i]['recharge']:0;
-                    $temp_serviceCharge = $data[$i]['serviceCharge']?$data[$i]['serviceCharge']:0;
-                    $temp_cost = $data[$i]['cost']?$data[$i]['cost']:0;
-                    $temp_cost_money = $temp_cost*0.06;
-                    $temp_service_money = $temp_serviceCharge*0.8;
-
-                    $users[] = array(
-                        'uid'=>$v['id'],
-                        'username'=>$user_info[$v['id']]['username'],
-                        'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
-                        'recharge'=>$temp_recharge,//充值总额
-                        'cost'=>$temp_cost,//消费总额
-                        'cost_commission'=>$temp_cost_money,//消费佣金
-                        'serviceCharge'=>$temp_serviceCharge,//交易手续费总额
-                        'service_commission'=>$temp_service_money,//手续费佣金
-                        'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
-                    );
-                    $recharge += $temp_recharge;
-                    $cost += $temp_cost;
-                    $cost_money += $temp_cost_money;
-                    $serviceCharge += $temp_serviceCharge;
-                    $service += $temp_service_money;
-                    $commission += ($temp_cost_money+$temp_service_money);
-                }
-
-                $users[] = array(
-                    'uid'=>'总计：',
-                    'username'=>'-',
-                    'register_time'=>'-',
-                    'recharge'=>$recharge,//充值总额
-                    'cost'=>$cost,//消费总额
-                    'cost_commission'=>$cost_money,//消费佣金
-                    'serviceCharge'=>$serviceCharge,//手续费
-                    'service_commission'=>$service,//手续费佣金
-                    'commission'=>$commission?$commission:0,//佣金总额
-                );
-            }else {
-                $users = array();
-                $recharge = $serviceCharge = $cost = $commission = $commission1 = $commission2 = $cost_money = $service = 0;
-                foreach ($data as $i => $v) {
-                    $temp_recharge = $data[$i]['recharge'] ? $data[$i]['recharge'] : 0;//充值总额
-                    $temp_serviceCharge = $data[$i]['serviceCharge'] ? $data[$i]['serviceCharge'] : 0;//交易手续费总额
-                    $temp_cost = $data[$i]['cost'] ? $data[$i]['cost'] : 0;//消费总额
+            $users = array();
+            $recharge = $serviceCharge = $cost = $commission = $commission1 = $commission2 = $cost_money = $service = 0;
+            foreach($data as $i=>$v) {
+                //初始化数据，没有则为0，便于计算
+                $temp_recharge = $data[$i]['recharge'] ? $data[$i]['recharge'] : 0;//充值总额
+                $temp_cost = $data[$i]['cost'] ? $data[$i]['cost'] : 0;//消费总额
+                $temp_serviceCharge = $data[$i]['serviceCharge'] ? $data[$i]['serviceCharge'] : 0;//手续费
+                //佣金的计算根据不同的查询条件不同
+                if ($week == 1) {
+                    $temp_cost_money = $temp_cost * 0.06;//消费佣金
+                    $temp_service_money = $temp_serviceCharge * 0.8;//手续费佣金
+                } else {
                     $temp_cost_money = $temp_cost * $cost_commission_point2[$user_level];//消费佣金
                     $temp_service_money = $temp_serviceCharge * $service_commission_point2[$user_level];//手续费佣金
-
-                    $users[$v['id']] = array(
-                        'uid' => $v['id'],
-                        'username' => $user_info[$v['id']]['username'],
-                        'register_time' => date('Y-m-d H:i:s', $user_info[$v['id']]['register_time']),
-                        'recharge' => $temp_recharge,//充值总额
-                        'cost' => $temp_cost,//消费总额
-                        'cost_commission' => $temp_cost_money,//消费佣金
-                        'serviceCharge' => $temp_serviceCharge,//交易手续费总额
-                        'service_commission' => $temp_service_money,//手续费佣金
-                        'commission' => $temp_cost_money + $temp_service_money,//佣金总额
-                    );
-                    $recharge += $temp_recharge;
-                    $cost += $temp_cost;
-                    $cost_money += $temp_cost_money;
-                    $serviceCharge += $temp_serviceCharge;
-                    $service += $temp_service_money;
-                    $commission += ($temp_cost_money + $temp_service_money);
                 }
-                ksort($users);
-                $users = array_values($users);
-                $users[] = array(
-                    'uid' => '总计：',
-                    'username' => '-',
-                    'register_time' => '-',
-                    'recharge' => $recharge,//充值总额
-                    'cost' => $cost,//消费总额
-                    'cost_commission' => $cost_money,//消费佣金
-                    'serviceCharge' => $serviceCharge,//手续费
-                    'service_commission' => $service,//手续费佣金
-                    'commission' => $commission ? $commission : 0,//佣金总额
+
+                $users[$v['id']] = array(
+                    'uid'=>$v['id'],
+                    'username'=>$user_info[$v['id']]['username'],
+                    'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
+                    'recharge'=>$temp_recharge,//充值总额
+                    'cost'=>$temp_cost,//消费总额
+                    'cost_commission'=>$temp_cost_money,//消费佣金
+                    'serviceCharge'=>$temp_serviceCharge,//手续费
+                    'service_commission'=>$temp_service_money,//手续费佣金
+                    'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
                 );
+
+                //底部数据总计
+                $recharge += $temp_recharge;//充值总额
+                $cost += $temp_cost;//消费总额
+                $cost_money += $temp_cost_money;//消费佣金
+                $serviceCharge += $temp_serviceCharge;//手续费
+                $service += $temp_service_money;//手续费佣金
+                $commission += ($temp_cost_money+$temp_service_money);//佣金总额
             }
+
+            //以ID排序
+            ksort($users);
+            $users = array_values($users);
+
+            //底部数据总计
+            $users[] = array(
+                'uid'=>'总计：',
+                'username'=>'-',
+                'register_time'=>'-',
+                'recharge'=>$recharge,//充值总额
+                'cost'=>$cost,//消费总额
+                'cost_commission'=>$cost_money,//消费佣金
+                'serviceCharge'=>$serviceCharge,//手续费
+                'service_commission'=>$service,//手续费佣金
+                'commission'=>$commission?$commission:0,//佣金总额
+            );
+
             $json = array('data'=>$users,'page'=>array('page'=>$page,'totalPage'=>ceil($lists['totalNum']/$pageSize)),'level'=>$user_level_string[$user_level]);
             echo json_encode($json);
             die;

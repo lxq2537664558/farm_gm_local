@@ -61,7 +61,7 @@ class AuthorityController extends BaseController {
             $gte?$params.='&gte='.$gte:'';
             $lte?$params.='&lte='.$lte:'';
 
-            var_dump($params);die;
+//            var_dump($params);die;
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
 

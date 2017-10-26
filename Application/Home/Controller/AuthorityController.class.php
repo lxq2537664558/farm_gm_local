@@ -37,10 +37,11 @@ class AuthorityController extends BaseController {
             $lte = I('post.lt','');//小于
             $gte *= 100;
             $lte *= 100;
+            $pageSize = I('post.pageSize',20);
 
             //处理分页
             $page = I('post.page',1);
-            $pageSize = 20;
+//            $pageSize = 20;
             $start = $pageSize*($page-1);
 
             //状态标识

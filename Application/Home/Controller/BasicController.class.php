@@ -43,7 +43,6 @@ class BasicController extends BaseController {
                 'serial'=>$post['max_sid'],
             );
 
-//            var_dump($data);die;
             $this->insAndUpdate('worship','',$data);
             $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             die;
@@ -84,13 +83,7 @@ class BasicController extends BaseController {
 //                $numbers = explode(',',str_replace('，',',',$v['number']));
                 $numbers = explode(',',str_replace('，',',',$v['price']));//被改成了价格，数据组成格式不变
 
-                $temp = array();
-                foreach ($names as $key=>$val){
-                    $temp['data'][] = $names[$key];
-                    $temp['data'][] = $numbers[$key];
-                }
-                $all_name[] = $temp;
-//                $all_name[] = array('data'=>array($names[0],$numbers[0],$names[1],$numbers[1],$names[2],$numbers[2]));
+                $all_name[] = array('data'=>array($names[0],$numbers[0],$names[1],$numbers[1],$names[2],$numbers[2]));
 //                $all_name[] = array($names[0],$numbers[0],$names[1],$numbers[1],$names[2],$numbers[2]);
                 $day = $v['day']>$day?$v['day']:$day;
             }
@@ -217,7 +210,7 @@ class BasicController extends BaseController {
                 'area'=>3,
                 'serial'=>$post['max_sid'],
             );
-//            var_dump($post);die;
+
             $this->insAndUpdate('worship','',$data);
             $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             die;
@@ -231,7 +224,6 @@ class BasicController extends BaseController {
         //获取物品清单
         $products = $this->getAll('product');
         $this->assign('products',$products);
-//        var_dump($worship);
 
         $this->display();
     }
@@ -267,16 +259,11 @@ class BasicController extends BaseController {
                 'area'=>4,
                 'serial'=>$post['max_sid'],
             );
-//            var_dump($post);die;
+
             $this->insAndUpdate('worship','',$data);
             $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             die;
         }
-
-//        //获取收盘价
-//        $url = 'http://'.C('SERVER_IP').'/GetClosePrice';
-//        $lists = $this->getHTTPData($url);
-//        $this->assign('close_price',$lists['items']);
 
         //获取供奉清单
         $where['area'] = 4;
@@ -286,7 +273,6 @@ class BasicController extends BaseController {
         //获取物品清单
         $products = $this->getAll('product');
         $this->assign('products',$products);
-//        var_dump($worship);
 
         $this->display();
     }

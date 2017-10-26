@@ -60,6 +60,9 @@ $('.select_week').change(function(){
     $("#search_data select").val("");
     if($(this).val()!=""){
         $('#search_data').hide();
+        $('.save_area').show();
+        $('.save_current_week').val($(this).val());
+        $('.save_current_fatherid').val(uid);
     }else{
         $('#search_data').show();
     }

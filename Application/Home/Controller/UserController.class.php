@@ -452,7 +452,7 @@ class UserController extends BaseController {
             //周的处理
             $week = I('post.week');//周的序号
             $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
-            $first_week_end_timestamp = strtotime('2017-10-15');//第一周结束时间
+            $first_week_end_timestamp = strtotime('2017-10-15 23:59');//第一周结束时间
 
             //如果有周，以周为准
             if($week == 1){//只有第一周使用新接口
@@ -470,6 +470,8 @@ class UserController extends BaseController {
                     $search_week = $week-1;//使用临时变量，week用于后面，不能参加计算
                     $start_time = strtotime('+'.$search_week.' week',$first_week_start_timestamp);//开始时间
                     $end_time = strtotime('+'.$search_week.' week',$first_week_end_timestamp);//结束时间
+//                    var_dump(date('Y-m-d H:i:s',$start_time),date('Y-m-d H:i:s',$end_time));
+//                    die;
                 }else {
                     //否则处理日期
                     if($start_year) {//有日期处理日期，否则查询全部
@@ -667,5 +669,94 @@ class UserController extends BaseController {
             $this->error('删除失败！');
             die;
         }
+    }
+
+
+
+    //保存用户推广列表数据功能
+    public function savePromotionList(){
+        set_time_limit(0);
+        $uid = I('post.uid');
+        $week = I('post.week');//周的序号
+
+        //周的处理
+        $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
+        $first_week_end_timestamp = strtotime('2017-10-15');//第一周结束时间
+
+        //如果有周，以周为准
+        if($week == 1){//只有第一周使用新接口
+            //使用新接口查以前的数据
+            $params = 'showId='.$uid;
+            $url = 'http://'.C('SERVER_IP').'/GetOldGeneralizeList';
+            $params = $this->publicEncrypt($params);
+            $url .= '?data='.$params;
+            $lists = $this->getHTTPData($url);
+        }else{
+            //其他全部走老接口
+            $search_week = $week-1;//使用临时变量，week用于后面，不能参加计算
+            $start_time = strtotime('+'.$search_week.' week',$first_week_start_timestamp);//开始时间
+            $end_time = strtotime('+'.$search_week.' week',$first_week_end_timestamp);//结束时间
+
+            $url = 'http://'.C('SERVER_IP').'/GetGeneralizeList';
+            $params = 'showId='.$uid;
+            $start_time?$params .= '&startTime='.$start_time.'&endTime='.$end_time:'';//时间信息，如果有才添加参数
+            $params = $this->publicEncrypt($params);//处理参数
+            $url .= '?data='.$params;
+            $lists = $this->getHTTPData($url);
+        }
+
+        //处理接口数据
+        $data = $lists['users'];
+        foreach ($data as $v){
+            $ids[] = $v['id'];
+        }
+        $ids[] = $uid;//获取所有的UID
+        $where['id'] = array('in',$ids);
+        $user_info = $this->getAll('user',$where,'id');//根据UID获取本地用户的基本信息
+
+        //用户等级
+        $user_level = 1;//目前没有分，默认为1
+        $cost_commission_point2 = array(0,0.08,0.09,0.1);//消费佣金比例
+        $service_commission_point2 = array(0,0.8,0.9,1);//手续费佣金比例----手续费暂时不分，为1的情况为0.8
+
+        //数据组装计算
+        $users = array();
+        foreach($data as $i=>$v) {
+            //初始化数据，没有则为0，便于计算
+            $temp_recharge = $data[$i]['recharge'] ? $data[$i]['recharge'] : 0;//充值总额
+            $temp_cost = $data[$i]['cost'] ? $data[$i]['cost'] : 0;//消费总额
+            $temp_serviceCharge = $data[$i]['serviceCharge'] ? $data[$i]['serviceCharge'] : 0;//手续费
+            //佣金的计算根据不同的查询条件不同
+            if ($week == 1) {
+                $temp_cost_money = $temp_cost * 0.06;//消费佣金
+                $temp_service_money = $temp_serviceCharge * 0.8;//手续费佣金
+            } else {
+                $temp_cost_money = $temp_cost * $cost_commission_point2[$user_level];//消费佣金
+                $temp_service_money = $temp_serviceCharge * $service_commission_point2[$user_level];//手续费佣金
+            }
+
+            $users[$v['id']] = array(
+                'uid'=>$v['id'],
+                'phone'=>$user_info[$v['id']]['username'],
+                'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
+                'recharge'=>$temp_recharge,//充值总额
+                'cost'=>$temp_cost,//消费总额
+                'cost_commission'=>$temp_cost_money,//消费佣金
+                'serviceCharge'=>$temp_serviceCharge,//手续费
+                'service_commission'=>$temp_service_money,//手续费佣金
+                'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
+                'week'=>$week,
+                'father_id'=>$uid,
+            );
+        }
+
+        //以ID排序
+        ksort($users);
+        $users = array_values($users);
+
+        var_dump($users);
+
+        //插入数据表
+//        D('user_promotion_list')->addAll($users);
     }
 }

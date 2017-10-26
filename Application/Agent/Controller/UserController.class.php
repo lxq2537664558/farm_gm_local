@@ -456,7 +456,7 @@ class UserController extends BaseController {
             //周的处理
             $week = I('post.week');//周的序号
             $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
-            $first_week_end_timestamp = strtotime('2017-10-15');//第一周结束时间
+            $first_week_end_timestamp = strtotime('2017-10-15 23:59');//第一周结束时间
 
             //如果有周，以周为准
             if($week == 1){//只有第一周使用新接口
@@ -474,6 +474,8 @@ class UserController extends BaseController {
                     $search_week = $week-1;//使用临时变量，week用于后面，不能参加计算
                     $start_time = strtotime('+'.$search_week.' week',$first_week_start_timestamp);//开始时间
                     $end_time = strtotime('+'.$search_week.' week',$first_week_end_timestamp);//结束时间
+//                    var_dump(date('Y-m-d H:i:s',$start_time),date('Y-m-d H:i:s',$end_time));
+//                    die;
                 }else {
                     //否则处理日期
                     if($start_year) {//有日期处理日期，否则查询全部
@@ -517,16 +519,16 @@ class UserController extends BaseController {
             //数据组装计算
             $users = array();
             $recharge = $serviceCharge = $cost = $commission = $commission1 = $commission2 = $cost_money = $service = 0;
-            foreach($data as $i=>$v){
+            foreach($data as $i=>$v) {
                 //初始化数据，没有则为0，便于计算
-                $temp_recharge = $data[$i]['recharge']?$data[$i]['recharge']:0;//充值总额
-                $temp_cost = $data[$i]['cost']?$data[$i]['cost']:0;//消费总额
-                $temp_serviceCharge = $data[$i]['serviceCharge']?$data[$i]['serviceCharge']:0;//手续费
+                $temp_recharge = $data[$i]['recharge'] ? $data[$i]['recharge'] : 0;//充值总额
+                $temp_cost = $data[$i]['cost'] ? $data[$i]['cost'] : 0;//消费总额
+                $temp_serviceCharge = $data[$i]['serviceCharge'] ? $data[$i]['serviceCharge'] : 0;//手续费
                 //佣金的计算根据不同的查询条件不同
-                if($week == 1) {
+                if ($week == 1) {
                     $temp_cost_money = $temp_cost * 0.06;//消费佣金
-                    $temp_service_money = $temp_serviceCharge*0.8;//手续费佣金
-                }else{
+                    $temp_service_money = $temp_serviceCharge * 0.8;//手续费佣金
+                } else {
                     $temp_cost_money = $temp_cost * $cost_commission_point2[$user_level];//消费佣金
                     $temp_service_money = $temp_serviceCharge * $service_commission_point2[$user_level];//手续费佣金
                 }

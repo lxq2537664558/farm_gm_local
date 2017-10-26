@@ -29,7 +29,7 @@ function checktable(isstart_year,isstart_month,isstart_day,isend_year,isend_mont
             // console.log(data);
             // console.log(data.data);
             $('#mytable tbody').empty();
-            $('#total_page').html(`当前<b id="current_page">${data.page.page}</b>/<b id="largest_page">${data.page.totalPage}</b>页`);
+            // $('#total_page').html(`当前<b id="current_page">${data.page.page}</b>/<b id="largest_page">${data.page.totalPage}</b>页`);
             $('.level').text(data.level);
             if(data.data){
                 for(var i = 0; i<data.data.length; i++){

@@ -29,7 +29,6 @@ class BaseController extends Controller {
             $this->checkAdmin();
 //            }
         }
-        $this->behaviorRecords();
     }
 
     //公共加密方法-备后期修改加密算法之用

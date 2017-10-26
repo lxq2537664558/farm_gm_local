@@ -13,7 +13,7 @@ function checktable(isstart_year,isstart_month,isstart_day,isend_year,isend_mont
             "page_name" : "channelManagement",
             // "search" : issearch,
             "table" : "user",
-            "page" : page,
+            // "page" : page,
             "start_year": isstart_year,
             "start_month": isstart_month,
             "start_day": isstart_day,
@@ -43,12 +43,12 @@ function checktable(isstart_year,isstart_month,isstart_day,isend_year,isend_mont
                 }else{
                     $('#search_data').show();
                 }
-                $('#left_page').show();
-                $('#right_page').show();
+                // $('#left_page').show();
+                // $('#right_page').show();
             }else{
                 alert("没有此查询数据");
-                $('#left_page').hide();
-                $('#right_page').hide();
+                // $('#left_page').hide();
+                // $('#right_page').hide();
             }
         }
     })
@@ -147,128 +147,128 @@ $('#end_month').change(function(){
 })
 
 
-var page = 1;
+// var page = 1;
 checktable(null);
-// 下一页
-if($('#largest_page').text()==1){
-    $('#next').attr('disabled',true).css('background','gray');
-}
-$('#next').click(function(){
-    page++;
-    $('#prev').attr('disabled',false).css('background','#ED6033');
-    if(page==$('#largest_page').text()){
-        $(this).attr('disabled',true).css('background','gray');
-    }
-    checktable(null);
-})
-// 上一页
-$('#prev').attr('disabled',true).css('background','gray');
-$('#prev').click(function(){
-    page--;
-    if(page==1){
-        $('#prev').attr('disabled',true).css('background','gray');
-    }
-    $('#next').attr('disabled',false).css('background','#4B97EB');
-    checktable(null);
-})
+// // 下一页
+// if($('#largest_page').text()==1){
+//     $('#next').attr('disabled',true).css('background','gray');
+// }
+// $('#next').click(function(){
+//     page++;
+//     $('#prev').attr('disabled',false).css('background','#ED6033');
+//     if(page==$('#largest_page').text()){
+//         $(this).attr('disabled',true).css('background','gray');
+//     }
+//     checktable(null);
+// })
+// // 上一页
+// $('#prev').attr('disabled',true).css('background','gray');
+// $('#prev').click(function(){
+//     page--;
+//     if(page==1){
+//         $('#prev').attr('disabled',true).css('background','gray');
+//     }
+//     $('#next').attr('disabled',false).css('background','#4B97EB');
+//     checktable(null);
+// })
 
 
 // 搜索
 $('#search_btn').click(function(){
-    page = 1;
-    $('#prev').attr('disabled',true).css('background','gray');
+    // page = 1;
+    // $('#prev').attr('disabled',true).css('background','gray');
     checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
     // 若最大页为1，设置下一页不可点
-    if($('#largest_page').text()==1){
-        $('#next').attr('disabled',true).css('background','gray');
-    }else{
-        $('#next').attr('disabled',false).css('background','#4B97EB');
-    }
-    $('#next').unbind("click");
-    $('#prev').unbind("click");
-    $('#jump').unbind("click");
-    $('#next').click(function(){
-        page++;
-        $('#prev').attr('disabled',false).css('background','#ED6033');
-        if(page==$('#largest_page').text()){
-            $(this).attr('disabled',true).css('background','gray');
-        }
-        checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
-    });
-    $('#prev').click(function(){
-        page--;
-        if(page==1){
-            $('#prev').attr('disabled',true).css('background','gray');
-        }
-        $('#next').attr('disabled',false).css('background','#4B97EB');
-        checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
-    });
-    $('#jump').click(function(){
-    if(isNaN($('#jump_val').val())){
-        alert("不是一个数字");
-    }else{
-        var jump_num = $('#jump_val').val(),
-            jump_num = Number(jump_num);
-        var largest_page = $('#largest_page').text(),
-            largest_page = Number(largest_page);
-        var current_page = $('#current_page').text(),
-            current_page = Number(current_page);
-        if(jump_num>largest_page||jump_num<=0){
-            jump_num = current_page;
-            $('#jump_val').val(current_page);
-        }
-        if(jump_num>1){
-            $('#prev').attr('disabled',false).css('background','#ED6033');
-        }
-        if(jump_num==1){
-            $('#prev').attr('disabled',true).css('background','gray');
-        }
-        if(largest_page==1){
-            $('#next').attr('disabled',true).css('background','gray');
-        }
-        if(jump_num==largest_page){
-            $('#next').attr('disabled',true).css('background','gray');
-        }else{
-            $('#next').attr('disabled',false).css('background','#4B97EB');
-        }
-        page = jump_num;
-        checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
-    }
-})
-})
-
-// 跳转
-$('#jump').click(function(){
-    if(isNaN($('#jump_val').val())){
-        alert("不是一个数字");
-    }else{
-        var jump_num = $('#jump_val').val(),
-            jump_num = Number(jump_num);
-        var largest_page = $('#largest_page').text(),
-            largest_page = Number(largest_page);
-        var current_page = $('#current_page').text(),
-            current_page = Number(current_page);
-        if(jump_num>largest_page||jump_num<=0){
-            jump_num = current_page;
-            $('#jump_val').val(current_page);
-        }
-        if(jump_num>1){
-            $('#prev').attr('disabled',false).css('background','#ED6033');
-        }
-        if(jump_num==1){
-            $('#prev').attr('disabled',true).css('background','gray');
-        }
-        if(largest_page==1){
-            $('#next').attr('disabled',true).css('background','gray');
-        }
-        if(jump_num==largest_page){
-            $('#next').attr('disabled',true).css('background','gray');
-        }else{
-            $('#next').attr('disabled',false).css('background','#4B97EB');
-        }
-        page = jump_num;
-        checktable(null);
-    }
+//     if($('#largest_page').text()==1){
+//         $('#next').attr('disabled',true).css('background','gray');
+//     }else{
+//         $('#next').attr('disabled',false).css('background','#4B97EB');
+//     }
+//     $('#next').unbind("click");
+//     $('#prev').unbind("click");
+//     $('#jump').unbind("click");
+//     $('#next').click(function(){
+//         page++;
+//         $('#prev').attr('disabled',false).css('background','#ED6033');
+//         if(page==$('#largest_page').text()){
+//             $(this).attr('disabled',true).css('background','gray');
+//         }
+//         checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
+//     });
+//     $('#prev').click(function(){
+//         page--;
+//         if(page==1){
+//             $('#prev').attr('disabled',true).css('background','gray');
+//         }
+//         $('#next').attr('disabled',false).css('background','#4B97EB');
+//         checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
+//     });
+//     $('#jump').click(function(){
+//     if(isNaN($('#jump_val').val())){
+//         alert("不是一个数字");
+//     }else{
+//         var jump_num = $('#jump_val').val(),
+//             jump_num = Number(jump_num);
+//         var largest_page = $('#largest_page').text(),
+//             largest_page = Number(largest_page);
+//         var current_page = $('#current_page').text(),
+//             current_page = Number(current_page);
+//         if(jump_num>largest_page||jump_num<=0){
+//             jump_num = current_page;
+//             $('#jump_val').val(current_page);
+//         }
+//         if(jump_num>1){
+//             $('#prev').attr('disabled',false).css('background','#ED6033');
+//         }
+//         if(jump_num==1){
+//             $('#prev').attr('disabled',true).css('background','gray');
+//         }
+//         if(largest_page==1){
+//             $('#next').attr('disabled',true).css('background','gray');
+//         }
+//         if(jump_num==largest_page){
+//             $('#next').attr('disabled',true).css('background','gray');
+//         }else{
+//             $('#next').attr('disabled',false).css('background','#4B97EB');
+//         }
+//         page = jump_num;
+//         checktable($('#start_year').val(),$('#start_month').val(),$('#start_day').val(),$('#end_year').val(),$('#end_month').val(),$('#end_day').val(),$('.select_week').val());
+//     }
+// })
+// })
+//
+// // 跳转
+// $('#jump').click(function(){
+//     if(isNaN($('#jump_val').val())){
+//         alert("不是一个数字");
+//     }else{
+//         var jump_num = $('#jump_val').val(),
+//             jump_num = Number(jump_num);
+//         var largest_page = $('#largest_page').text(),
+//             largest_page = Number(largest_page);
+//         var current_page = $('#current_page').text(),
+//             current_page = Number(current_page);
+//         if(jump_num>largest_page||jump_num<=0){
+//             jump_num = current_page;
+//             $('#jump_val').val(current_page);
+//         }
+//         if(jump_num>1){
+//             $('#prev').attr('disabled',false).css('background','#ED6033');
+//         }
+//         if(jump_num==1){
+//             $('#prev').attr('disabled',true).css('background','gray');
+//         }
+//         if(largest_page==1){
+//             $('#next').attr('disabled',true).css('background','gray');
+//         }
+//         if(jump_num==largest_page){
+//             $('#next').attr('disabled',true).css('background','gray');
+//         }else{
+//             $('#next').attr('disabled',false).css('background','#4B97EB');
+//         }
+//         page = jump_num;
+//         checktable(null);
+//     }
 })
 
 

@@ -43,7 +43,8 @@ checktable(null);
 
 $('.setting_display_num_btn').click(function(){
     // console.log($('.setting_display_num_input').val());
-    checktable($('.setting_display_num_input').val());
+    // alert(1);
+    checktable($('.setting_display_num_input').val(),$('#search .search_state').val(),data,$('#search .search_uid').val(),$('#search .more_number').val(),$('#search .less_number').val());
 })
 
 

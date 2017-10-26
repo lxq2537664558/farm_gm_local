@@ -245,37 +245,38 @@ class UserController extends BaseController {
             $user_ids = $this->sortInfoById($users['data'],'id','id');
             $ids_string = join('_',array_values($user_ids));
 
-            $url = 'http://'.C('SERVER_IP').'/GetUserGameData';
+//            $url = 'http://'.C('SERVER_IP').'/GetUserGameData';
+//
+//            $params = 'showIds='.$ids_string;
+//            $params = $this->publicEncrypt($params);
+//            $url .= '?data='.$params;
+////            var_dump($url);die;
+//            $lists = $this->getHTTPData($url);
+//
+//            $http_data = $lists['data'];
+//
+//            $sort_data = $this->sortInfoById($http_data,'showId');
 
-            $params = 'showIds='.$ids_string;
+
+            $url = 'http://'.C('SERVER_IP').'/GetUserData';
+
+            $params = 'showIds=' . $ids_string . '&type=1';
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
-//            var_dump($url);die;
+
             $lists = $this->getHTTPData($url);
-//            var_dump($lists);die;
-            $http_data = $lists['data'];
-
-            $sort_data = $this->sortInfoById($http_data,'showId');
-
-            //用户登录时间数据
-            $url2 = 'http://'.C('SERVER_IP').'/GetUserData';
-
-            $params = 'showIds=' . $ids_string . '&type=0';
-            $params = $this->publicEncrypt($params);
-            $url2 .= '?data='.$params;
-
-            $lists2 = $this->getHTTPData($url2);
-            $sort_data2 = $this->sortInfoById($lists2['users'],'showId');
+//            var_dump($url,$lists);die;
+            $sort_data = $this->sortInfoById($lists['users'],'showId');
 
             $user_state = array('正常','封号','永久封号');
             $user_type = array('普通用户','代理商','商会长');
 
-            //下属玩家统计
-            $sql = 'SELECT p.id,count(s.username) AS children_count FROM user AS p LEFT JOIN user AS s ON s.father_id = p.id GROUP BY p.username ORDER BY p.id';
-            $counts = D('user')->query($sql);
-            foreach ($counts as $c){
-                $count_data[$c['id']] = $c['children_count'];
-            }
+//            //下属玩家统计
+//            $sql = 'SELECT p.id,count(s.username) AS children_count FROM user AS p LEFT JOIN user AS s ON s.father_id = p.id GROUP BY p.username ORDER BY p.id';
+//            $counts = D('user')->query($sql);
+//            foreach ($counts as $c){
+//                $count_data[$c['id']] = $c['children_count'];
+//            }
 
             foreach ($users['data'] as $k=>$v){
                 $combine[$k] = array(
@@ -284,12 +285,13 @@ class UserController extends BaseController {
                     'state'=>$user_state[$v['state']],
                     'user_type'=>$user_type[$v['user_type']],
                     'diamond'=>floor($sort_data[$v['id']]['diamond']),
-                    'player_num'=>$count_data[$v['id']],
-                    'login_time'=>$sort_data2[$v['id']]['login_time']?date('Y-m-d H:i:s',$sort_data2[$v['id']]['login_time']):'-',
+                    'player_num'=>$sort_data[$v['id']]['num'],//$count_data[$v['id']],
+                    'login_time'=>$sort_data[$v['id']]['lastLoginTime']?date('Y-m-d H:i:s',$sort_data[$v['id']]['lastLoginTime']):'-',
                     'register_time'=>$v['register_time']?date('Y-m-d H:i:s',$v['register_time']):'-',
-                    'mid' => $sort_data2[$v['id']]['id'],//mongodb的id
+                    'mid' => $sort_data[$v['id']]['id'],//mongodb的id
                 );
 
+                //空数据默认显示0
                 foreach ($combine[$k] as $key=>$val){
                     if(!$val){
                         $combine[$k][$key] = 0;

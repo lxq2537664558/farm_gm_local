@@ -46,10 +46,10 @@
                     <option value="20">20</option>
                 </select>
                 <span>周</span><b style="color: red; font-size: 12px; margin-left: 10px;">若选择周查询，按日期查询则失效隐藏</b>
-                <form class="save_area" action="{:U('Home/User/savePromotionList')}" style="display: none;" method="post">
+                <form class="save_area" action="{:U('Home/User/savePromotionList')}" style="display: none; margin-top: 5px;" method="post">
                     <input class="save_current_week" type="hidden" name="week" value="">
                     <input class="save_current_fatherid" type="hidden" name="uid" value="">
-                    <button class="save_table_btn" type="submit">保存</button>
+                    <button class="save_table_btn" type="submit">保存当前周佣金数据</button>
                 </form>
             </div>
             <!-- 按日期查询 -->

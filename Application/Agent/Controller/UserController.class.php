@@ -90,116 +90,133 @@ class UserController extends BaseController {
         die;
     }
 
-//    //用户列表
-//    public function index(){
-//        $post = I('post.');
-//
-//        if($post) {
-//            $search = I('post.search','','trim');
-//            $table = I('post.table');
-//            $page = I('post.page', 1);
-//            $pager = array('page' => $page, 'pageSize' => 20);
-//
-//            //当前UID
-//            $user_info = session('AdminInfo');
-//            $uid = $user_info['uid'];
-//
-//            //查下级单位
-////            $where1['id'] = $uid;//保留当前用户数据
-//            $where1['father_id'] = $uid;
-////            $where1['grandfather_id'] = $uid;
-//            $where1['_logic'] = 'or';
-//
-//            //模糊搜索
-//            if($search){
-//                $where['id'] = array('like','%'.$search.'%');
-//                $where['username'] = array('like','%'.$search.'%');
-//                $where['account'] = array('like','%'.$search.'%');
-//                $where['phone'] = array('like','%'.$search.'%');
-//                $where['idcard'] = array('like','%'.$search.'%');
-//                $where['_logic'] = 'or';
-//
-//                //条件逻辑
-//                $where_main['_complex'] = array(
-//                    $where1, $where,
-//                    '_logic' => 'and'
-//                );
-//            }else{
-//                $where_main = $where1;
-//            }
-//
-//            $users = $this->getAll('user',$where_main, 'id', '', '', $pager);
-////            var_dump($users);
-////            die;
-//            $user_ids = $this->sortInfoById($users['data'],'id','id');
-////            $user_ids[$uid] = $uid;
-////            $user_ids = array_keys($users['data']);
-//            $uid_string = join('_', $user_ids);
-//
-//            $url = 'http://'.C('SERVER_IP').'/GetUserData';
-//
-//            $params = 'showIds=' . $uid_string . '&type=0';
-////            var_dump($params);
-//            $params = $this->publicEncrypt($params);
-//            $url .= '?data='.$params;
-//
-//            $lists = $this->getHTTPData($url);
-//
-////            var_dump($url);
-////            var_dump($lists);
-////            die;
-//            //序列化接口请求的数据
-//            $http_user_data = $this->sortInfoById($lists['users'],'showId');
-////            var_dump($http_user_data);die;
-//
-//            $state_array = array('正常','封号','永久封号');
-//
-//            //组装数据
-//            foreach ($users['data'] as $k=>$v){
-//                $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?$http_user_data[$v['id']]['gold']:0;//金币
-////                $users['data'][$k]['father_id'] = $http_user_data[$v['id']]['generalizeId1']?$http_user_data[$v['id']]['generalizeId1']:0;//一级推广id
-//                $users['data'][$k]['father_id'] = $v['father_id']?$v['father_id']:0;//改为自表查询，不再显示接口的数据
-////                $users['data'][$k]['grandfather_id'] = $http_user_data[$v['id']]['generalizeId2']?$http_user_data[$v['id']]['generalizeId2']:0;//二级推广id
-//                $users['data'][$k]['login_time'] = $http_user_data[$v['id']]['lastLoginTime']?$http_user_data[$v['id']]['lastLoginTime']:0;//上次登陆时间
-//                $users['data'][$k]['mid'] = $http_user_data[$v['id']]['id']?$http_user_data[$v['id']]['id']:0;//mongodb的id
-////                $users['data'][$k]['idcard'] = $http_user_data[$v['id']]['idcard']?$http_user_data[$v['id']]['idcard']:'';//身份证
-//                $users['data'][$k]['idcard'] = $v['idcard']?$v['idcard']:'';//身份证
-//
-//                $users['data'][$k]['username'] = $v['username']?$v['username']:'';//用户名
-//                $users['data'][$k]['phone'] = $v['phone']?$v['phone']:'';//手机
-////                var_dump($users['data'][$k]['state'],$v['state']);
-////                $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?$http_user_data[$v['id']]['gold']:0;//注册时间
-//            }
-//
-//            //字段翻译
-//            $translate_fields = C('TRANSLATE_FIELDS');
-//            $translate = $translate_fields[$table];
-//
-//            //处理状态数据
-//            foreach ($users['data'] as $k=>$v){
-//                $temp = $v;
-//                foreach ($translate as $field=>$string){
-//                    if($string == 'to_time'){
-//                        $temp[$field] = date('Y-m-d',$v[$field]);
-//                    }else {
-//                        $temp[$field] = $string[$v[$field]];
-//                    }
-//                }
-//                $data[$k] = $temp;
-//            }
-//            $users['data'] = $data;
-//
-//            echo json_encode($users);die;
-//        }
-//
-//        $this->display();
-//    }
-
-
     //用户列表
     public function index(){
-        $this->redirect(U('Agent/User/promotionList'));
+        $post = I('post.');
+
+        if($post) {
+            $search = I('post.search','','trim');
+            $table = I('post.table');
+            $page = I('post.page', 1);
+            $pageSize = 20;
+            $pager = array('page' => $page, 'pageSize' => $pageSize);
+
+            //当前UID
+            $user_info = session('AdminInfo');
+            $uid = $user_info['uid'];
+
+
+            //根据推广列表的数据来筛选需要显示的UID
+            $url = 'http://' . C('SERVER_IP') . '/GetGeneralizeList';
+
+            $start = ($page - 1) * $pageSize;
+            $end = $pageSize;
+//            $params = 'index=' . $start . '&num=' . $end . '&showId=' . $uid;
+            $params = 'showId=' . $uid;
+
+            $params = $this->publicEncrypt($params);
+            $url .= '?data=' . $params;
+
+            $lists3 = $this->getHTTPData($url);
+            $promotion_list_users = $lists3['users'];
+            $promotion_uids = $this->sortInfoById($promotion_list_users,'id','id');
+            $promotion_uids = array_values($promotion_uids);
+
+
+            //查下级单位
+            $where1['father_id'] = $uid;
+//            $where1['login_time'] = array('gt',0);
+            $where1['_logic'] = 'and';
+            $where1['id'] = array('in',$promotion_uids);//根据推广列表的数据来筛选需要显示的UID
+
+            //模糊搜索
+            if($search){
+                $where['id'] = array('like','%'.$search.'%');
+                $where['phone'] = array('like','%'.$search.'%');
+                $where['idcard'] = array('like','%'.$search.'%');
+                $where['_logic'] = 'or';
+
+                //条件逻辑
+                $where_main['_complex'] = array(
+                    $where1, $where,
+                    '_logic' => 'and'
+                );
+            }else{
+                $where_main = $where1;
+            }
+
+            $users = $this->getAll('user',$where_main, 'id', '', '', $pager);
+
+            $user_ids = $this->sortInfoById($users['data'],'id','id');
+
+//            $user_ids[$uid] = $uid;
+//            $user_ids = array_keys($users['data']);
+            $uid_string = join('_', $user_ids);
+
+            $url = 'http://'.C('SERVER_IP').'/GetUserData';
+
+            $params = 'showIds=' . $uid_string . '&type=0';
+//            var_dump($params);
+            $params = $this->publicEncrypt($params);
+            $url .= '?data='.$params;
+
+            $lists = $this->getHTTPData($url);
+
+//            var_dump($url);
+//            var_dump($lists);
+//            die;
+            //序列化接口请求的数据
+            $http_user_data = $this->sortInfoById($lists['users'],'showId');
+//            var_dump($http_user_data);die;
+
+            $state_array = array('正常','封号','永久封号');
+
+            //组装数据
+            foreach ($users['data'] as $k=>$v){
+                $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?$http_user_data[$v['id']]['gold']:0;//金币
+//                $users['data'][$k]['father_id'] = $http_user_data[$v['id']]['generalizeId1']?$http_user_data[$v['id']]['generalizeId1']:0;//一级推广id
+                $users['data'][$k]['father_id'] = $v['father_id']?$v['father_id']:0;//改为自表查询，不再显示接口的数据
+//                $users['data'][$k]['grandfather_id'] = $http_user_data[$v['id']]['generalizeId2']?$http_user_data[$v['id']]['generalizeId2']:0;//二级推广id
+                $users['data'][$k]['login_time'] = $http_user_data[$v['id']]['lastLoginTime']?$http_user_data[$v['id']]['lastLoginTime']:0;//上次登陆时间
+                $users['data'][$k]['mid'] = $http_user_data[$v['id']]['id']?$http_user_data[$v['id']]['id']:0;//mongodb的id
+//                $users['data'][$k]['idcard'] = $http_user_data[$v['id']]['idcard']?$http_user_data[$v['id']]['idcard']:'';//身份证
+                $users['data'][$k]['idcard'] = $v['idcard']?$v['idcard']:'';//身份证
+
+                $users['data'][$k]['username'] = $v['username']?$v['username']:'';//用户名
+                $users['data'][$k]['phone'] = $v['phone']?$v['phone']:'';//手机
+//                var_dump($users['data'][$k]['state'],$v['state']);
+//                $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?$http_user_data[$v['id']]['gold']:0;//注册时间
+            }
+
+            //字段翻译
+            $translate_fields = C('TRANSLATE_FIELDS');
+            $translate = $translate_fields[$table];
+
+            //处理状态数据
+            foreach ($users['data'] as $k=>$v){
+                $temp = $v;
+                foreach ($translate as $field=>$string){
+                    if($string == 'to_time'){
+                        $temp[$field] = date('Y-m-d',$v[$field]);
+                    }else {
+                        $temp[$field] = $string[$v[$field]];
+                    }
+                }
+                $data[$k] = $temp;
+            }
+            $users['data'] = $data;
+
+            echo json_encode($users);die;
+        }
+
+        $this->display();
     }
+
+
+//    //用户列表
+//    public function index(){
+////        $this->redirect(U('Agent/User/promotionList'));//现在又改需求不需要跳转了。。。。。。
+//    }
 
     //获取推广码
     public function getExtensionCode($post){

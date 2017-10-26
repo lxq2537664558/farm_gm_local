@@ -124,7 +124,13 @@ class PublicController extends BaseController {
         $uid = $http_request_data['uid'];
 
         //绑定推广码
+        if($extension_code == 0){
+            $return = array('state'=>0,'msg'=>'推广码必须为数字,且不能为0，绑定失败！');
+            return $return;
+        }
+
         $where['extension_code'] = $extension_code;
+
         $user_info = $this->getAll('user',$where);
         $user_info = current($user_info);//上级信息
 
@@ -242,7 +248,9 @@ class PublicController extends BaseController {
                 'realname'=>$user_info['realname'],
                 'payee_name'=>$user_info['phone'],
                 'time'=>time(),
-                'yingfu'=>($http_request_data['money']-$http_request_data['money']*0.005)/10,
+//                'yingfu'=>($http_request_data['money']-$http_request_data['money']*0.005)/10,
+            //又改了需求，改成2%
+                'yingfu'=>($http_request_data['money']-$http_request_data['money']*0.02)/10,
             );
             $res2 = $this->insAndUpdate('withdrawals','',$tData);
             if(!$res2){

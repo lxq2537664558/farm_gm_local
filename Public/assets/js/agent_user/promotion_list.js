@@ -8,8 +8,8 @@ function checktable(isstart_year,isstart_month,isstart_day,isend_year,isend_mont
     $.ajax({
          url:ipaddress+"index.php?m=Agent&c=User&a=promotionList",
          data : {
-            "uid" : uid,
-            "mid" : mid,
+            // "uid" : uid,
+            // "mid" : mid,
             "page_name" : "channelManagement",
             // "search" : issearch,
             "table" : "user",

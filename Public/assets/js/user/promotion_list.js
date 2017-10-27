@@ -58,7 +58,11 @@ function checktable(isstart_year,isstart_month,isstart_day,isend_year,isend_mont
 // 选择周
 $('.select_week').change(function(){
     $("#search_data select").val("");
-    if($(this).val()!=""){
+    // alert($('.current_week').text())
+    if($(this).val()!="" && $(this).val() != $('.current_week').text()){
+        $('#search_data').hide();
+        $('.save_area').hide();
+    }else if($(this).val()!="" && $(this).val() == $('.current_week').text()){
         $('#search_data').hide();
         $('.save_area').show();
         $('.save_current_week').val($(this).val());

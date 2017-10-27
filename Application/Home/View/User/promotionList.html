@@ -19,6 +19,11 @@
         </div>
         <!-- 内容 -->
         <div class="promotion-list" style="overflow: hidden;">
+            <!-- 提示当前周 -->
+            <div class="">
+                <span style="font-size: 14px;">今天是 <b class="current_date"></b></span>
+                <span style="font-size: 14px;">为游戏的第 <b class="current_week"></b> 周</span>
+            </div>
             <!-- 按周查询 -->
             <div class="week_div" style="display: none;">
                 <span>查询第</span>
@@ -216,6 +221,25 @@
 <script type="text/javascript">
     $('#collapse-nav2').addClass('am-in');
 
+    // 当前周
+    var date = new Date();
+	var year = date.getFullYear();
+	var month = date.getMonth()+1;
+	var day = date.getDate();
+    var getYearWeek = function (a, b, c) {
+	    //date1是当前日期
+	    //date2是当年第一天
+	    //d是当前日期是今年第多少天
+	    //用d + 当前年的第一天的周差距的和在除以7就是本年第几周
+	    var date1 = new Date(a, parseInt(b) - 1, c), date2 = new Date(a, 0, 1);
+	    var d = Math.round((date1.valueOf() - date2.valueOf()) / 86400000);
+	    return Math.ceil((d + ((date2.getDay() + 1) - 1)) / 7);
+	};
+	var current_week = getYearWeek(year, month, day)-40;
+    $('.current_date').text(year+"-"+month+"-"+day);
+    $('.current_week').text(current_week);
+
+    // 导出表格
     $(".out_excel").click(function(){
 
         $('#mytable').tableExport({

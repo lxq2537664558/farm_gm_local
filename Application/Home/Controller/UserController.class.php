@@ -437,9 +437,22 @@ class UserController extends BaseController {
             set_time_limit(0);
             $uid = I('post.uid');
 
-            //分页配置
-            $page = I('post.page',1);
-            $pageSize = 10;
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            //分页配置
+//            $page = I('post.page',1);
+//            $pageSize = 10;
 
             //搜索的筛选条件
             $start_year = I('post.start_year');
@@ -454,51 +467,71 @@ class UserController extends BaseController {
             $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
             $first_week_end_timestamp = strtotime('2017-10-15 23:59');//第一周结束时间
 
+            $search_data = 1;//是否启用本地数据
             //如果有周，以周为准
             if($week == 1){//只有第一周使用新接口
-                //使用新接口查以前的数据
-                $start = ($page-1)*$pageSize;
-                $end = $pageSize;
-                $params = 'index='.$start.'&num='.$end.'&showId='.$uid;
-                $url = 'http://'.C('SERVER_IP').'/GetOldGeneralizeList';
-                $params = $this->publicEncrypt($params);
-                $url .= '?data='.$params;
-                $lists = $this->getHTTPData($url);
-            }else{
-                //其他全部走老接口
-                if($week){//周的时间处理
-                    $search_week = $week-1;//使用临时变量，week用于后面，不能参加计算
-                    $start_time = strtotime('+'.$search_week.' week',$first_week_start_timestamp);//开始时间
-                    $end_time = strtotime('+'.$search_week.' week',$first_week_end_timestamp);//结束时间
-//                    var_dump(date('Y-m-d H:i:s',$start_time),date('Y-m-d H:i:s',$end_time));
-//                    die;
-                }else {
-                    //否则处理日期
-                    if($start_year) {//有日期处理日期，否则查询全部
-                        //判断参数是否完整
-                        $time_params = array('start_year', 'start_month', 'start_day', 'end_year', 'end_month', 'end_day');
-                        foreach ($time_params as $v) {
-                            if (!$$v) {
-                                echo json_encode(array('msg' => '参数不完整'));
-                                die;
-                            }
-                        }
-                        $start_time = strtotime($start_year . $start_month . $start_day);//开始时间
-                        $end_time = strtotime($end_year . $end_month . $end_day . ' 23:59');//结束时间
-                    }
+                //查询该用户该周是否有本地数据
+                $uWhere['father_id'] = $uid;
+                $uWhere['week'] = $week;
+                $res = $this->getAll('user_promotion_list',$uWhere);
+                $lists['users'] = $res;
+
+                if(!$lists['users']) {
+                    $search_data = 0;
+                    //使用新接口查以前的数据
+//                    $start = ($page - 1) * $pageSize;
+//                    $end = $pageSize;
+//                    $params = 'index=' . $start . '&num=' . $end . '&showId=' . $uid;
+                    $params = 'showId=' . $uid;
+                    $url = 'http://' . C('SERVER_IP') . '/GetOldGeneralizeList';
+                    $params = $this->publicEncrypt($params);
+                    $url .= '?data=' . $params;
+                    $lists = $this->getHTTPData($url);
                 }
-                $url = 'http://'.C('SERVER_IP').'/GetGeneralizeList';
-                $start = ($page-1)*$pageSize;
-                $end = $pageSize;
-                $params = 'index='.$start.'&num='.$end.'&showId='.$uid;//分页信息
-                $start_time?$params .= '&startTime='.$start_time.'&endTime='.$end_time:'';//时间信息，如果有才添加参数
-                $params = $this->publicEncrypt($params);//处理参数
-                $url .= '?data='.$params;
-                $lists = $this->getHTTPData($url);
+            }else{
+                //查询该用户该周是否有本地数据
+                $uWhere['father_id'] = $uid;
+                $uWhere['week'] = $week;
+                $res = $this->getAll('user_promotion_list',$uWhere);
+                $lists['users'] = $res;                
+
+                if(!$lists['users']) {
+                    $search_data = 0;
+                    //其他全部走老接口
+                    if ($week) {//周的时间处理
+                        $search_week = $week - 1;//使用临时变量，week用于后面，不能参加计算
+                        $start_time = strtotime('+' . $search_week . ' week', $first_week_start_timestamp);//开始时间
+                        $end_time = strtotime('+' . $search_week . ' week', $first_week_end_timestamp);//结束时间
+                    } else {
+                        //否则处理日期
+                        if ($start_year) {//有日期处理日期，否则查询全部
+                            //判断参数是否完整
+                            $time_params = array('start_year', 'start_month', 'start_day', 'end_year', 'end_month', 'end_day');
+                            foreach ($time_params as $v) {
+                                if (!$$v) {
+                                    echo json_encode(array('msg' => '参数不完整'));
+                                    die;
+                                }
+                            }
+                            $start_time = strtotime($start_year . $start_month . $start_day);//开始时间
+                            $end_time = strtotime($end_year . $end_month . $end_day . ' 23:59');//结束时间
+                        }
+                    }
+                    $url = 'http://' . C('SERVER_IP') . '/GetGeneralizeList';
+//                    $start = ($page - 1) * $pageSize;
+//                    $end = $pageSize;
+//                    $params = 'index=' . $start . '&num=' . $end . '&showId=' . $uid;//分页信息
+                    $params = 'showId=' . $uid;//分页信息
+                    $start_time ? $params .= '&startTime=' . $start_time . '&endTime=' . $end_time : '';//时间信息，如果有才添加参数
+                    $params = $this->publicEncrypt($params);//处理参数
+                    $url .= '?data=' . $params;
+                    $lists = $this->getHTTPData($url);
+                }
             }
 
             //处理接口数据
             $data = $lists['users'];
+//            var_dump($data);
             foreach ($data as $v){
                 $ids[] = $v['id'];
             }
@@ -529,17 +562,31 @@ class UserController extends BaseController {
                     $temp_service_money = $temp_serviceCharge * $service_commission_point2[$user_level];//手续费佣金
                 }
 
-                $users[$v['id']] = array(
-                    'uid'=>$v['id'],
-                    'username'=>$user_info[$v['id']]['username'],
-                    'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
-                    'recharge'=>$temp_recharge,//充值总额
-                    'cost'=>$temp_cost,//消费总额
-                    'cost_commission'=>$temp_cost_money,//消费佣金
-                    'serviceCharge'=>$temp_serviceCharge,//手续费
-                    'service_commission'=>$temp_service_money,//手续费佣金
-                    'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
-                );
+                if($search_data == 1){//启用本地数据的数据组装
+                    $users[$v['id']] = array(
+                        'uid'=>($search_data == 1)?$v['uid']:$v['id'],
+                        'username'=>$v['phone'],
+                        'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
+                        'recharge'=>$temp_recharge,//充值总额
+                        'cost'=>$temp_cost,//消费总额
+                        'cost_commission'=>$temp_cost_money,//消费佣金
+                        'serviceCharge'=>$temp_serviceCharge,//手续费
+                        'service_commission'=>$temp_service_money,//手续费佣金
+                        'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
+                    );
+                }else{
+                    $users[$v['id']] = array(
+                        'uid'=>($search_data == 1)?$v['uid']:$v['id'],
+                        'username'=>$user_info[$v['id']]['phone'],
+                        'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
+                        'recharge'=>$temp_recharge,//充值总额
+                        'cost'=>$temp_cost,//消费总额
+                        'cost_commission'=>$temp_cost_money,//消费佣金
+                        'serviceCharge'=>$temp_serviceCharge,//手续费
+                        'service_commission'=>$temp_service_money,//手续费佣金
+                        'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
+                    );
+                }
 
                 //底部数据总计
                 $recharge += $temp_recharge;//充值总额
@@ -550,6 +597,7 @@ class UserController extends BaseController {
                 $commission += ($temp_cost_money+$temp_service_money);//佣金总额
             }
 
+            $total_num = count($users);
             //以ID排序
             ksort($users);
             $users = array_values($users);
@@ -557,7 +605,7 @@ class UserController extends BaseController {
             //底部数据总计
             $users[] = array(
                 'uid'=>'总计：',
-                'username'=>'-',
+                'username'=>$total_num,
                 'register_time'=>'-',
                 'recharge'=>$recharge,//充值总额
                 'cost'=>$cost,//消费总额
@@ -567,7 +615,8 @@ class UserController extends BaseController {
                 'commission'=>$commission?$commission:0,//佣金总额
             );
 
-            $json = array('data'=>$users,'page'=>array('page'=>$page,'totalPage'=>ceil($lists['totalNum']/$pageSize)),'level'=>$user_level_string[$user_level]);
+//            $json = array('data'=>$users,'page'=>array('page'=>$page,'totalPage'=>ceil($lists['totalNum']/$pageSize)),'level'=>$user_level_string[$user_level]);
+            $json = array('data'=>$users,'level'=>$user_level_string[$user_level]);
             echo json_encode($json);
             die;
         }
@@ -679,6 +728,31 @@ class UserController extends BaseController {
         $uid = I('post.uid');
         $week = I('post.week');//周的序号
 
+        //SESSION的用户数据
+        $user_info = session('AdminInfo');
+        $admin_id = $user_info['uid'];
+
+        //检查保存时间与选定数据是否一致
+        $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
+        $first_week_end_timestamp = strtotime('2017-10-15 23:59');//第一周结束时间
+        $search_week = $week - 1;//使用临时变量，week用于后面，不能参加计算
+        $start_time = strtotime('+' . $search_week . ' week', $first_week_start_timestamp);//开始时间
+        $end_time = strtotime('+' . $search_week . ' week', $first_week_end_timestamp);//结束时间
+        $now_time = time();
+        if(!(($now_time >= $start_time) && ($now_time <= $end_time))){
+            $this->error('只能保存本周的数据！');
+            die;
+        }
+
+        //检查是否已经保存过数据
+        $sWhere['father_id'] = $uid;
+        $sWhere['week'] = $week;
+        $data_exists = D('user_promotion_list')->where($sWhere)->count();
+        if($data_exists>0){
+            $this->error('这一周已经保存过了！');
+            die;
+        }
+
         //周的处理
         $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
         $first_week_end_timestamp = strtotime('2017-10-15');//第一周结束时间
@@ -737,7 +811,7 @@ class UserController extends BaseController {
 
             $users[$v['id']] = array(
                 'uid'=>$v['id'],
-                'phone'=>$user_info[$v['id']]['username'],
+                'phone'=>$user_info[$v['id']]['phone'],
                 'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
                 'recharge'=>$temp_recharge,//充值总额
                 'cost'=>$temp_cost,//消费总额
@@ -747,6 +821,7 @@ class UserController extends BaseController {
                 'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
                 'week'=>$week,
                 'father_id'=>$uid,
+                'admin_id'=>$admin_id,
             );
         }
 
@@ -754,9 +829,11 @@ class UserController extends BaseController {
         ksort($users);
         $users = array_values($users);
 
-        var_dump($users);
+//        var_dump($users);die;
 
         //插入数据表
-//        D('user_promotion_list')->addAll($users);
+        D('user_promotion_list')->addAll($users);
+
+        $this->success('操作成功！');
     }
 }

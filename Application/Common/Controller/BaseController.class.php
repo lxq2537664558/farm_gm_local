@@ -171,8 +171,8 @@ class BaseController extends Controller {
         $this->assign('main_menu',$main_menu);
 
         //菜单
-        $game_names = $this->getGameNames();//获取游戏类型列表
-        $this->assign('game_names',$game_names);
+//        $game_names = $this->getGameNames();//获取游戏类型列表
+//        $this->assign('game_names',$game_names);
     }
 
 

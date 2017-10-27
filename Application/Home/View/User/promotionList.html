@@ -46,10 +46,11 @@
                     <option value="20">20</option>
                 </select>
                 <span>周</span><b style="color: red; font-size: 12px; margin-left: 10px;">若选择周查询，按日期查询则失效隐藏</b>
-                <form class="save_area" action="{:U('Home/User/savePromotionList')}" style="display: none; margin-top: 5px;" method="post">
+                <form class="save_area" action="{:U('Home/User/savePromotionList')}" style="display: none; margin-top: 5px; margin-bottom: 5px;" method="post">
                     <input class="save_current_week" type="hidden" name="week" value="">
                     <input class="save_current_fatherid" type="hidden" name="uid" value="">
                     <button class="save_table_btn" type="submit">保存当前周佣金数据</button>
+                    <b style="color: red; font-size: 12px; margin-left: 10px; margin-top: 5px;">请了解保存逻辑，谨慎保存，一周数据只能保存一次</b>
                 </form>
             </div>
             <!-- 按日期查询 -->
@@ -211,6 +212,7 @@
 <script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/user/promotion_list.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/tableExport.js"></script>
 <script type="text/javascript">
     $('#collapse-nav2').addClass('am-in');
 

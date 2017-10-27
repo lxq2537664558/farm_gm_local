@@ -65,6 +65,7 @@ $('.select_week').change(function(){
         $('.save_current_fatherid').val(uid);
     }else{
         $('#search_data').show();
+        $('.save_area').hide();
     }
 })
 

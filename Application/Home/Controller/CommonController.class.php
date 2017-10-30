@@ -345,7 +345,14 @@ class CommonController extends Controller
 
         //一个用户一个礼包只能领取一次
         $oWhere['uid'] = $user_info['id'];
-        $oWhere['gid'] = 1;//新手礼包的gid为1
+        //新手礼包的gid为1
+        $gWhere['novice'] = 1;
+        $xinshou = D('gifts')->where($gWhere)->select();
+        foreach ($xinshou as $v){
+            $xinshou_gids[] = $v['id'];
+        }
+
+        $oWhere['gid'] = array('in',$xinshou_gids);
         $is_get = D('gift_cdk')->where($oWhere)->select();
         if($is_get){
             echo json_encode(array('state'=>0,'msg'=>'每个户只能领取一次新手礼包！'));
@@ -375,6 +382,7 @@ class CommonController extends Controller
         }else{
             $model->rollback();
             echo json_encode(array('state'=>0,'msg'=>'系统错误，数据更新失败！'));
+//            echo json_encode(array('state'=>0,'msg'=>D('gift_cdk')->_sql()));
             die;
         }
 

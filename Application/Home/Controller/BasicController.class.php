@@ -521,11 +521,21 @@ class BasicController extends BaseController {
     public function basicPacks(){
         $gifts = $this->getAll('gifts');
         //剩余数量-未使用的CDK
-        $sql = 'select gid,count(*)as count from gift_cdk where state = 0 GROUP BY gid';
-        $res = D('gift_cdk')->query($sql);
-        $res = $this->sortInfoById($res,'gid','count');
+        $sql1 = 'select gid,count(*)as count from gift_cdk where state = 0 GROUP BY gid';
+        $res1 = D('gift_cdk')->query($sql1);
+        $res1 = $this->sortInfoById($res1,'gid','count');
+
+        //如果是新手礼包，则为未领取的CKD
+        $sql2 = 'select gid,count(*)as count from gift_cdk where uid is null GROUP BY gid';
+        $res2 = D('gift_cdk')->query($sql2);
+        $res2 = $this->sortInfoById($res2,'gid','count');
+
         foreach ($gifts as $k=>$v){
-            $gifts[$k]['left_num'] = $res[$v['id']]?$res[$v['id']]:0;
+            if($v['novice'] == 1){//如果是新手礼包，则为未领取的CKD
+                $gifts[$k]['left_num'] = $res2[$v['id']] ? $res2[$v['id']] : 0;
+            }else {
+                $gifts[$k]['left_num'] = $res1[$v['id']] ? $res1[$v['id']] : 0;
+            }
         }
 
         $this->assign('gifts',$gifts);

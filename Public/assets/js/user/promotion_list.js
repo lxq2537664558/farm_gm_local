@@ -59,10 +59,10 @@ function checktable(isstart_year,isstart_month,isstart_day,isend_year,isend_mont
 $('.select_week').change(function(){
     $("#search_data select").val("");
     // alert($('.current_week').text())
-    if($(this).val()!="" && $(this).val() != $('.current_week').text()){
+    if($(this).val()!="" && $(this).val() != $('.current_week').text()-1){
         $('#search_data').hide();
         $('.save_area').hide();
-    }else if($(this).val()!="" && $(this).val() == $('.current_week').text()){
+    }else if($(this).val()!="" && $(this).val() == $('.current_week').text()-1){
         $('#search_data').hide();
         $('.save_area').show();
         $('.save_current_week').val($(this).val());

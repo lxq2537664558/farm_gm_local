@@ -738,9 +738,13 @@ class UserController extends BaseController {
         $search_week = $week - 1;//使用临时变量，week用于后面，不能参加计算
         $start_time = strtotime('+' . $search_week . ' week', $first_week_start_timestamp);//开始时间
         $end_time = strtotime('+' . $search_week . ' week', $first_week_end_timestamp);//结束时间
-        $now_time = time();
+        $now_time = strtotime('-1 week');
+//        if(!(($now_time >= $start_time) && ($now_time <= $end_time))){
+//            $this->error('只能保存本周的数据！');
+//            die;
+//        }
         if(!(($now_time >= $start_time) && ($now_time <= $end_time))){
-            $this->error('只能保存本周的数据！');
+            $this->error('只能保存上周的数据！');
             die;
         }
 

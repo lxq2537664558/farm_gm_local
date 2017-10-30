@@ -17,6 +17,8 @@
                 <input type="" name="" placeholder="输入UID或用户名">
                 <button>搜索</button>
             </div>
+            <!-- 表格导出 -->
+            <p><button class="out_excel" style="float: left;">表格导出为excel</button></p>
             <table id="mytable" style="width: 100%;" border="1">
                 <thead>
                 <tr>
@@ -26,13 +28,14 @@
                     <th>用户组</th>
                     <th>钻石</th>
                     <th>下属玩家数</th>
+                    <th>财富总值</th>
                     <th>上次登陆时间</th>
                     <th>注册时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                    
+
                 </tbody>
             </table>
             <div style="float: left; display: none; margin: 10px 10px;" id="left_page">
@@ -51,8 +54,24 @@
 <script type="text/javascript" src="__PUBLIC__/assets/js/amazeui.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/user/channel_management.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/tableExport.js"></script>
 <script type="text/javascript">
     $('#collapse-nav2').addClass('am-in');
+
+    // 导出表格
+    $(".out_excel").click(function(){
+
+        $('#mytable').tableExport({
+
+        type:'excel',
+
+        escape:'false',
+
+        fileName: '渠道管理'
+
+        });
+
+    });
 </script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
 </body>

@@ -14,7 +14,7 @@ function checktable(issearch){
             // console.log(data);
             // console.log(data.data);
             $('#mytable tbody').empty();
-            $('#total_page').html(`当前<b id="current_page">${data.page.page}</b>/<b id="largest_page">${data.page.totalPage}</b>页`);           
+            $('#total_page').html(`当前<b id="current_page">${data.page.page}</b>/<b id="largest_page">${data.page.totalPage}</b>页`);
             if(data.data){
                 for(var i = 0; i<data.data.length; i++){
                     $('#mytable tbody').append(`
@@ -25,6 +25,7 @@ function checktable(issearch){
                             <td>${data.data[i].user_type}</td>
                             <td>${data.data[i].diamond}</td>
                             <td>${data.data[i].player_num}</td>
+                            <td>${data.data[i].total_wealth}</td>
                             <td>${data.data[i].login_time}</td>
                             <td>${data.data[i].register_time}</td>
                         </tr>
@@ -41,7 +42,7 @@ function checktable(issearch){
                     var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
                     window.location=ipaddress+`index.php?m=Home&c=User&a=promotionList&uid=${uid}&mid=${mid}`
                 })
-                
+
             }else{
                 alert("没有此查询数据");
                 $('#left_page').hide();

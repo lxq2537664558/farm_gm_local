@@ -480,7 +480,7 @@ class UserController extends BaseController {
                 $res = $this->getAll('user_promotion_list',$uWhere);
                 $lists['users'] = $res;
 
-                $lists = NULL;//读取线上数据测试条件
+//                $lists = NULL;//读取线上数据测试条件
 
                 if(!$lists['users']) {
                     $search_data = 0;
@@ -501,7 +501,7 @@ class UserController extends BaseController {
                 $res = $this->getAll('user_promotion_list',$uWhere);
                 $lists['users'] = $res;
 
-                $lists = NULL;//读取线上数据测试条件
+//                $lists = NULL;//读取线上数据测试条件
 
                 if(!$lists['users']) {
                     $search_data = 0;

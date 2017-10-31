@@ -220,9 +220,10 @@ class UserController extends BaseController {
         if($post){
             set_time_limit(0);
             $page = I('post.page',1);
+            $pageSize = I('post.pageSize',10);
             $search = I('post.search','');
 
-            $pager = array('page' => $page, 'pageSize' => 10);
+            $pager = array('page' => $page, 'pageSize' => $pageSize);
 
             //模糊查询
             if($search) {

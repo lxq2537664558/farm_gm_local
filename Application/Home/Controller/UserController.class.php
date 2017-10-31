@@ -221,9 +221,11 @@ class UserController extends BaseController {
             set_time_limit(0);
             $page = I('post.page',1);
             $pageSize = I('post.pageSize',10);
+            $pageSize = $pageSize?$pageSize:10;
             $search = I('post.search','');
 
             $pager = array('page' => $page, 'pageSize' => $pageSize);
+//            $pager = array('page' => $page, 'pageSize' => 10);
 
             //模糊查询
             if($search) {

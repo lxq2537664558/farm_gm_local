@@ -216,9 +216,6 @@ class UserController extends BaseController {
 
     //渠道管理
     public function channelManagement(){
-        //total_wealth
-        //财富总值字段
-
         $post = I('post.');
         if($post){
             set_time_limit(0);
@@ -293,6 +290,7 @@ class UserController extends BaseController {
                     'login_time'=>$sort_data[$v['id']]['lastLoginTime']?date('Y-m-d H:i:s',$sort_data[$v['id']]['lastLoginTime']):'-',
                     'register_time'=>$v['register_time']?date('Y-m-d H:i:s',$v['register_time']):'-',
                     'mid' => $sort_data[$v['id']]['id'],//mongodb的id
+                    'total_wealth'=>$sort_data[$v['id']]['treasure']?$sort_data[$v['id']]['treasure']:0,
                 );
 
                 //空数据默认显示0
@@ -480,7 +478,7 @@ class UserController extends BaseController {
                 $res = $this->getAll('user_promotion_list',$uWhere);
                 $lists['users'] = $res;
 
-//                $lists = NULL;//读取线上数据测试条件
+                $lists = NULL;//读取线上数据测试条件
 
                 if(!$lists['users']) {
                     $search_data = 0;
@@ -501,7 +499,7 @@ class UserController extends BaseController {
                 $res = $this->getAll('user_promotion_list',$uWhere);
                 $lists['users'] = $res;
 
-//                $lists = NULL;//读取线上数据测试条件
+                $lists = NULL;//读取线上数据测试条件
 
                 if(!$lists['users']) {
                     $search_data = 0;
@@ -792,6 +790,11 @@ class UserController extends BaseController {
 
         //处理接口数据
         $data = $lists['users'];
+        if(!$data){
+            $this->error('保存失败，没有数据！');
+            die;
+        }
+
         foreach ($data as $v){
             $ids[] = $v['id'];
         }

@@ -220,13 +220,14 @@ class UserController extends BaseController {
         if($post){
             set_time_limit(0);
             $page = I('post.page',1);
+            $pageSize = I('post.pageSize',10);
             $search = I('post.search','');
 
-            $pager = array('page' => $page, 'pageSize' => 10);
+            $pager = array('page' => $page, 'pageSize' => $pageSize);
 
             //模糊查询
             if($search) {
-                $search_fields = array();//检索字段
+                $search_fields = array('id','phone');//检索字段
                 foreach ($search_fields as $v) {
                     $where[$v] = array('like', '%' . $search . '%');
                 }
@@ -242,6 +243,7 @@ class UserController extends BaseController {
 
             //用户分页列表
             $users = $this->getAll('user',$where_main, '', '', '', $pager);
+//            die;
             $user_ids = $this->sortInfoById($users['data'],'id','id');
             $ids_string = join('_',array_values($user_ids));
 
@@ -289,6 +291,7 @@ class UserController extends BaseController {
                     'login_time'=>$sort_data[$v['id']]['lastLoginTime']?date('Y-m-d H:i:s',$sort_data[$v['id']]['lastLoginTime']):'-',
                     'register_time'=>$v['register_time']?date('Y-m-d H:i:s',$v['register_time']):'-',
                     'mid' => $sort_data[$v['id']]['id'],//mongodb的id
+                    'total_wealth'=>$sort_data[$v['id']]['treasure']?$sort_data[$v['id']]['treasure']:0,
                 );
 
                 //空数据默认显示0
@@ -476,6 +479,8 @@ class UserController extends BaseController {
                 $res = $this->getAll('user_promotion_list',$uWhere);
                 $lists['users'] = $res;
 
+                $lists = NULL;//读取线上数据测试条件
+
                 if(!$lists['users']) {
                     $search_data = 0;
                     //使用新接口查以前的数据
@@ -493,7 +498,9 @@ class UserController extends BaseController {
                 $uWhere['father_id'] = $uid;
                 $uWhere['week'] = $week;
                 $res = $this->getAll('user_promotion_list',$uWhere);
-                $lists['users'] = $res;                
+                $lists['users'] = $res;
+
+                $lists = NULL;//读取线上数据测试条件
 
                 if(!$lists['users']) {
                     $search_data = 0;
@@ -523,6 +530,7 @@ class UserController extends BaseController {
 //                    $params = 'index=' . $start . '&num=' . $end . '&showId=' . $uid;//分页信息
                     $params = 'showId=' . $uid;//分页信息
                     $start_time ? $params .= '&startTime=' . $start_time . '&endTime=' . $end_time : '';//时间信息，如果有才添加参数
+//                    var_dump($params);die;
                     $params = $this->publicEncrypt($params);//处理参数
                     $url .= '?data=' . $params;
                     $lists = $this->getHTTPData($url);
@@ -738,6 +746,7 @@ class UserController extends BaseController {
         $search_week = $week - 1;//使用临时变量，week用于后面，不能参加计算
         $start_time = strtotime('+' . $search_week . ' week', $first_week_start_timestamp);//开始时间
         $end_time = strtotime('+' . $search_week . ' week', $first_week_end_timestamp);//结束时间
+
         $now_time = strtotime('-1 week');
 //        if(!(($now_time >= $start_time) && ($now_time <= $end_time))){
 //            $this->error('只能保存本周的数据！');
@@ -757,10 +766,6 @@ class UserController extends BaseController {
             die;
         }
 
-        //周的处理
-        $first_week_start_timestamp = strtotime('2017-10-9');//第一周开始时间
-        $first_week_end_timestamp = strtotime('2017-10-15');//第一周结束时间
-
         //如果有周，以周为准
         if($week == 1){//只有第一周使用新接口
             //使用新接口查以前的数据
@@ -778,6 +783,7 @@ class UserController extends BaseController {
             $url = 'http://'.C('SERVER_IP').'/GetGeneralizeList';
             $params = 'showId='.$uid;
             $start_time?$params .= '&startTime='.$start_time.'&endTime='.$end_time:'';//时间信息，如果有才添加参数
+//            var_dump($params);die;
             $params = $this->publicEncrypt($params);//处理参数
             $url .= '?data='.$params;
             $lists = $this->getHTTPData($url);
@@ -785,6 +791,11 @@ class UserController extends BaseController {
 
         //处理接口数据
         $data = $lists['users'];
+        if(!$data){
+            $this->error('保存失败，没有数据！');
+            die;
+        }
+
         foreach ($data as $v){
             $ids[] = $v['id'];
         }

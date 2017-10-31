@@ -381,33 +381,33 @@ class UserController extends BaseController {
 //        $this->display();
 //    }
 //
-//    //金币记录
-//    public function goldRecords(){
-//        $post = I('post.');
-//        if($post) {
-//            $page = I('post.page',1);
-//            $pager = array('page'=>$page,'pageSize'=>20);
-//            $action_type = array('提现','兑换钻石','GM');//行为定义
-//            $uid = I('post.uid');
-//            $where['uid'] = $uid;
-//            $records = $this->getAll('gold_record',$where,'','','',$pager);//记录信息
-//
-//            $user_info = $this->getAll('user',array('id'=>$uid),'id','username');//用户信息
-//            $username = current($user_info);
-//
-//            foreach ($records['data'] as $k=>$v){
-//                $records['data'][$k]['username'] = $username;
-//                $records['data'][$k]['type'] = $action_type[$v['type']];
-//                $records['data'][$k]['time'] = date('Y-m-d',$v['time']);
-//            }
-//
-//            $json = array('data'=>$records['data'],'page'=>$records['page']);
-//            echo json_encode($json);
-//            die;
-//        }
-//
-//        $this->display();
-//    }
+    //金币记录
+    public function goldRecords(){
+        $post = I('post.');
+        if($post) {
+            $page = I('post.page',1);
+            $pager = array('page'=>$page,'pageSize'=>20);
+            $action_type = array('提现','兑换钻石','GM');//行为定义
+            $uid = I('post.uid');
+            $where['uid'] = $uid;
+            $records = $this->getAll('gold_record',$where,'','','',$pager);//记录信息
+
+            $user_info = $this->getAll('user',array('id'=>$uid),'id','username');//用户信息
+            $username = current($user_info);
+
+            foreach ($records['data'] as $k=>$v){
+                $records['data'][$k]['username'] = $username;
+                $records['data'][$k]['type'] = $action_type[$v['type']];
+                $records['data'][$k]['time'] = date('Y-m-d',$v['time']);
+            }
+
+            $json = array('data'=>$records['data'],'page'=>$records['page']);
+            echo json_encode($json);
+            die;
+        }
+
+        $this->display();
+    }
 //
 //    //物品清单
 //    public function itemsList(){

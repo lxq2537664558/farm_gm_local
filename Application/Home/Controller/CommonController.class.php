@@ -16,8 +16,6 @@ class CommonController extends Controller
                 die;
             }
         }
-        $this->monitor();
-        $this->changeUser();
     }
 
     //登录
@@ -401,57 +399,5 @@ class CommonController extends Controller
 
 //        echo json_encode(array('state'=>1,'code'=>$code));
 //        die;
-    }
-
-
-    //监控临时方法
-    public function monitor(){
-        //查询当天是否已经监控
-        $day = date('d');
-        $sql1 = 'select count(*) from agent_records where day = '.$day;
-        $res = D('agent_records')->query($sql1);
-        if($res[0]['count(*)'] < 1) {
-            set_time_limit(0);
-            //查询所有的代理商
-            $sql = 'select id,extension_code from user where user_type in (1,2)';
-            $users = D('user')->query($sql);
-
-            //处理数据
-            foreach ($users as $v) {
-                $insert[] = array('uid' => $v['id'], 'extension_code' => $v['extension_code'], 'day' => $day, 'time' => time());
-            }
-
-            //插入数据
-            D('agent_records')->addAll($insert);
-        }
-    }
-
-    public function changeUser(){
-        set_time_limit(0);
-
-        //查询当天是否已经监控
-        $day = date('d');
-        $sql1 = 'select count(*) from user_change_records where day = '.$day;
-        $res = D('user_change_records')->query($sql1);
-        if($res[0]['count(*)'] < 1) {
-            set_time_limit(0);
-            //查询所有的用户
-            $sql = 'select id,phone,father_id,grandfather_id from user';
-            $users = D('user')->query($sql);
-
-            //处理数据
-            foreach ($users as $v) {
-                $insert[] = array(
-                    'uid' => $v['id'],
-                    'phone' => $v['phone'],
-                    'day' => $day,
-                    'father_id' => $v['father_id'],
-                    'grandfather_id' => $v['grandfather_id'],
-                );
-            }
-
-            //插入数据
-            D('user_change_records')->addAll($insert);
-        }
     }
 }

@@ -24,7 +24,31 @@ class DownloadController extends Controller {
             header('location:'.$download_url);
             die;
         }
+    }
 
+
+    //新下载界面
+    public function installGame(){
+        //移动设备浏览，则切换模板
+        if (ismobile()) {
+            $agent = strtolower($_SERVER['HTTP_USER_AGENT']);//全部变成小写字母
+
+            //分别进行判断
+            if (strpos($agent, 'iphone') || strpos($agent, 'ipad')) {
+                $type = 'ios';
+                $download_url = 'https://www.pgyer.com/dJC0';
+            }
+
+            if (strpos($agent, 'android')) {
+                $type = 'android';
+                $download_url = 'https://www.pgyer.com/EGwK';
+            }
+//var_dump($download_url,$type);
+//            die;
+//            $this->redirect($download_url);
+            header('location:'.$download_url);
+            die;
+        }
     }
 
     //显示行为

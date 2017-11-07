@@ -11,12 +11,12 @@ class DownloadController extends Controller {
             //分别进行判断
             if (strpos($agent, 'iphone') || strpos($agent, 'ipad')) {
                 $type = 'ios';
-                $download_url = 'http://www.dafuvip.com/eUZfmq';
+                $download_url = 'http://www.dafuvip.com/nIniay';
             }
 
             if (strpos($agent, 'android')) {
                 $type = 'android';
-                $download_url = 'http://www.dafuvip.com/vy6ZRz';
+                $download_url = 'http://www.dafuvip.com/QfyiQr';
             }
 //var_dump($download_url,$type);
 //            die;
@@ -24,7 +24,31 @@ class DownloadController extends Controller {
             header('location:'.$download_url);
             die;
         }
+    }
 
+
+    //新下载界面
+    public function installGame(){
+        //移动设备浏览，则切换模板
+        if (ismobile()) {
+            $agent = strtolower($_SERVER['HTTP_USER_AGENT']);//全部变成小写字母
+
+            //分别进行判断
+            if (strpos($agent, 'iphone') || strpos($agent, 'ipad')) {
+                $type = 'ios';
+                $download_url = 'https://www.pgyer.com/dJC0';
+            }
+
+            if (strpos($agent, 'android')) {
+                $type = 'android';
+                $download_url = 'https://www.pgyer.com/EGwK';
+            }
+//var_dump($download_url,$type);
+//            die;
+//            $this->redirect($download_url);
+            header('location:'.$download_url);
+            die;
+        }
     }
 
     //显示行为
@@ -38,11 +62,11 @@ class DownloadController extends Controller {
         $pageSize = 50;
         $page = I('get.page',1);
         $pageshow = 3;
-
+        
         $model = D('user_behavior');
         $behavior = $model->limit($pageSize)->page($page)->select();
         $count = $model->count();
-
+        
         $pageInfo = array(
             'totalPage' => ceil($count/$pageSize),
             'page'		=> $page,
@@ -54,7 +78,7 @@ class DownloadController extends Controller {
         $pageInfo['start'] = (($pageInfo['page']-$pageshow)<=0)?1:$pageInfo['page']-$pageshow;
         $pageInfo['end'] = (($pageInfo['page']+$pageshow)>=$pageInfo['totalPage'])?$pageInfo['totalPage']:$pageInfo['page']+$pageshow;
         $pageInfo['pageSize'] = $pageSize?$pageSize:$this->pageSize;
-
+        
         $current = current($behavior);
         $header = array_keys($current);
 

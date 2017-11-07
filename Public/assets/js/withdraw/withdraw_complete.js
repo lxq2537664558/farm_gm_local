@@ -24,8 +24,8 @@ function checktable(ispagesize,issearch,isfield,isegt,iselt){
             $('#total_page').html(`当前<b id="current_page">${data.page.page}</b>/<b id="largest_page">${data.page.totalPage}</b>页`);
             if(data.data){
                 for(var i = 0; i<data.data.length; i++){
-                    $('#mytable tbody').append(`<tr><td>${data.data[i].uid}</td><td>${data.data[i].id}</td><td>${data.data[i].money}</td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].transfer_type}</td><td>${data.data[i].remarks}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
-                    // $('#mytable tbody').append(`<tr><td>${data.data[i].uid}</td><td>${data.data[i].id}</td><td>${data.data[i].money}</td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].province}</td><td>${data.data[i].area}</td><td>${data.data[i].transfer_type}</td><td>${data.data[i].remarks}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
+                    // $('#mytable tbody').append(`<tr><td>${data.data[i].uid}</td><td>${data.data[i].id}</td><td>${data.data[i].money}</td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].transfer_type}</td><td>${data.data[i].remarks}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
+                    $('#mytable tbody').append(`<tr><td>${data.data[i].uid}</td><td>${data.data[i].id}</td><td>${data.data[i].money}</td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
                 }
                 $('#search').show();
                 $('#left_page').show();

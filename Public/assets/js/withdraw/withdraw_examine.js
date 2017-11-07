@@ -1,9 +1,10 @@
-function checktable(issearch,isfield,isegt,iselt){
+function checktable(ispagesize,issearch,isfield,isegt,iselt){
     $.ajax({
          // url:ipaddress+"index.php?m=Home&c=Withdraw&a=withdrawManagement",
          url:ipaddress+"index.php?m=Home&c=Search&a=withdrawExamine",
          data : {
             "page_name" : "withdrawManagement",
+            "pageSize" :  ispagesize,
             "search" : issearch,
             "table" : "withdrawals",
             "page" : page,
@@ -26,7 +27,7 @@ function checktable(issearch,isfield,isegt,iselt){
                     // $('#mytable tbody').append(`<tr><td><input class="selected" type="checkbox" /></td><td>${data.data[i].uid}</td><td><span>${data.data[i].id}<i style="display: none">a</i></span></td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].transfer_type}</td><td>${data.data[i].remarks}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
                     // $('#mytable tbody').append(`<tr><td><input class="selected" type="checkbox" /></td><td>${data.data[i].uid}</td><td><span>${data.data[i].id}<i style="display: none">a</i></span></td><td>${data.data[i].money}</td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].province}</td><td>${data.data[i].area}</td><td>${data.data[i].transfer_type}</td><td>${data.data[i].remarks}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
                     $('#mytable tbody').append(`<tr><td><input class="selected" type="checkbox" /></td><td>${data.data[i].uid}</td><td><span>${data.data[i].id}<i style="display: none">a</i></span></td><td>${data.data[i].money}</td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].transfer_type}</td><td>${data.data[i].remarks}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
-                }       
+                }
                 $('#search').show();
                 $('#left_page').show();
                 $('#right_page').show();
@@ -86,6 +87,16 @@ function checktable(issearch,isfield,isegt,iselt){
 
 var page = 1;
 checktable(null);
+
+$('.setting_display_num_btn').click(function(){
+  if(isNaN($('.setting_display_num_input').val())){
+      alert("不是一个数字");
+  }else{
+      checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
+  }
+})
+
+
 // 下一页
 if($('#largest_page').text()==1){
     $('#next').attr('disabled',true).css('background','gray');
@@ -96,7 +107,7 @@ $('#next').click(function(){
     if(page==$('#largest_page').text()){
         $(this).attr('disabled',true).css('background','gray');
     }
-    checktable(null);
+    checktable($('.setting_display_num_input').val());
 })
 // 上一页
 $('#prev').attr('disabled',true).css('background','gray');
@@ -106,14 +117,14 @@ $('#prev').click(function(){
         $('#prev').attr('disabled',true).css('background','gray');
     }
     $('#next').attr('disabled',false).css('background','#4B97EB');
-    checktable(null);
+    checktable($('.setting_display_num_input').val());
 })
 
 // 搜索
 $('#search button').click(function(){
     page = 1;
     $('#prev').attr('disabled',true).css('background','gray');
-    checktable($('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
+    checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
     // 若最大页为1，设置下一页不可点
     if($('#largest_page').text()==1){
         $('#next').attr('disabled',true).css('background','gray');
@@ -129,7 +140,7 @@ $('#search button').click(function(){
         if(page==$('#largest_page').text()){
             $(this).attr('disabled',true).css('background','gray');
         }
-        checktable($('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
+        checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
     });
     $('#prev').click(function(){
         page--;
@@ -137,7 +148,7 @@ $('#search button').click(function(){
             $('#prev').attr('disabled',true).css('background','gray');
         }
         $('#next').attr('disabled',false).css('background','#4B97EB');
-        checktable($('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
+        checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
     });
     $('#jump').click(function(){
     if(isNaN($('#jump_val').val())){
@@ -168,7 +179,7 @@ $('#search button').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable($('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
+        checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
     }
 })
 })
@@ -203,6 +214,6 @@ $('#jump').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable(null);
+        checktable($('.setting_display_num_input').val());
     }
 })

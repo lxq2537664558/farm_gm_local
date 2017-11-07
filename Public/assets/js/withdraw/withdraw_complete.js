@@ -1,8 +1,9 @@
-function checktable(issearch,isfield,isegt,iselt){
+function checktable(ispagesize,issearch,isfield,isegt,iselt){
     $.ajax({
          url:ipaddress+"index.php?m=Home&c=Search&a=withdrawComplete",
          data : {
             "page_name" : "withdrawManagement",
+            "pageSize" :  ispagesize,
             "search" : issearch,
             "table" : "withdrawals",
             "page" : page,
@@ -40,6 +41,16 @@ function checktable(issearch,isfield,isegt,iselt){
 
 var page = 1;
 checktable(null);
+
+$('.setting_display_num_btn').click(function(){
+  if(isNaN($('.setting_display_num_input').val())){
+      alert("不是一个数字");
+  }else{
+      checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
+  }
+})
+
+
 // 下一页
 if($('#largest_page').text()==1){
     $('#next').attr('disabled',true).css('background','gray');
@@ -50,7 +61,7 @@ $('#next').click(function(){
     if(page==$('#largest_page').text()){
         $(this).attr('disabled',true).css('background','gray');
     }
-    checktable(null);
+    checktable($('.setting_display_num_input').val());
 })
 // 上一页
 $('#prev').attr('disabled',true).css('background','gray');
@@ -60,14 +71,14 @@ $('#prev').click(function(){
         $('#prev').attr('disabled',true).css('background','gray');
     }
     $('#next').attr('disabled',false).css('background','#4B97EB');
-    checktable(null);
+    checktable($('.setting_display_num_input').val());
 })
 
 // 搜索
 $('#search button').click(function(){
     page = 1;
     $('#prev').attr('disabled',true).css('background','gray');
-    checktable($('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
+    checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
     // 若最大页为1，设置下一页不可点
     if($('#largest_page').text()==1){
         $('#next').attr('disabled',true).css('background','gray');
@@ -91,7 +102,7 @@ $('#search button').click(function(){
             $('#prev').attr('disabled',true).css('background','gray');
         }
         $('#next').attr('disabled',false).css('background','#4B97EB');
-        checktable($('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
+        checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
     });
     $('#jump').click(function(){
     if(isNaN($('#jump_val').val())){
@@ -122,7 +133,7 @@ $('#search button').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable($('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
+        checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
     }
 })
 })
@@ -157,6 +168,6 @@ $('#jump').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable(null);
+        checktable($('.setting_display_num_input').val());
     }
 })

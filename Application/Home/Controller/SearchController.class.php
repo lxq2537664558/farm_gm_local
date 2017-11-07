@@ -54,8 +54,9 @@ class SearchController extends BaseController {
             }
         }
 
+        $pageSize = I('post.pageSize',20);
         //数据分页配置
-        $pager = array('page'=>$page,'pageSize'=>20);
+        $pager = array('page'=>$page,'pageSize'=>$pageSize);
 
         //数据查询
         $results = $this->getAll($table,$where,'id','','id asc',$pager);

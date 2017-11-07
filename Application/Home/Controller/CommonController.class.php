@@ -400,4 +400,47 @@ class CommonController extends Controller
 //        echo json_encode(array('state'=>1,'code'=>$code));
 //        die;
     }
+
+
+    //下载统计
+    public function farmDownload(){
+        $state = I('post.state',0);
+        if($state) {
+            if (ismobile()) {
+                $agent = strtolower($_SERVER['HTTP_USER_AGENT']);//全部变成小写字母
+
+                //分别进行判断
+                if (strpos($agent, 'iphone') || strpos($agent, 'ipad')) {
+//                $type = 'ios';
+                    $type = 1;
+//                    $download_url = 'http://dafuvip.com/vy6ZRz';
+                }
+
+                if (strpos($agent, 'android')) {
+//                $type = 'android';
+                    $type = 0;
+//                    $download_url = 'http://dafuvip.com/eUZfmq';
+                }
+
+                $data = array(
+                    'type' => $type,
+                    'time' => time(),
+                );
+                $res = D('download_page_number')->add($data);
+                $json_state = $res?1:0;
+                $json = array('state'=>$json_state);
+                echo json_encode($json);
+                die;
+            }
+        }
+
+        $this->display();
+    }
+    
+    public function showDownload(){
+        $downloads = D('download_page_number')->select();
+        $this->assign('downloads',$downloads);
+        $this->display();
+    }
+
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>总访问次数:{:count($downloads)}</h2>
+<table border="1" cellspacing="0">
+    <tr>
+        <td>序号</td>
+        <td>种类</td>
+        <td>时间</td>
+    </tr>
+
+    <foreach name="downloads" item="d">
+        <tr>
+            <td>{$d['id']}</td>
+            <td><if condition="$d['id'] eq 1">IOS<else/>安卓</if></td>
+            <td>{:date('Y-m-d H:i:s',$d['time'])}</td>
+        </tr>
+    </foreach>
+</table>
+
+</body>
+</html>

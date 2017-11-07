@@ -138,6 +138,15 @@ class PublicController extends BaseController {
         $data['grandfather_id'] = $user_info['father_id'];
         $uWhere['id'] = $uid;
         $res = $this->insAndUpdate('user',$uWhere,$data);
+        //记录推广码变动
+        $rData = array(
+            'uid'=>$uid,
+            'extension_code'=>$extension_code,
+            'father_id'=>$user_info['id'],
+            'month'=>date('m'),
+            'day'=>date('d'),
+        );
+        $this->insAndUpdate('extension_change','',$rData);
 
         if($res['state']){
             $return = array('state'=>1,'msg'=>'绑定成功！','father_id'=>$user_info['id'],'grandfather_id'=>$user_info['father_id']);

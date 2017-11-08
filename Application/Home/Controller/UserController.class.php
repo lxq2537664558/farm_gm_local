@@ -64,6 +64,7 @@ class UserController extends BaseController {
 //                $users['data'][$k]['father_id'] = $http_user_data[$v['id']]['generalizeId1']?$http_user_data[$v['id']]['generalizeId1']:0;//一级推广id
                 $users['data'][$k]['father_id'] = $v['father_id']?$v['father_id']:0;//改为自表查询，不再显示接口的数据
                 $users['data'][$k]['login_time'] = $http_user_data[$v['id']]['lastLoginTime']?$http_user_data[$v['id']]['lastLoginTime']:0;//上次登陆时间
+                $users['data'][$k]['username'] = $v['username']?$v['username']:'';//用户名
                 $users['data'][$k]['mid'] = $http_user_data[$v['id']]['id']?$http_user_data[$v['id']]['id']:0;//mongodb的id
                 $users['data'][$k]['idcard'] = $v['idcard']?$v['idcard']:'';//身份证
                 $users['data'][$k]['username'] = $v['username']?$v['username']:'';//用户名
@@ -80,7 +81,7 @@ class UserController extends BaseController {
                 $temp = $v;
                 foreach ($translate as $field=>$string){
                     if($string == 'to_time'){
-                        $temp[$field] = date('Y-m-d',$v[$field]);
+                        $temp[$field] = date('Y-m-d H:i',$v[$field]);
                     }else {
                         $temp[$field] = $string[$v[$field]];
                     }

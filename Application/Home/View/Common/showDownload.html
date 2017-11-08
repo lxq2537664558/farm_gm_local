@@ -16,7 +16,7 @@
     <foreach name="downloads" item="d">
         <tr>
             <td>{$d['id']}</td>
-            <td><if condition="$d['id'] eq 1">IOS<else/>安卓</if></td>
+            <td><if condition="$d['type'] eq 1">IOS<else/>安卓</if></td>
             <td>{:date('Y-m-d H:i:s',$d['time'])}</td>
         </tr>
     </foreach>

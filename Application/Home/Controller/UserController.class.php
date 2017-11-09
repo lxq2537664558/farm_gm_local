@@ -327,7 +327,7 @@ class UserController extends BaseController {
         $post = I('post.');
         if($post) {
             $page = I('post.page', 1);
-            $pageSize = 20;
+            $pageSize = $post['$pageSize']?$post['$pageSize']:20;
             $order_type = array('买','卖');//定义挂单类型
             $order_state = array('挂单','完成','撤销');//定义挂单类型
 //            var_dump($post);
@@ -492,7 +492,7 @@ class UserController extends BaseController {
                 $res = $this->getAll('user_promotion_list',$uWhere);
                 $lists['users'] = $res;
 
-                $lists = NULL;//读取线上数据测试条件
+//                $lists = NULL;//读取线上数据测试条件
 
                 if(!$lists['users']) {
                     $search_data = 0;
@@ -513,7 +513,7 @@ class UserController extends BaseController {
                 $res = $this->getAll('user_promotion_list',$uWhere);
                 $lists['users'] = $res;
 
-                $lists = NULL;//读取线上数据测试条件
+//                $lists = NULL;//读取线上数据测试条件
 
                 if(!$lists['users']) {
                     $search_data = 0;
@@ -543,16 +543,16 @@ class UserController extends BaseController {
 //                    $params = 'index=' . $start . '&num=' . $end . '&showId=' . $uid;//分页信息
                     $params = 'showId=' . $uid;//分页信息
                     $start_time ? $params .= '&startTime=' . $start_time . '&endTime=' . $end_time : '';//时间信息，如果有才添加参数
-//                    var_dump($params);die;
                     $params = $this->publicEncrypt($params);//处理参数
                     $url .= '?data=' . $params;
                     $lists = $this->getHTTPData($url);
+//                    var_dump($lists);die;
                 }
             }
 
             //处理接口数据
             $data = $lists['users'];
-//            var_dump($data);
+
             foreach ($data as $v){
                 $ids[] = $v['id'];
             }
@@ -588,24 +588,24 @@ class UserController extends BaseController {
                         'uid'=>($search_data == 1)?$v['uid']:$v['id'],
                         'username'=>$v['phone'],
                         'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
-                        'recharge'=>$temp_recharge,//充值总额
-                        'cost'=>$temp_cost,//消费总额
-                        'cost_commission'=>$temp_cost_money,//消费佣金
-                        'serviceCharge'=>$temp_serviceCharge,//手续费
-                        'service_commission'=>$temp_service_money,//手续费佣金
-                        'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
+                        'recharge'=>round($temp_recharge,2),//充值总额
+                        'cost'=>round($temp_cost,2),//消费总额
+                        'cost_commission'=>round($temp_cost_money,2),//消费佣金
+                        'serviceCharge'=>round($temp_serviceCharge,2),//手续费
+                        'service_commission'=>round($temp_service_money,2),//手续费佣金
+                        'commission'=>round($temp_cost_money+$temp_service_money,2),//佣金总额
                     );
                 }else{
                     $users[$v['id']] = array(
                         'uid'=>($search_data == 1)?$v['uid']:$v['id'],
                         'username'=>$user_info[$v['id']]['phone'],
                         'register_time'=>date('Y-m-d H:i:s',$user_info[$v['id']]['register_time']),
-                        'recharge'=>$temp_recharge,//充值总额
-                        'cost'=>$temp_cost,//消费总额
-                        'cost_commission'=>$temp_cost_money,//消费佣金
-                        'serviceCharge'=>$temp_serviceCharge,//手续费
-                        'service_commission'=>$temp_service_money,//手续费佣金
-                        'commission'=>$temp_cost_money+$temp_service_money,//佣金总额
+                        'recharge'=>round($temp_recharge,2),//充值总额
+                        'cost'=>round($temp_cost,2),//消费总额
+                        'cost_commission'=>round($temp_cost_money,2),//消费佣金
+                        'serviceCharge'=>round($temp_serviceCharge,2),//手续费
+                        'service_commission'=>round($temp_service_money,2),//手续费佣金
+                        'commission'=>round($temp_cost_money+$temp_service_money,2),//佣金总额
                     );
                 }
 
@@ -628,12 +628,12 @@ class UserController extends BaseController {
                 'uid'=>'总计：',
                 'username'=>$total_num,
                 'register_time'=>'-',
-                'recharge'=>$recharge,//充值总额
-                'cost'=>$cost,//消费总额
-                'cost_commission'=>$cost_money,//消费佣金
-                'serviceCharge'=>$serviceCharge,//手续费
-                'service_commission'=>$service,//手续费佣金
-                'commission'=>$commission?$commission:0,//佣金总额
+                'recharge'=>round($recharge,2),//充值总额
+                'cost'=>round($cost,2),//消费总额
+                'cost_commission'=>round($cost_money,2),//消费佣金
+                'serviceCharge'=>round($serviceCharge,2),//手续费
+                'service_commission'=>round($service,2),//手续费佣金
+                'commission'=>$commission?round($commission,2):0,//佣金总额
             );
 
 //            $json = array('data'=>$users,'page'=>array('page'=>$page,'totalPage'=>ceil($lists['totalNum']/$pageSize)),'level'=>$user_level_string[$user_level]);
@@ -683,13 +683,13 @@ class UserController extends BaseController {
                         'username' => $sort_data[$v['id']]['userName'],
                         'diamond' => floor($sort_data[$v['id']]['diamond']),
                         'treasure' => $sort_data[$v['id']]['treasure'],
-                        'recharge' => $sort_data[$v['id']]['recharge'],//充值总额
-                        'cost' => $sort_data[$v['id']]['cost'],//下线总额cost
+                        'recharge' => round($sort_data[$v['id']]['recharge'],2),//充值总额
+                        'cost' => round($sort_data[$v['id']]['cost'],2),//下线总额cost
                         'difference' => $sort_data[$v['id']]['recharge'] - $sort_data[$v['id']]['cost'],//上下差值
                         'depotLevel' => $sort_data[$v['id']]['depotLevel'],
-                        'stealTotalValue' => $sort_data[$v['id']]['stealTotalValue'],
-                        'beStolenTotalValue' => $sort_data[$v['id']]['beStolenTotalValue'],
-                        'steal_difference' => $sort_data[$v['id']]['stealTotalValue'] - $sort_data[$v['id']]['beStolenTotalValue'],//偷取差值
+                        'stealTotalValue' => round($sort_data[$v['id']]['stealTotalValue'],2),
+                        'beStolenTotalValue' => round($sort_data[$v['id']]['beStolenTotalValue'],2),
+                        'steal_difference' => round($sort_data[$v['id']]['stealTotalValue'] - $sort_data[$v['id']]['beStolenTotalValue'],2),//偷取差值
                         'dogNum' => $sort_data[$v['id']]['dogNum'],
                         'dogFoodNum' => $sort_data[$v['id']]['dogFoodNum'],
                         'speedUpItemNum' => $sort_data[$v['id']]['speedUpItemNum'],

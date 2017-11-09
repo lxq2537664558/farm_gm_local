@@ -327,7 +327,7 @@ class UserController extends BaseController {
         $post = I('post.');
         if($post) {
             $page = I('post.page', 1);
-            $pageSize = $post['$pageSize']?$post['$pageSize']:20;
+            $pageSize = $post['pageSize']?$post['pageSize']:20;
             $order_type = array('买','卖');//定义挂单类型
             $order_state = array('挂单','完成','撤销');//定义挂单类型
 //            var_dump($post);

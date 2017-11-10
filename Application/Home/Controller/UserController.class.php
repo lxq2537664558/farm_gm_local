@@ -932,7 +932,33 @@ class UserController extends BaseController {
 
     //禁言
     public function banned(){
-        var_dump(111111);
+        $state = I('get.state',0);
+        $uid = I('get.uid',0);
+        if(!$uid){
+            $this->error('操作失败，参数丢失！');
+            die;
+        }
 
+        //接口
+        $params = 'showId='.$uid.'&bannedToPost='.$state;
+        $url = 'http://'.C('SERVER_IP').'/GetOldGeneralizeList';
+        $params = $this->publicEncrypt($params);
+        $url .= '?data='.$params;
+        $lists = $this->getHTTPData($url);
+        if($lists['ret'] == 1) {
+            $where['id'] = $uid;
+            $data['banned'] = 1;
+            $res = $this->insAndUpdate('user', $where, $data);
+            if ($res['state']) {
+                $this->success('操作成功！');
+                die;
+            } else {
+                $this->error('操作失败！');
+                die;
+            }
+        }else{
+            $this->error('操作失败,接口错误！');
+            die;
+        }
     }
 }

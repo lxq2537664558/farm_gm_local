@@ -25,9 +25,9 @@ function checktable(issearch){
                 for(var i=0; i<data.data.length+1; i++){
                     // 判断用户是否拥有 推广列表
                     if($('#mytable tbody tr:nth-child('+i+')').find('td:nth-child(7)').text()!="普通用户"){
-                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span><span class="banned" style="color: blue; cursor: pointer; margin-left: 10px;">禁言</span></td>');
+                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span><span class="banned" style="color: blue; cursor: pointer; margin-left: 10px;">解言</span><span class="not_banned" style="color: blue; cursor: pointer; margin-left: 10px;">禁言</span></td>');
                     }else{
-                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span><span class="banned" style="color: blue; cursor: pointer; margin-left: 10px;">禁言</span></td>');
+                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span><span class="banned" style="color: blue; cursor: pointer; margin-left: 10px;">禁言</span><span class="not_banned" style="color: blue; cursor: pointer; margin-left: 10px;">解言</span></td>')
                     }
                 }
 
@@ -199,7 +199,14 @@ function checktable(issearch){
                 $('.banned').click(function(){
                     var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
                     var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
-                    window.location=ipaddress+`index.php?m=Home&c=User&a=banned&uid=${uid}&mid=${mid}`
+                    window.location=ipaddress+`index.php?m=Home&c=User&a=banned&state=1&uid=${uid}&mid=${mid}`
+                })
+
+                // 解言
+                $('.not_banned').click(function(){
+                    var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
+                    var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
+                    window.location=ipaddress+`index.php?m=Home&c=User&a=banned&state=0&uid=${uid}&mid=${mid}`
                 })
             }else{
                 alert("没有此查询数据");

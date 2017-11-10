@@ -35,7 +35,6 @@ class UserController extends BaseController {
             if($search){
                 $where['id'] = array('like','%'.$search.'%');
                 $where['username'] = array('like','%'.$search.'%');
-                $where['realname'] = array('like','%'.$search.'%');//新增昵称模糊搜索
                 $where['phone'] = array('like','%'.$search.'%');
                 $where['idcard'] = array('like','%'.$search.'%');
                 $where['_logic'] = 'or';
@@ -947,7 +946,7 @@ class UserController extends BaseController {
         $lists = $this->getHTTPData($url);
         if($lists['ret'] == 1) {
             $where['id'] = $uid;
-            $data['banned'] = 1;
+            $data['banned'] = $state;
             $res = $this->insAndUpdate('user', $where, $data);
             if ($res['state']) {
                 $this->success('操作成功！');

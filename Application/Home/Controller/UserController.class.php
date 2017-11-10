@@ -35,6 +35,7 @@ class UserController extends BaseController {
             if($search){
                 $where['id'] = array('like','%'.$search.'%');
                 $where['username'] = array('like','%'.$search.'%');
+                $where['realname'] = array('like','%'.$search.'%');//新增昵称模糊搜索
                 $where['phone'] = array('like','%'.$search.'%');
                 $where['idcard'] = array('like','%'.$search.'%');
                 $where['_logic'] = 'or';

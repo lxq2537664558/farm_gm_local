@@ -927,4 +927,11 @@ class UserController extends BaseController {
             D('user_change_records')->addAll($insert);
         }
     }
+
+
+    //禁言
+    public function banned(){
+        var_dump(111111);
+
+    }
 }

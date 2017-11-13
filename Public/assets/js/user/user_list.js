@@ -1,9 +1,10 @@
 console.log(ipaddress);
-function checktable(issearch){
+function checktable(is_nickname,issearch){
     $.ajax({
          url: ipaddress+"index.php?m=Home&c=User&a=index",
          data : {
             "page_name" : "channelManagement",
+            "nicheng" : is_nickname,
             "search" : issearch,
             "table" : "user",
             "page" : page
@@ -25,9 +26,9 @@ function checktable(issearch){
                 for(var i=0; i<data.data.length+1; i++){
                     // 判断用户是否拥有 推广列表
                     if($('#mytable tbody tr:nth-child('+i+')').find('td:nth-child(7)').text()!="普通用户"){
-                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span><span class="banned" style="color: blue; cursor: pointer; margin-left: 10px;">禁言</span><span class="not_banned" style="color: blue; cursor: pointer; margin-left: 10px;">解言</span></td>');
+                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>');
                     }else{
-                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span><span class="banned" style="color: blue; cursor: pointer; margin-left: 10px;">禁言</span><span class="not_banned" style="color: blue; cursor: pointer; margin-left: 10px;">解言</span></td>')
+                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>')
                     }
                 }
 
@@ -139,6 +140,7 @@ function checktable(issearch){
                                         type: "POST",
                                         success: function(data){
                                             alert(data.msg);
+                                            console.log(data);
                                             // $('.user_edit').hide();
                                             if(data.msg=="修改成功！"){
                                                 // $('.user_edit').hide();
@@ -199,19 +201,19 @@ function checktable(issearch){
                     window.location=ipaddress+`index.php?m=Home&c=User&a=itemsList&uid=${uid}&mid=${mid}`
                 })
 
-                // 禁言
-                $('.banned').click(function(){
-                    var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
-                    var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
-                    window.location=ipaddress+`index.php?m=Home&c=User&a=banned&state=1&uid=${uid}&mid=${mid}`
-                })
-
-                // 解言
-                $('.not_banned').click(function(){
-                    var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
-                    var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
-                    window.location=ipaddress+`index.php?m=Home&c=User&a=banned&state=0&uid=${uid}&mid=${mid}`
-                })
+                // // 禁言
+                // $('.banned').click(function(){
+                //     var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
+                //     var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
+                //     window.location=ipaddress+`index.php?m=Home&c=User&a=banned&state=1&uid=${uid}&mid=${mid}`
+                // })
+                //
+                // // 解言
+                // $('.not_banned').click(function(){
+                //     var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
+                //     var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
+                //     window.location=ipaddress+`index.php?m=Home&c=User&a=banned&state=0&uid=${uid}&mid=${mid}`
+                // })
             }else{
                 alert("没有此查询数据");
                 $('#left_page').hide();
@@ -250,7 +252,7 @@ $('#prev').click(function(){
 $('#search button').click(function(){
     page = 1;
     $('#prev').attr('disabled',true).css('background','gray');
-    checktable($('#search input').val());
+    checktable($('.is_nickname').val(),$('#search input').val());
     // 若最大页为1，设置下一页不可点
     if($('#largest_page').text()==1){
         $('#next').attr('disabled',true).css('background','gray');
@@ -266,7 +268,7 @@ $('#search button').click(function(){
         if(page==$('#largest_page').text()){
             $(this).attr('disabled',true).css('background','gray');
         }
-        checktable($('#search input').val());
+        checktable($('.is_nickname').val(),$('#search input').val());
     });
     $('#prev').click(function(){
         page--;
@@ -274,7 +276,7 @@ $('#search button').click(function(){
             $('#prev').attr('disabled',true).css('background','gray');
         }
         $('#next').attr('disabled',false).css('background','#4B97EB');
-        checktable($('#search input').val());
+        checktable($('.is_nickname').val(),$('#search input').val());
     });
     $('#jump').click(function(){
     if(isNaN($('#jump_val').val())){
@@ -305,7 +307,7 @@ $('#search button').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable($('#search input').val());
+        checktable($('.is_nickname').val(),$('#search input').val());
     }
 })
 })
@@ -340,7 +342,7 @@ $('#jump').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable(null);
+        checktable($('.is_nickname').val(),$('#search input').val());
     }
 })
 

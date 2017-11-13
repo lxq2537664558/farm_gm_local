@@ -58,6 +58,7 @@ function checktable(issearch){
                                 '<p class="change_username"> <span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">用户名</span><input type="" name=""></p>'+
                                 '<p class="change_password"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">设置密码</span><input type="password" name="" placeholder="若不更改密码请勿填写"></p>'+
                                 '<p class="change_type"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">用户组</span><select class="type_select"><option value="putong">普通用户</option><option value="daili">代理商</option><option value="huizhang">商会长</option></select></p>'+
+                                '<p class="change_banned"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">禁言</span><select class="banned_select"><option value="0">否</option><option value="1">是</option></select></p>'+
                                 '<p class="change_state"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">状态</span><select class="state_select"><option value="zhengchang">正常</option><option value="fenghao">封号</option><option value="yongjiu">永久封号</option></select></p><p style="display: none;" class="seal_time"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">封号时间</span><input type="" name="" placeholder="请输入封号天数"></p>'+
                                 '<div class="btn" style="padding-left: 80px;"><button style="width: 80px; height: 30px; margin-right: 20px; border-radius: 5px; border: none; margin-bottom: 20px;" class="sure_change">确定</button><button style="width: 80px; height: 30px; border-radius: 5px; border: none; margin-bottom: 20px;" class="cancel_change">取消</button></div>';
 
@@ -65,6 +66,8 @@ function checktable(issearch){
 
                                 $('.user_edit').find('.change_uid input').val(data.id);
                                 $('.user_edit').find('.change_username input').val(data.username);
+                                // 禁言状态
+                                $('.user_edit').find('.change_banned select').val(data.banned);
                                 $('.user_edit').find('.change_username input').attr('readonly',true);
                                 // $('.user_edit').find('.change_idcard input').val(data.idcard);
                                 if(data.user_type==0){
@@ -129,7 +132,8 @@ function checktable(issearch){
                                             password : $('.change_password input').val(),
                                             user_type : user_type,
                                             state : state,
-                                            close_time : $('.seal_time input').val()
+                                            close_time : $('.seal_time input').val(),
+                                            banned : $('.banned_select').val()
                                         },
                                         dataType: "json",
                                         type: "POST",

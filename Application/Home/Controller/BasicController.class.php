@@ -854,4 +854,21 @@ class BasicController extends BaseController {
             die;
         }
     }
+
+    //查看发行量设置
+    public function viewPublic(){
+        $id = I('get.id',0);
+
+        $url = 'http://'.C('SERVER_IP').'/GetItemNum';
+        $params = 'itemId='.$id;
+        $params = $this->publicEncrypt($params);
+        $url .= '?data='.$params;
+
+        $lists = $this->getHTTPData($url);
+        if($lists['ret'] == 1){
+            $this->assign('info',$lists);
+        }
+
+        $this->display();
+    }
 }

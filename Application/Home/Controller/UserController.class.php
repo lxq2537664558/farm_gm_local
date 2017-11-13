@@ -162,6 +162,7 @@ class UserController extends BaseController {
             $uid = $post['uid'];
             $uWhere['id'] = $uid;
             unset($post['uid']);
+            $banned = $post['banned'];
 
             //密码为空则不修改密码
             if($post['password']){
@@ -176,15 +177,12 @@ class UserController extends BaseController {
             $model = D();
             $model->startTrans();
 
-//            var_dump($user_info);
-//            var_dump(in_array($post['user_type'],array(1,2)) && (!$user_info['extension_code']));
             //当用户被修改为代理商层级且用户之前不是代理商层级[没有推广码]时获取新的推广码
             if(in_array($post['user_type'],array(1,2)) && (!$user_info['extension_code'])){
                 //推广码
                 $code = $this->getExtensionCode($post);
                 $post['extension_code'] = $code;
             }
-//            var_dump($post);die;
 
             if(($post['user_type'] == 0) && $user_info['extension_code']){
                 //检测代理商关系
@@ -203,17 +201,29 @@ class UserController extends BaseController {
                 }
                 $post['extension_code'] = '';
             }
-//            die;
+
+            //禁言部分===没有加入到事务中
+            //接口
+            $params = 'showId='.$uid.'&bannedToPost='.$banned;
+            $url = 'http://'.C('SERVER_IP').'/gm.GMHandler.BannedToPost';
+            $params = $this->publicEncrypt($params);
+            $url .= '?data='.$params;
+            $lists = $this->getHTTPData($url);//由于接口没有返回值，所以暂时不加判断
+            $post['banned'] = $banned;
+
             $res = $this->insAndUpdate('user',$uWhere,$post);
-//            echo D('user')->_sql();
-//            die;
+
+            $uid = I('get.uid',0);
+            if(!$uid){
+                $this->error('操作失败，参数丢失！');
+                die;
+            }
+
             if($res['state']){
                 $model->commit();
                 echo json_encode(array('state'=>1,'msg'=>'修改成功！'));
                 die;
             }else{
-//                echo D('user')->_sql();
-//                var_dump($res1);
                 $model->rollback();
                 echo json_encode(array('state'=>0,'msg'=>'修改失败！'));
                 die;
@@ -940,11 +950,13 @@ class UserController extends BaseController {
 
         //接口
         $params = 'showId='.$uid.'&bannedToPost='.$state;
-        $url = 'http://'.C('SERVER_IP').'/GetOldGeneralizeList';
+        $url = 'http://'.C('SERVER_IP').'/gm.GMHandler.BannedToPost';
         $params = $this->publicEncrypt($params);
         $url .= '?data='.$params;
         $lists = $this->getHTTPData($url);
-        if($lists['ret'] == 1) {
+        
+//        if($lists['ret'] == 1) {
+        if(1) {//线上服务器重启后改为判断，接口那边暂时没有返回值
             $where['id'] = $uid;
             $data['banned'] = $state;
             $res = $this->insAndUpdate('user', $where, $data);

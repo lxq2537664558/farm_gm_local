@@ -1,4 +1,4 @@
-console.log(ipaddress);
+// console.log(ipaddress);
 function checktable(is_nickname,issearch){
     $.ajax({
          url: ipaddress+"index.php?m=Home&c=User&a=index",
@@ -13,7 +13,7 @@ function checktable(is_nickname,issearch){
          dataType: 'json',
          async: false,
          success: function (data) {
-            // console.log(data);
+            console.log(data);
             // console.log(data.data);
             $('#mytable tbody').empty();
             $('#total_page').html(`当前<b id="current_page">${data.page.page}</b>/<b id="largest_page">${data.page.totalPage}</b>页`);

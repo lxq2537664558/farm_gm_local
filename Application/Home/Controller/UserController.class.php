@@ -30,30 +30,46 @@ class UserController extends BaseController {
             $table = I('post.table');
             $page = I('post.page', 1);
             $pager = array('page' => $page, 'pageSize' => 20);
+            $nicheng = I('post.nicheng',0);
 
             //模糊搜索
             if($search){
-                $where['id'] = array('like','%'.$search.'%');
-                $where['username'] = array('like','%'.$search.'%');
-                $where['phone'] = array('like','%'.$search.'%');
-                $where['idcard'] = array('like','%'.$search.'%');
-                $where['_logic'] = 'or';
+                if($nicheng){
+                    //搜索昵称的接口
+                    $url = 'http://'.C('SERVER_IP').'/FindUser';
+                    $params = 'name=' . $search . '&type=0';
+                    $params = $this->publicEncrypt($params);
+                    $url .= '?data='.$params;
+                    $lists = $this->getHTTPData($url);
+
+                    if($lists['ret'] != 1) {
+                        $users['data'] = NULL;
+                    }else{
+                        $user_ids = $this->sortInfoById($lists['users'],'showId','showId');
+                        $lWhere['id'] = array('in',$user_ids);
+                        $users = $this->getAll('user',$lWhere, 'id', '','id asc', $pager);
+                    }
+                }else {
+                    $where['id'] = array('like', '%' . $search . '%');
+                    $where['username'] = array('like', '%' . $search . '%');
+                    $where['phone'] = array('like', '%' . $search . '%');
+                    $where['idcard'] = array('like', '%' . $search . '%');
+                    $where['_logic'] = 'or';
+                    $users = $this->getAll('user',$where, 'id', '','id asc', $pager);
+
+                    $user_ids = $this->sortInfoById($users['data'],'id','id');
+                    $uid_string = join('_', $user_ids);
+
+                    $url = 'http://'.C('SERVER_IP').'/GetUserData';
+
+                    $params = 'showIds=' . $uid_string . '&type=0';
+                    $params = $this->publicEncrypt($params);
+                    $url .= '?data='.$params;
+                    $lists = $this->getHTTPData($url);
+                }
+            }else{
+                $users = $this->getAll('user','', 'id', '','id asc', $pager);
             }
-
-            $users = $this->getAll('user',$where, 'id', '','id asc', $pager);
-//            var_dump(is_array(array('o'=>'id')));
-//            die;
-
-            $user_ids = $this->sortInfoById($users['data'],'id','id');
-            $uid_string = join('_', $user_ids);
-
-            $url = 'http://'.C('SERVER_IP').'/GetUserData';
-
-            $params = 'showIds=' . $uid_string . '&type=0';
-            $params = $this->publicEncrypt($params);
-            $url .= '?data='.$params;
-            $lists = $this->getHTTPData($url);
-
 
             //序列化接口请求的数据
             $http_user_data = $this->sortInfoById($lists['users'],'showId');
@@ -205,19 +221,19 @@ class UserController extends BaseController {
             //禁言部分===没有加入到事务中
             //接口
             $params = 'showId='.$uid.'&bannedToPost='.$banned;
+//            var_dump($params);die;
             $url = 'http://'.C('SERVER_IP').'/gm.GMHandler.BannedToPost';
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
-            $lists = $this->getHTTPData($url);//由于接口没有返回值，所以暂时不加判断
+            $lists = $this->getHTTPData($url);
+            if(!$lists['ret']){
+                $model->rollback();
+                echo json_encode(array('state'=>0,'msg'=>'修改失败，接口错误！'));
+                die;
+            }
             $post['banned'] = $banned;
 
             $res = $this->insAndUpdate('user',$uWhere,$post);
-
-            $uid = I('get.uid',0);
-            if(!$uid){
-                $this->error('操作失败，参数丢失！');
-                die;
-            }
 
             if($res['state']){
                 $model->commit();

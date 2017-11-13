@@ -38,7 +38,10 @@
                         <td>{$i['leftNum']}</td>
                         <td>{$i['leftNum']/$i['releaseCount']}</td>
                         <td><if condition="$i['costNum'] eq true">{$i['costNum']}<else/>0</if></td>
-                        <td><a href="{:U('Home/Basic/publicEdit',array('id'=>$i['itemId']))}">编辑</a></td>
+                        <td>
+                            <a href="{:U('Home/Basic/publicEdit',array('id'=>$i['itemId']))}">编辑</a>
+                            <a href="{:U('Home/Basic/viewPublic',array('id'=>$i['itemId']))}">查看</a>
+                        </td>
                     </tr>
                 </foreach>
                 </tbody>

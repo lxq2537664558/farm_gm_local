@@ -672,9 +672,6 @@ class UserController extends BaseController {
 
     //获取用户游戏数据
     public function gameData(){
-        $post = I('post.');
-
-        $uid = I('post.uid',0);
         $page = I('post.page',1);
         $pager = array('page' => $page, 'pageSize' => 20);
         $search = I('post.search','','trim');
@@ -699,8 +696,12 @@ class UserController extends BaseController {
 //            var_dump($lists);die;
             $http_data = $lists['data'];
             if($http_data) {
-
                 $sort_data = $this->sortInfoById($http_data, 'showId');
+
+                //获取用户的提现总额
+                $w_sql = 'select id,sum(yingfu) as sum from withdrawals where uid in ('.join(',',$user_ids).') and state = 3';
+                $w_result = D('withdrawals')->query($w_sql);
+//                var_dump($w_sql,$w_result);
 
                 foreach ($users['data'] as $k => $v) {
 //                $combine[$k] = array(
@@ -724,6 +725,7 @@ class UserController extends BaseController {
                         'fishs' => join(',', $sort_data[$v['id']]['fishs']),
                         'forests' => join(',', $sort_data[$v['id']]['forests']),
                         'mines' => join(',', $sort_data[$v['id']]['mines']),
+                        'withDraw'=>$w_result[0]['sum'],//提现总额
                     );
 
                     foreach ($combine[$k] as $key => $val) {

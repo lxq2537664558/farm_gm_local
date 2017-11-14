@@ -505,7 +505,39 @@ class PublicController extends BaseController {
         return $return;
     }
 
+    //统计用户登录次数方法
+    public function setLoginTimes(){
+        $uid = I('get.uid',0);
+        if(!$uid){
+            $json = array('state'=>0,'msg'=>'参数不完整！');
+            echo json_encode($json);
+            die;
+        }
 
+        //查询次数
+        $dWhere['uid'] = $uid;
+        $data_exists = $this->getAll('login_times',$dWhere);
+        if($data_exists){
+            $where = $dWhere;
+            $times = $data_exists[0]['times']+1;
+        }else{
+            $times = 1;
+        }
+
+        $data = array(
+            'uid'=>$uid,
+            'times'=>$times,
+        );
+        $res = $this->insAndUpdate('login_times',$where,$data);
+
+        if($res['state']){
+            $json = array('state'=>1,'msg'=>'操作成功！');
+        }else{
+            $json = array('state'=>0,'msg'=>'系统错误，修改失败！');
+        }
+        echo json_encode($json);
+        die;
+    }
 
 
 }

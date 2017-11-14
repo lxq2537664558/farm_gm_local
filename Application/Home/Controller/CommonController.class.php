@@ -134,7 +134,13 @@ class CommonController extends Controller
             }
 
             $uWhere['id'] = $uid;
-            $data = array('realname' => $realname, 'bank' => $bank, 'collection_account' => $collection_account,'opening_bank'=>$post['opening_bank']);
+            $data = array(
+                'realname' => $realname,
+                'bank' => $bank,
+                'collection_account' => $collection_account,
+                'opening_bank'=>$post['opening_bank'],
+                'alipay_account'=>$post['alipay_account'],
+            );
             D('user')->where($uWhere)->save($data);
             $this->redirect(U('Home/Common/checkIDCard', array('uid' => $uid)));
         } else {

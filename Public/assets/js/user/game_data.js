@@ -24,6 +24,7 @@ function checktable(issearch){
                             <td>${data.data[i].diamond}</td>
                             <td>${data.data[i].treasure}</td>
                             <td>${data.data[i].recharge}</td>
+                            <td>${data.data[i].widthDraw}</td>
                             <td>${data.data[i].cost}</td>
                             <td>${data.data[i].difference}</td>
                             <td>${data.data[i].depotLevel}</td>

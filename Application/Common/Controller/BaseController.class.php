@@ -29,6 +29,7 @@ class BaseController extends Controller {
             $this->checkAdmin();
 //            }
         }
+        $this->behaviorRecords();
     }
 
     //公共加密方法-备后期修改加密算法之用
@@ -132,15 +133,15 @@ class BaseController extends Controller {
 
     //后台权限验证
     public function checkAdmin(){
-//        var_dump($_GET);die;
         $qrcode_pass = I('get.qrcode_pass','');
         $code = I('get.extension_code','');
 
-        $loginInfo = session('AdminInfo');
+        $loginInfo = session(C('ADMIN_LOGIN_SESSION_FIELD'));
         $isLogin = $loginInfo['isAdmin']?$loginInfo['isAdmin']:$loginInfo['isAgent'];//管理员或者代理商
+//        var_dump($isLogin,$_SESSION);die;
         if(!$isLogin){//未登录，跳转到登录页面
-            session('AdminInfo',NULL);//清理session
-            $this->redirect('Home/Public/adminLogin',array('extension_code'=>$code,'qrcode_pass'=>$qrcode_pass));
+            session(C('ADMIN_LOGIN_SESSION_FIELD'),NULL);//清理session
+            $this->redirect('Home/Public/'.C('ADMIN_LOGIN_ACTION_NAME'),array('extension_code'=>$code,'qrcode_pass'=>$qrcode_pass));
             die;
         }else{
             $this->sidebar($loginInfo['group']);//左侧导航菜单
@@ -576,58 +577,58 @@ class BaseController extends Controller {
 
 
 
-//    //后台记录用户行为方法
-//    public function behaviorRecords(){
-//        $loginInfo = session('AdminInfo');
-//        if($loginInfo) {
-//            //有登录信息才处理数据
-//            //POST数据
-//            $post_data = I('post.');
-//            //GET数据
-//            $get_data = I('get.');
-//            $record_data = '';
-//            if($post_data) {
-//                $record_data .= 'POST数据:';
-//                foreach ($post_data as $pk => $pv) {
-//                    $record_data .= '"'.$pk.'"=>"'.$pv.'"';
-//                }
-//                $record_data .= '--------';
-//            }
-//
-//            if($get_data) {
-//                $record_data .= 'GET数据:';
-//                foreach ($get_data as $gk => $gv) {
-//                    $record_data .= '"'.$gk.'"=>"'.$gv.'"';
-//                }
-//                $record_data .= '--------';
-//            }
-//
-//            $time = time();
-//            $data = array(
-//                'uid' => $loginInfo['uid'],
-//                'module_name' => MODULE_NAME,
-//                'controller_name' => CONTROLLER_NAME,
-//                'action_name' => ACTION_NAME,
-//                'time' => $time,
-//                'month' => date('m'),
-//                'day' => date('d'),
-//                'data' => $record_data,
-//                'ip'=>$_SERVER["REMOTE_ADDR"],
-//        );
-//
-//            $file_data = '用户'.$loginInfo['username'].'['.$loginInfo['uid'].',IP:'.$_SERVER["REMOTE_ADDR"].']于'.date('Y-m-d H:i:s',$time);
-//            if($post_data){
-//                $file_data .= '处理了数据：'.$record_data.'\n';
-//            }else{
-//                $file_data .= '访问了页面'.MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME.PHP_EOL;
-//            }
-//
-//            //写文件
-//            $filename = 'user_behavior_'.date('Ymd').'.txt';//以日期命名
-//            file_put_contents($filename,$file_data,FILE_APPEND);
-//
-//            //插入数据
-//            D('user_behavior')->add($data);
-//        }
-//    }
+    //后台记录用户行为方法
+    public function behaviorRecords(){
+        $loginInfo = session('AdminInfo');
+        if($loginInfo) {
+            //有登录信息才处理数据
+            //POST数据
+            $post_data = I('post.');
+            //GET数据
+            $get_data = I('get.');
+            $record_data = '';
+            if($post_data) {
+                $record_data .= 'POST数据:';
+                foreach ($post_data as $pk => $pv) {
+                    $record_data .= '"'.$pk.'"=>"'.$pv.'"';
+                }
+                $record_data .= '--------';
+            }
+
+            if($get_data) {
+                $record_data .= 'GET数据:';
+                foreach ($get_data as $gk => $gv) {
+                    $record_data .= '"'.$gk.'"=>"'.$gv.'"';
+                }
+                $record_data .= '--------';
+            }
+
+            $time = time();
+            $data = array(
+                'uid' => $loginInfo['uid'],
+                'module_name' => MODULE_NAME,
+                'controller_name' => CONTROLLER_NAME,
+                'action_name' => ACTION_NAME,
+                'time' => $time,
+                'month' => date('m'),
+                'day' => date('d'),
+                'data' => $record_data,
+                'ip'=>$_SERVER["REMOTE_ADDR"],
+        );
+
+            $file_data = '用户'.$loginInfo['username'].'['.$loginInfo['uid'].',IP:'.$_SERVER["REMOTE_ADDR"].']于'.date('Y-m-d H:i:s',$time);
+            if($post_data){
+                $file_data .= '处理了数据：'.$record_data.'\n';
+            }else{
+                $file_data .= '访问了页面'.MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME.PHP_EOL;
+            }
+
+            //写文件
+            $filename = 'user_behavior_'.date('Ymd').'.txt';//以日期命名
+            file_put_contents($filename,$file_data,FILE_APPEND);
+
+            //插入数据
+            D('user_behavior')->add($data);
+        }
+    }
 }

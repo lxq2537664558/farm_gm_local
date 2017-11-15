@@ -74,5 +74,7 @@ return array(
         ),
     ),
 
+    'ADMIN_LOGIN_ACTION_NAME'=>'adminLogin',
+    'ADMIN_LOGIN_SESSION_FIELD'=>'admin_login_session_field',
      'SERVER_IP'=>'172.168.1.49:9999',
 );

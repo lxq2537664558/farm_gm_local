@@ -21,36 +21,36 @@
 <body style="width: 100%; height: 100%; margin: 0; padding: 0;">
 	<div class="title">
 		<h1 style="height: 42px; background-image: url('__PUBLIC__/assets/img/common/bind_title_bg.png'); background-size: 100% 100%; background-repeat: no-repeat; text-align: center; color: #69313A; font-weight: normal; font-size: 24px; padding-top: 5px; padding-bottom: 10px; line-height: 44px;">
-			<p style="font-family: hkhbt">管理银行账户</p>
+			<p style="font-family: hkhbt">管理账户</p>
 		</h1>
 	</div>
 	<div class="content-top" style="width: 86%; margin: 0 auto;">
 		<p style="margin-top: 20px;">
-			<span style="display: inline-block; width: 28%; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">开户姓名</span>
+			<span style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 38px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">开户姓名</span>
 			<input type="text" readonly="readonly" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" value="{$realname}">
 		</p>
 		<p style="margin-top: 20px;">
-				<span class="bank_span" style="display: inline-block; width: 28%; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">账户银行</span>
-				<input type="text" readonly="readonly" style="width: 60%; height: 28px; line-height: 32px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" value="{$bank}">
+			<span class="bank_span" style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 36px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">账户银行</span>
+			<input type="text" readonly="readonly" style="width: 60%; height: 28px; line-height: 32px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" value="{$bank}">
 		</p>
+
 		<p style="margin-top: 20px;">
-			<span class="bank_span" style="display: inline-block; width: 28%; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">开户行</span>
-			<input type="text" readonly="readonly" style="width: 60%; height: 28px; line-height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" value="{$opening_bank}">
+			<span style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 36px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">开户行</span>
+			<input type="text" readonly="readonly" placeholder="不能为空" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="opening_bank" value="{$opening_bank}">
 		</p>
+
 		<p style="margin-top: 20px;">
-			<span class="bank_span" style="display: inline-block; width: 28%; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">账户账号</span>
-			<input type="text" readonly="readonly" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" value="{$collection_account}">
+			<span style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 36px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">银行账号</span>
+			<input type="text" readonly="readonly" placeholder="不能为空" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="collection_account" value="{$collection_account}">
 		</p>
+
+		<p style="margin-top: 20px;">
+			<span style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 36px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">支付宝账号</span>
+			<input type="text" readonly="readonly" placeholder="不能为空" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="alipay_account" value="{$alipay_account}">
+		</p>
+
 	</div>
-	<p style="width: 86%; margin: 0 auto; color: #69313A; margin-top: 10px;">您已绑定银行账户</p>
+	<p style="width: 86%; margin: 0 auto; color: #69313A; margin-top: 10px;">您已绑定账户</p>
 	<a href="{:U('Home/Common/editAccount',array('uid'=>$uid))}" style="display: inline-block; text-align: center; line-height: 38px; height: 38px; color: #376410; font-weight: bold; background-image: url('__PUBLIC__/assets/img/common/bind_btn_bg.png'); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 44%; margin-left: 28%; font-size: 16px; border-radius: 2px; margin-top: 24px; letter-spacing: 1px;">修改账户</a>
-	<div class="content-bottom" style="width: 86%; margin: 0 auto; color: #7030A1; margin-top: 20px; border: 2px solid #E4905B; border-radius: 5px; padding-left: 10px; padding-bottom: 15px;">
-		<h5 style="font-size: 24px; color: #B3522C">温馨提示：</h5>
-		<ul style="list-style: none; font-size: 14px; margin-top: 10px; color: #69313A;">
-			<li style="margin-top: 5px;">1. 绑定的银行账户开户人需与实名认证姓名一致！</li>
-			<li style="margin-top: 5px;">2. 请<b style="color: red;">务必自己仔细确认</b>您的账号是否填写正确，<b style="color: red;">否则后果自负</b></li>
-			<li style="margin-top: 5px;">3. 如若有绑定问题，请咨询游戏客服</li>
-		</ul>
-	</div>
 </body>
 </html>

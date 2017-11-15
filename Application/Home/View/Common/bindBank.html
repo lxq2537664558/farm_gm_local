@@ -18,19 +18,19 @@
 <body style="width: 100%; height: 100%; margin: 0; padding: 0;">
 	<div class="title">
 		<h1 style="height: 42px; background-image: url('__PUBLIC__/assets/img/common/bind_title_bg.png'); background-size: 100% 100%; background-repeat: no-repeat; text-align: center; color: #69313A; font-weight: normal; font-size: 24px; padding-top: 5px; padding-bottom: 10px; line-height: 44px;">
-			<p style="font-family: hkhbt">银行账户绑定</p>
+			<p style="font-family: hkhbt">账户绑定</p>
 		</h1>
 	</div>
 	<div class="content-top" style="width: 86%; margin: 0 auto;">
 		<form action="{$url}" method="post">
 			<p style="margin-top: 20px;">
-				<span style="display: inline-block; width: 28%; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">开户姓名</span>
-				<input type="text" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="realname" value="{$realname}">
+				<span class="realname_span" style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 36px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">开户姓名</span>
+				<input class="realname_input" type="text" placeholder="不能为空" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="realname" value="{$realname}">
 			</p>
 			<p style="margin-top: 20px;">
-				<span class="bank_span" style="display: inline-block; width: 28%; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 32px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">账户银行</span>
-				<input class="bank_input" readonly="readonly" type="text" placeholder="选其他银行可自填" style="width: 30%; height: 26px; margin-left: -5px; text-indent: 2px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C; font-size: 12px;" name="bank" value="{$bank}">
-				<select class="select_bank" style="width: 32%; height: 28px;">
+				<span class="bank_span" style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 32px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">账户银行</span>
+				<input class="bank_input" readonly="readonly" type="text" placeholder="选其他银行可自填(不能为空)" style="width: 30%; height: 26px; margin-left: -5px; text-indent: 2px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C; font-size: 12px;" name="bank" value="{$bank}">
+				<select class="select_bank" style="width: 32%; height: 28px;" value="{$bank}">
 					<option value="请选择银行">请选择银行</option>
 					<option value="中国工商银行">中国工商银行</option>
 					<option value="中国农业银行">中国农业银行</option>
@@ -47,31 +47,24 @@
 			</p>
 
 			<p style="margin-top: 20px;">
-				<span class="bank_span" style="display: inline-block; width: 28%; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">开户行</span>
-				<input type="text" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="opening_bank" value="{$opening_bank}">
+				<span style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 36px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">开户行</span>
+				<input type="text" placeholder="不能为空" style="width: 60%; height: 28px; margin-left: -5px; te	xt-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="opening_bank" value="{$opening_bank}">
 			</p>
 
 			<p style="margin-top: 20px;">
-				<span class="bank_span" style="display: inline-block; width: 28%; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">账户账号</span>
-				<input type="text" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="collection_account" value="{$collection_account}">
+				<span style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 36px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">银行账号</span>
+				<input type="text" placeholder="不能为空" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="collection_account" value="{$collection_account}">
 			</p>
 
 			<p style="margin-top: 20px;">
-				<span class="alipay_account_span" style="display: inline-block; width: 28%; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">支付宝账号</span>
-				<input type="text" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="alipay_account" value="{$alipay_account}">
+				<span style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 34px; border-right: none; line-height: 36px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">支付宝账号</span>
+				<input type="text" placeholder="不能为空" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="alipay_account" value="{$alipay_account}">
 			</p>
-
+			<b style="display: block; font-size: 12px; color: red; width: 90%; margin-top: 10px;">请谨慎填写并自己仔细确认信息是否正确，否则后果自负</b>
 			<p style="text-align: center;">
 				<input type="submit" value="提交" style="height: 38px; color: #376410; font-weight: bold; background-image: url('__PUBLIC__/assets/img/common/bind_btn_bg.png'); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 44%; font-size: 16px; border-radius: 2px; margin-top: 24px; letter-spacing: 1px;">
 			</p>
 		</form>
-	</div>
-	<div class="content-bottom" style="width: 90%; margin: 0 auto; color: #7030A1; margin-top: 20px; border: 2px solid #E4905B; border-radius: 5px; padding-left: 10px; padding-bottom: 15px;">
-		<h5 style="font-size: 24px; color: #B3522C">温馨提示：</h5>
-		<ul style="list-style: none; font-size: 14px; margin-top: 10px; color: #69313A;">
-			<li style="margin-top: 5px;">1. 绑定的银行账户开户人需<b style="color: red;">与实名认证姓名</b>一致！</li>
-			<li style="margin-top: 5px;">2. 请<b style="color: red;">自己仔细确认</b>您的账号是否填写正确，否则后果自负</li>
-		</ul>
 	</div>
 </body>
 <script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
@@ -80,6 +73,7 @@
 		if($(this).val()=="请选择银行"){
 			$('.bank_input').attr('readonly',true);
 			$('.bank_input').val("");
+			$('.bank_span').css('lineHeight','34px');
 	        return false;
 	    }else if($(this).val()=="其他银行"){
 			$('.bank_input').attr('readonly',false);
@@ -88,8 +82,16 @@
 	    }else{
 	    	$('.bank_input').attr('readonly',true);
 	    	$('.bank_input').val($('.select_bank').val());
-	  		$('.bank_span').css('lineHeight','34px');
+	  		$('.bank_span').css('lineHeight','36px');
 	    }
 	});
+
+	if($('.bank_input').val()!="") {
+		$('.bank_span').css('lineHeight','36px');
+	}
+
+	if($('.realname_input').val()!=""){
+		$('.realname_span').css('lineHeight','38px');
+	}
 </script>
 </html>

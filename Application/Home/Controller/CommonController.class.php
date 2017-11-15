@@ -114,6 +114,7 @@ class CommonController extends Controller
             $bank = $post['bank'];
 
             if ((!$realname) || (!$collection_account) || (!$bank) || (!$post['opening_bank']) || !$post['alipay_account']) {
+                var_dump($post);die;
                 $this->error('所有认证信息均不能为空！');
                 die;
             }

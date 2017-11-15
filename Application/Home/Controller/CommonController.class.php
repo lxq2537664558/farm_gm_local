@@ -69,6 +69,7 @@ class CommonController extends Controller
         $this->assign('idcard', $check);//实名认证
         $this->assign('collection_account', $collection_account);//银行卡绑定
         $this->assign('bank', $user_info['bank']);
+        $this->assign('alipay_account', $user_info['alipay_account']);
         $this->display();
     }
 
@@ -113,9 +114,8 @@ class CommonController extends Controller
             $collection_account = $post['collection_account'];
             $bank = $post['bank'];
 
-            if ((!$realname) || (!$collection_account) || (!$bank) || (!$post['opening_bank']) || !$post['alipay_account']) {
-                var_dump($post);die;
-                $this->error('所有认证信息均不能为空！');
+            if ((!$realname) || (!$collection_account) || (!$bank) || (!$post['opening_bank'])) {
+                $this->error('姓名、账户银行、账户帐号、开户行均不能为空！');
                 die;
             }
 
@@ -130,21 +130,12 @@ class CommonController extends Controller
             $where['id'] = $uid;
             $user_exists = D('user')->where($where)->select();
             if (!$user_exists) {
-                $this->error('实名认证、开户姓名必须与支付宝真实姓名一致，请检查！');
+                $this->error('姓名与注册信息不一致，请检查！');
                 die;
             }
 
             $uWhere['id'] = $uid;
-            //ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号[0],以2088开头的16位纯数字组成;否则为1
-            $alipay_account_type = (strpos($post['alipay_account'],'2088') !== false)?0:1;//支付宝帐号类型的判断
-            $data = array(
-                'realname' => $realname,
-                'bank' => $bank,
-                'collection_account' => $collection_account,
-                'opening_bank'=>$post['opening_bank'],
-                'alipay_account'=>$post['alipay_account'],
-                'alipay_account_type'=>$alipay_account_type,
-            );
+            $data = array('realname' => $realname, 'bank' => $bank, 'collection_account' => $collection_account,'opening_bank'=>$post['opening_bank']);
             D('user')->where($uWhere)->save($data);
             $this->redirect(U('Home/Common/checkIDCard', array('uid' => $uid)));
         } else {
@@ -180,7 +171,6 @@ class CommonController extends Controller
         $this->assign('bank', $user_info['bank']);
         $this->assign('opening_bank', $user_info['opening_bank']);
         $this->assign('collection_account', $user_info['collection_account']);
-        $this->assign('alipay_account', $user_info['alipay_account']);
         $this->assign('uid', $uid);
 
         $this->display();
@@ -194,8 +184,6 @@ class CommonController extends Controller
         $post = I('post.');
         if ($post) {
             $where['id'] = $uid;
-            //ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号[0],以2088开头的16位纯数字组成;否则为1
-            $post['alipay_account_type'] = (strpos($post['alipay_account'],'2088') !== false)?0:1;//支付宝帐号类型的判断
             $res = D('user')->where($where)->save($post);
             if($res){
                 $this->redirect(U('Home/Common/checkIDCard'), array('uid' => $uid));
@@ -212,6 +200,7 @@ class CommonController extends Controller
             $this->assign('bank', $user_info['bank']);
             $this->assign('opening_bank', $user_info['opening_bank']);
             $this->assign('collection_account', $user_info['collection_account']);
+            $this->assign('alipay_account', $user_info['alipay_account']);
             $this->display('bindBank');
         }
     }
@@ -413,47 +402,4 @@ class CommonController extends Controller
 //        echo json_encode(array('state'=>1,'code'=>$code));
 //        die;
     }
-
-
-    //下载统计
-    public function farmDownload(){
-        $state = I('post.state',0);
-        if($state) {
-            if (ismobile()) {
-                $agent = strtolower($_SERVER['HTTP_USER_AGENT']);//全部变成小写字母
-
-                //分别进行判断
-                if (strpos($agent, 'iphone') || strpos($agent, 'ipad')) {
-//                $type = 'ios';
-                    $type = 1;
-//                    $download_url = 'http://dafuvip.com/vy6ZRz';
-                }
-
-                if (strpos($agent, 'android')) {
-//                $type = 'android';
-                    $type = 0;
-//                    $download_url = 'http://dafuvip.com/eUZfmq';
-                }
-
-                $data = array(
-                    'type' => $type,
-                    'time' => time(),
-                );
-                $res = D('download_page_number')->add($data);
-                $json_state = $res?1:0;
-                $json = array('state'=>$json_state);
-                echo json_encode($json);
-                die;
-            }
-        }
-
-        $this->display();
-    }
-    
-    public function showDownload(){
-        $downloads = D('download_page_number')->select();
-        $this->assign('downloads',$downloads);
-        $this->display();
-    }
-
 }

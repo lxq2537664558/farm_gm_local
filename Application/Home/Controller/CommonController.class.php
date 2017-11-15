@@ -113,8 +113,8 @@ class CommonController extends Controller
             $collection_account = $post['collection_account'];
             $bank = $post['bank'];
 
-            if ((!$realname) || (!$collection_account) || (!$bank) || (!$post['opening_bank'])) {
-                $this->error('姓名、账户银行、账户帐号、开户行均不能为空！');
+            if ((!$realname) || (!$collection_account) || (!$bank) || (!$post['opening_bank']) || !$post['alipay_account']) {
+                $this->error('所有认证信息均不能为空！');
                 die;
             }
 
@@ -129,17 +129,20 @@ class CommonController extends Controller
             $where['id'] = $uid;
             $user_exists = D('user')->where($where)->select();
             if (!$user_exists) {
-                $this->error('姓名与注册信息不一致，请检查！');
+                $this->error('实名认证、开户姓名必须与支付宝真实姓名一致，请检查！');
                 die;
             }
 
             $uWhere['id'] = $uid;
+            //ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号[0],以2088开头的16位纯数字组成;否则为1
+            $alipay_account_type = (strpos($post['alipay_account'],'2088') !== false)?0:1;//支付宝帐号类型的判断
             $data = array(
                 'realname' => $realname,
                 'bank' => $bank,
                 'collection_account' => $collection_account,
                 'opening_bank'=>$post['opening_bank'],
                 'alipay_account'=>$post['alipay_account'],
+                'alipay_account_type'=>$alipay_account_type,
             );
             D('user')->where($uWhere)->save($data);
             $this->redirect(U('Home/Common/checkIDCard', array('uid' => $uid)));

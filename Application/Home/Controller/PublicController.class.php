@@ -260,6 +260,9 @@ class PublicController extends BaseController {
 //                'yingfu'=>($http_request_data['money']-$http_request_data['money']*0.005)/10,
             //又改了需求，改成2%
                 'yingfu'=>($http_request_data['money']-$http_request_data['money']*0.02)/10,
+                //新增支付宝需求
+                'alipay_account'=>$user_info['alipay_account'],
+                'alipay_account_type'=>$user_info['alipay_account_type'],
             );
             $res2 = $this->insAndUpdate('withdrawals','',$tData);
             if(!$res2){
@@ -369,9 +372,8 @@ class PublicController extends BaseController {
         return $return;
     }
 
-
-    //管理员登录方法
-    public function adminLogin(){
+    //管理员登录方法-复制，方法名根据配置变动
+    public function loginAdmin(){
         $qrcode_pass = I('get.qrcode_pass','');
         $code = I('get.extension_code','');
 
@@ -396,6 +398,16 @@ class PublicController extends BaseController {
 
             $user_info = current($user_exists);
 
+            //记录用户行为
+            $rData = array(
+                'uid'=>$user_info['id'],
+                'ip'=>$_SERVER["REMOTE_ADDR"],
+                'time'=>time(),
+                'operation'=>0,//0:正常登录；1:登录错误；2:提现审核操作
+            );
+
+            $this->insAndUpdate('withdrawals_operation','',$rData);
+
             //写入SESSION
             $loginInfo = array(
                 'isAdmin' => 1,
@@ -403,7 +415,7 @@ class PublicController extends BaseController {
                 'username'=>$user_info['username'],
                 'group'=>$user_info['group'],
             );
-            session('AdminInfo',$loginInfo);
+            session(C('ADMIN_LOGIN_SESSION_FIELD'),$loginInfo);
 
             if($qrcode_pass){
                 $this->success('登录成功！',U('Home/User/addUser',array('extension_code'=>$code,'qrcode_pass'=>$qrcode_pass)));
@@ -412,14 +424,60 @@ class PublicController extends BaseController {
             }
         }else{
             $this->assign('url',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
-            $this->display();
+            $this->display('adminLogin');
         }
+    }
+    //管理员登录方法
+    public function adminLogin(){
+//        $qrcode_pass = I('get.qrcode_pass','');
+//        $code = I('get.extension_code','');
+//
+//        $post = I('post.');
+//        if($post){
+//            $username = trim($post['username']);
+//            $password = base64_encode($post['password']);
+//
+//            $where['_string']='BINARY username = "'.$username.'" AND password = "'.$password.'"';
+//
+//            if(!$username || !$password){
+//                $this->error('用户名或密码不能为空！');
+//                die;
+//            }
+//
+//            $user_exists = $this->getAll('admin',$where);
+//
+//            if(!$user_exists){
+//                $this->error('用户名或密码错误！');
+//                die;
+//            }
+//
+//            $user_info = current($user_exists);
+//
+//            //写入SESSION
+//            $loginInfo = array(
+//                'isAdmin' => 1,
+//                'uid'=>$user_info['id'],
+//                'username'=>$user_info['username'],
+//                'group'=>$user_info['group'],
+//            );
+//            session(C('ADMIN_LOGIN_SESSION_FIELD'),$loginInfo);
+//
+//            if($qrcode_pass){
+//                $this->success('登录成功！',U('Home/User/addUser',array('extension_code'=>$code,'qrcode_pass'=>$qrcode_pass)));
+//            }else{
+//                $this->success('登录成功！',U('Home/Index/index'));
+//            }
+//        }else{
+//            $this->assign('url',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
+//            $this->display();
+//        }
     }
 
     //管理员退出方法
     public function adminLogout(){
-        session('AdminInfo',NULL);
-        $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/adminLogin'));
+        session(C('ADMIN_LOGIN_SESSION_FIELD'),NULL);
+
+        $this->redirect(U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.C('ADMIN_LOGIN_ACTION_NAME')));
         die;
     }
 
@@ -504,40 +562,5 @@ class PublicController extends BaseController {
 
         return $return;
     }
-
-    //统计用户登录次数方法
-    public function setLoginTimes(){
-        $uid = I('get.uid',0);
-        if(!$uid){
-            $json = array('state'=>0,'msg'=>'参数不完整！');
-            echo json_encode($json);
-            die;
-        }
-
-        //查询次数
-        $dWhere['uid'] = $uid;
-        $data_exists = $this->getAll('login_times',$dWhere);
-        if($data_exists){
-            $where = $dWhere;
-            $times = $data_exists[0]['times']+1;
-        }else{
-            $times = 1;
-        }
-
-        $data = array(
-            'uid'=>$uid,
-            'times'=>$times,
-        );
-        $res = $this->insAndUpdate('login_times',$where,$data);
-
-        if($res['state']){
-            $json = array('state'=>1,'msg'=>'操作成功！');
-        }else{
-            $json = array('state'=>0,'msg'=>'系统错误，修改失败！');
-        }
-        echo json_encode($json);
-        die;
-    }
-
 
 }

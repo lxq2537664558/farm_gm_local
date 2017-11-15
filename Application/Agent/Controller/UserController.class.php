@@ -545,7 +545,7 @@ class UserController extends BaseController {
             $user_level = 1;//目前没有分，默认为1
             $user_level_string = array(0,'普通代理商','中级代理商','高级代理商');
             $cost_commission_point2 = array(0,0.08,0.09,0.1);//消费佣金比例
-            $service_commission_point2 = array(0,0.8,0.9,1);//手续费佣金比例----手续费暂时不分，为1的情况为0.8
+            $service_commission_point2 = array(0,0.6,0.9,1);//手续费佣金比例----手续费暂时不分，为1的情况为0.8
 
             //数据组装计算
             $users = array();

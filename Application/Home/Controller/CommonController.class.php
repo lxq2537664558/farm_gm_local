@@ -56,6 +56,7 @@ class CommonController extends Controller
         $user_info = D('user')->where($where)->select();
 
         $user_info = current($user_info);
+//        var_dump($user_info);
         $idcard = $user_info['idcard'];
         $realname = $user_info['realname'];
         $check = 0;
@@ -70,6 +71,7 @@ class CommonController extends Controller
         $this->assign('collection_account', $collection_account);//银行卡绑定
         $this->assign('bank', $user_info['bank']);
         $this->assign('alipay_account', $user_info['alipay_account']);
+//        var_dump($user_info);
         $this->display();
     }
 
@@ -114,8 +116,8 @@ class CommonController extends Controller
             $collection_account = $post['collection_account'];
             $bank = $post['bank'];
 
-            if ((!$realname) || (!$collection_account) || (!$bank) || (!$post['opening_bank'])) {
-                $this->error('姓名、账户银行、账户帐号、开户行均不能为空！');
+            if ((!$realname) || (!$collection_account) || (!$bank) || (!$post['opening_bank']) || (!$post['alipay_account'])) {
+                $this->error('认证信息均不能为空！');
                 die;
             }
 
@@ -134,8 +136,17 @@ class CommonController extends Controller
                 die;
             }
 
+            $alipay_account = $post['alipay_account'];
+            $alipay_account_type = (strpos($post['alipay_account'],'2088') !== false)?0:1;
             $uWhere['id'] = $uid;
-            $data = array('realname' => $realname, 'bank' => $bank, 'collection_account' => $collection_account,'opening_bank'=>$post['opening_bank']);
+            $data = array(
+                'realname' => $realname,
+                'bank' => $bank,
+                'collection_account' => $collection_account,
+                'opening_bank'=>$post['opening_bank'],
+                'alipay_account'=>$alipay_account,
+                'alipay_account_type'=>$alipay_account_type,
+                );
             D('user')->where($uWhere)->save($data);
             $this->redirect(U('Home/Common/checkIDCard', array('uid' => $uid)));
         } else {

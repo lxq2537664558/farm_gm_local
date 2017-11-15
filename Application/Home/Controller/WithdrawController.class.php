@@ -3,6 +3,12 @@ namespace Home\Controller;
 use Think\Controller;
 use Common\Controller\BaseController;
 class WithdrawController extends BaseController {
+//    public function __construct()
+//    {
+//        parent::__construct();
+//        $this->redirect('Home/Index/index');
+//        die;
+//    }
 
     //提现管理
     public function withdrawManagement(){
@@ -34,20 +40,6 @@ class WithdrawController extends BaseController {
         $post = I('post.');
         $ids = $post['id_arr'];//批量修改的id
         $state = $post['state'];//状态
-        $password = $post['password'];//支付密码
-
-        //查询支付密码
-        //获取用户信息
-        $user_info = 
-        $uid = 
-        $fWhere['password'] = $password;
-        $fWhere['uid'] = $uid;
-        $flag = $this->getAll('withdrawals_pass',$fWhere);
-        if(!$flag) {
-            $json = array('state' => 0, 'msg' => '操作失败，支付密码不正确！');
-            echo json_encode($json);
-            die;
-        }
 
         //组装SQL
         $display_order = $ids;

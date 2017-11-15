@@ -69,6 +69,7 @@ class CommonController extends Controller
         $this->assign('idcard', $check);//实名认证
         $this->assign('collection_account', $collection_account);//银行卡绑定
         $this->assign('bank', $user_info['bank']);
+        $this->assign('alipay_account',$user_info['alipay_account']);
         $this->display();
     }
 

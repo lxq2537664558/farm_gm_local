@@ -69,7 +69,6 @@ class CommonController extends Controller
         $this->assign('idcard', $check);//实名认证
         $this->assign('collection_account', $collection_account);//银行卡绑定
         $this->assign('bank', $user_info['bank']);
-        $this->assign('alipay_account', $user_info['alipay_account']);
         $this->display();
     }
 
@@ -194,6 +193,8 @@ class CommonController extends Controller
         $post = I('post.');
         if ($post) {
             $where['id'] = $uid;
+            //ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号[0],以2088开头的16位纯数字组成;否则为1
+            $post['alipay_account_type'] = (strpos($post['alipay_account'],'2088') !== false)?0:1;//支付宝帐号类型的判断
             $res = D('user')->where($where)->save($post);
             if($res){
                 $this->redirect(U('Home/Common/checkIDCard'), array('uid' => $uid));

@@ -172,6 +172,7 @@ class CommonController extends Controller
         $this->assign('opening_bank', $user_info['opening_bank']);
         $this->assign('collection_account', $user_info['collection_account']);
         $this->assign('uid', $uid);
+        $this->assign('alipay_account', $user_info['alipay_account']);
 
         $this->display();
     }

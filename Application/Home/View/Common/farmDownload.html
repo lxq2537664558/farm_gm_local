@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>Title</title>
+    <style>
+    	*{
+    		margin: 0;
+    		padding: 0;
+    	}
+    </style>
+</head>
+<body style="width: 100%; background: #8EBE10">
+	<div style="position: relative;">
+		<img src="__PUBLIC__/assets/img/common/game_download_bg.jpg" alt="" style="width: 100%;">
+		<button style="position: absolute; width: 30%; background: white; opacity: 0; -moz-opacity: 0; -khtml-opacity: 0; filter:alpha(opacity=0); background:transparent; border: none; top: 55%; left: 37%; height: 55px; outline: none;"></button>
+	</div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js" ></script>
+<script>
+	$('button').click(function(){
+		$.ajax({
+				url: ipaddress+"index.php?m=Home&c=Common&a=farmDownload",
+				type: "POST",
+				dataType: "json",
+				data:{state: 1},
+				success: function(data){
+					if(data.state==1){
+						window.location.href = "http://www.jiyu-keji.com/farm/index.php?m=Home&c=Download&a=downloadGame";
+					}
+				}
+			})
+	})
+</script>
+</html>

@@ -28,7 +28,7 @@
 				<input class="realname_input" type="text" placeholder="不能为空" style="width: 60%; height: 28px; margin-left: -5px; text-indent: 5px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C;" name="realname" value="{$realname}">
 			</p>
 			<p style="margin-top: 20px;">
-				<span class="bank_span" style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 32px; border-right: none; line-height: 34px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">账户银行</span>
+				<span class="bank_span" style="display: inline-block; width: 28%; font-size: 12px; border: 1px solid darkgray; text-align: center; color: rgb(247,226,168); height: 32px; border-right: none; line-height: 36px; background: #B55A5C; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">账户银行</span>
 				<input class="bank_input" readonly="readonly" type="text" placeholder="选其他银行可自填(不能为空)" style="width: 30%; height: 26px; margin-left: -5px; text-indent: 2px; padding-top: 4px; background: #F7E2A8; border: none; border: 2px solid #D9C38F; border-left: 2px solid #D37B7C; font-size: 12px;" name="bank" value="{$bank}">
 				<select class="select_bank" style="width: 32%; height: 28px;" value="{$bank}">
 					<option value="请选择银行">请选择银行</option>
@@ -73,12 +73,12 @@
 		if($(this).val()=="请选择银行"){
 			$('.bank_input').attr('readonly',true);
 			$('.bank_input').val("");
-			$('.bank_span').css('lineHeight','34px');
+			$('.bank_span').css('lineHeight','36px');
 	        return false;
 	    }else if($(this).val()=="其他银行"){
 			$('.bank_input').attr('readonly',false);
 			$('.bank_input').val("");
-			$('.bank_span').css('lineHeight','34px');
+			$('.bank_span').css('lineHeight','36px');
 	    }else{
 	    	$('.bank_input').attr('readonly',true);
 	    	$('.bank_input').val($('.select_bank').val());

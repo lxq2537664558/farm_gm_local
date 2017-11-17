@@ -136,8 +136,10 @@ class CommonController extends Controller
                 die;
             }
 
-            $alipay_account = $post['alipay_account'];
-            $alipay_account_type = (strpos($post['alipay_account'],'2088') !== false)?0:1;
+            $alipay_account = I('post.alipay_account','trim');
+            $alipay_account = str_replace(' ','',$alipay_account);
+            $alipay_account = str_replace(' ','',$alipay_account);
+            $alipay_account_type = (strpos($alipay_account,'2088') !== false)?0:1;
             $uWhere['id'] = $uid;
             $data = array(
                 'realname' => $realname,
@@ -196,6 +198,13 @@ class CommonController extends Controller
         $post = I('post.');
         if ($post) {
             $where['id'] = $uid;
+
+            $alipay_account = I('post.alipay_account','trim');
+            $alipay_account = str_replace(' ','',$alipay_account);
+            $alipay_account = str_replace(' ','',$alipay_account);
+            $alipay_account_type = (strpos($alipay_account,'2088') !== false)?0:1;
+            $post['alipay_account'] = $alipay_account;
+            $post['alipay_account_type'] = $alipay_account_type;
             $res = D('user')->where($where)->save($post);
             if($res){
                 $this->redirect(U('Home/Common/checkIDCard'), array('uid' => $uid));
@@ -413,5 +422,47 @@ class CommonController extends Controller
 
 //        echo json_encode(array('state'=>1,'code'=>$code));
 //        die;
+    }
+    
+    //展示手机各端访问统计
+    public function showDownload(){
+        $downloads = D('download_page_number')->where()->select();
+        $this->assign('downloads',$downloads);
+        $this->display();
+    }
+
+    //下载统计
+    public function farmDownload(){
+        $state = I('post.state',0);
+        if($state) {
+            if (ismobile()) {
+                $agent = strtolower($_SERVER['HTTP_USER_AGENT']);//全部变成小写字母
+
+                //分别进行判断
+                if (strpos($agent, 'iphone') || strpos($agent, 'ipad')) {
+                    //                $type = 'ios';
+                    $type = 1;
+                    //                    $download_url = 'http://dafuvip.com/vy6ZRz';
+                }
+
+                if (strpos($agent, 'android')) {
+                    //                $type = 'android';
+                    $type = 0;
+                    //                    $download_url = 'http://dafuvip.com/eUZfmq';
+                }
+
+                $data = array(
+                    'type' => $type,
+                    'time' => time(),
+                );
+                $res = D('download_page_number')->add($data);
+                $json_state = $res?1:0;
+                $json = array('state'=>$json_state);
+                echo json_encode($json);
+                die;
+            }
+        }
+
+        $this->display();
     }
 }

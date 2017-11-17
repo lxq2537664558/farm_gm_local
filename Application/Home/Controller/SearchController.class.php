@@ -113,6 +113,8 @@ class SearchController extends BaseController {
             $egt?$where['money'] = array('egt',$egt):'';
             $elt?$where['money'] = array('elt',$elt):'';
         }
+//        $where['state'] = array('neq',3);
+//        $where['hide'] = 1;
         $json = $this->searchAll(1,$where);
         
         echo json_encode($json);

@@ -7,7 +7,7 @@ function checktable(ispagesize,issearch,isfield,isegt,iselt){
             "search" : issearch,
             "table" : "withdrawals",
             "page" : page,
-            "field" : isfield,
+            "field" : accurate_field,
             "egt" : isegt,
             "elt" : iselt
          },

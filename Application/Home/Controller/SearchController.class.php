@@ -113,6 +113,9 @@ class SearchController extends BaseController {
             $egt?$where['money'] = array('egt',$egt):'';
             $elt?$where['money'] = array('elt',$elt):'';
         }
+//        $where['alipay_account'] = array('eq','');
+//        $where['state'] = array('neq',3);
+//        $where['hide'] = 1;
         $json = $this->searchAll(1,$where);
         
         echo json_encode($json);
@@ -137,6 +140,7 @@ class SearchController extends BaseController {
 //        $json = $this->getAll('withdrawals','','id','','id asc',$pager);
 //        $where = array('state'=>array('in',array(0,1)));
         $where = array('state'=>0);//现在修改为只要审核中的
+//        $where['alipay_account'] = array('eq','');
         if($elt && $egt){
             $where[] = 'money >= '.$egt.' and money <= '.$elt;
         }else{

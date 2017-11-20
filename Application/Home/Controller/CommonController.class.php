@@ -81,8 +81,8 @@ class CommonController extends Controller
 
         $post = I('post.');
         if ($post) {
-            $realname = $post['realname'];
-            $idcard = $post['idcard'];
+            $realname = trim($post['realname']);
+            $idcard = trim($post['idcard']);
             if (!$realname || !$idcard) {
                 $this->error('姓名或身份证号不能为空！');
                 die;

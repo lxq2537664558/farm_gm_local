@@ -76,5 +76,6 @@ return array(
 
     'ADMIN_LOGIN_ACTION_NAME'=>'loginAdmin',
     'ADMIN_LOGIN_SESSION_FIELD'=>'admin_login_session_field',
-     'SERVER_IP'=>'172.168.1.49:9999',
+    'INTERFACE_IP'=>'http://172.168.1.54/farm_gm_local',
+    'SERVER_IP'=>'172.168.1.49:9999',
 );

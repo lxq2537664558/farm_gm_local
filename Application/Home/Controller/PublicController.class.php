@@ -427,51 +427,6 @@ class PublicController extends BaseController {
             $this->display('adminLogin');
         }
     }
-    //管理员登录方法
-    public function adminLogin(){
-//        $qrcode_pass = I('get.qrcode_pass','');
-//        $code = I('get.extension_code','');
-//
-//        $post = I('post.');
-//        if($post){
-//            $username = trim($post['username']);
-//            $password = base64_encode($post['password']);
-//
-//            $where['_string']='BINARY username = "'.$username.'" AND password = "'.$password.'"';
-//
-//            if(!$username || !$password){
-//                $this->error('用户名或密码不能为空！');
-//                die;
-//            }
-//
-//            $user_exists = $this->getAll('admin',$where);
-//
-//            if(!$user_exists){
-//                $this->error('用户名或密码错误！');
-//                die;
-//            }
-//
-//            $user_info = current($user_exists);
-//
-//            //写入SESSION
-//            $loginInfo = array(
-//                'isAdmin' => 1,
-//                'uid'=>$user_info['id'],
-//                'username'=>$user_info['username'],
-//                'group'=>$user_info['group'],
-//            );
-//            session(C('ADMIN_LOGIN_SESSION_FIELD'),$loginInfo);
-//
-//            if($qrcode_pass){
-//                $this->success('登录成功！',U('Home/User/addUser',array('extension_code'=>$code,'qrcode_pass'=>$qrcode_pass)));
-//            }else{
-//                $this->success('登录成功！',U('Home/Index/index'));
-//            }
-//        }else{
-//            $this->assign('url',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
-//            $this->display();
-//        }
-    }
 
     //管理员退出方法
     public function adminLogout(){

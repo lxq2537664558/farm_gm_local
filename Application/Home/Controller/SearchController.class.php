@@ -116,9 +116,7 @@ class SearchController extends BaseController {
             $search = I('post.search','','trim');//用户输入信息
             $where[$accurate] = $search;
         }
-//        $where['alipay_account'] = array('eq','');
-//        $where['state'] = array('neq',3);
-//        $where['hide'] = 1;
+
         $json = $this->searchAll(1,$where);
         
         echo json_encode($json);

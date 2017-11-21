@@ -24,8 +24,15 @@ function checktable(ispagesize,issearch,isfield,isegt,iselt){
                 console.log(data);
                 for(var i = 0; i<data.data.length; i++){
                     // $('#mytable tbody').append(`<tr><td><input class="selected" type="checkbox" /></td><td>${data.data[i].uid}</td><td><span>${data.data[i].id}<i style="display: none">a</i></span></td><td>${data.data[i].money}</td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].transfer_type}</td><td>${data.data[i].remarks}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
-                    $('#mytable tbody').append(`<tr><td><input class="selected" type="checkbox" /></td><td>${data.data[i].uid}</td><td><span>${data.data[i].id}<i style="display: none">a</i></span></td><td>${data.data[i].money}</td><td>${data.data[i].diff}</td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
+                    $('#mytable tbody').append(`<tr><td><input class="selected" type="checkbox" /></td><td>${data.data[i].uid}</td><td><span>${data.data[i].id}<i style="display: none">a</i></span></td><td>${data.data[i].money}</td><td><span>${data.data[i].percent}</span><i style="display: none">${data.data[i].class}</i></td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
                 }
+
+                for(var i = 0; i < $('#mytable tbody tr').length; i++){
+                    if($('#mytable tbody tr').eq(i).find('td:nth-child(5) i').text()=="1"){
+                        $('#mytable tbody tr').eq(i).find('td:nth-child(2)').css({'color' : 'red', 'font-weight' : 'bold'});
+                    }
+                }
+
                 $('#search').show();
                 $('#left_page').show();
                 $('#right_page').show();

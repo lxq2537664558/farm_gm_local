@@ -34,7 +34,6 @@ class SearchController extends BaseController {
             }
         }
 
-//        var_dump($search,$where);die;
         //其他条件
         if($condition){
             //拼接其他方法发送过来的条件
@@ -61,8 +60,6 @@ class SearchController extends BaseController {
 
         //数据查询
         $results = $this->getAll($table,$where,'id','','id asc',$pager);
-//        var_dump($results);die;
-//        echo D($table)->_sql();die;
 
         //字段翻译的映射
         $translate_fields = C('TRANSLATE_FIELDS');
@@ -105,6 +102,7 @@ class SearchController extends BaseController {
     public function withdrawManagement(){
         $egt = I("post.egt",'');
         $elt = I("post.elt",'');
+        $accurate = I('post.accurate_field','');//精确搜索
 
         $where = '';
         if($elt && $egt){
@@ -113,9 +111,12 @@ class SearchController extends BaseController {
             $egt?$where['money'] = array('egt',$egt):'';
             $elt?$where['money'] = array('elt',$elt):'';
         }
-//        $where['alipay_account'] = array('eq','');
-//        $where['state'] = array('neq',3);
-//        $where['hide'] = 1;
+
+        if($accurate){
+            $search = I('post.search','','trim');//用户输入信息
+            $where[$accurate] = $search;
+        }
+
         $json = $this->searchAll(1,$where);
         
         echo json_encode($json);

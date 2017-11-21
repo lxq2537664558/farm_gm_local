@@ -1,8 +1,9 @@
-function checktable(issearch){
+function checktable(ispagesize,issearch){
     $.ajax({
          url:ipaddress+"index.php?m=Home&c=User&a=gameData",
          data : {
             "page_name" : "channelManagement",
+            "pageSize" :  ispagesize,
             "search" : issearch,
             "table" : "user",
             "page" : page
@@ -16,6 +17,7 @@ function checktable(issearch){
             $('#mytable tbody').empty();
             $('#total_page').html(`当前<b id="current_page">${data.page.page}</b>/<b id="largest_page">${data.page.totalPage}</b>页`);
             if(data.data){
+                console.log(data.data);
                 for(var i = 0; i<data.data.length; i++){
                     $('#mytable tbody').append(`
                         <tr>
@@ -25,6 +27,9 @@ function checktable(issearch){
                             <td>${data.data[i].treasure}</td>
                             <td>${data.data[i].recharge}</td>
                             <td>${data.data[i].withDraw}</td>
+
+                            <td>${data.data[i].diff}</td>
+
                             <td>${data.data[i].cost}</td>
                             <td>${data.data[i].difference}</td>
                             <td>${data.data[i].depotLevel}</td>
@@ -57,6 +62,15 @@ function checktable(issearch){
 
 var page = 1;
 checktable(null);
+
+$('.setting_display_num_btn').click(function(){
+  if(isNaN($('.setting_display_num_input').val())){
+      alert("不是一个数字");
+  }else{
+      checktable($('.setting_display_num_input').val(),$('#search input').val());
+  }
+})
+
 // 下一页
 if($('#largest_page').text()==1){
     $('#next').attr('disabled',true).css('background','gray');

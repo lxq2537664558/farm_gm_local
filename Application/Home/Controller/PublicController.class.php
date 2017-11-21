@@ -249,6 +249,11 @@ class PublicController extends BaseController {
             }
             //github 111111111
             //存到提现表
+            $recharge_total = $http_request_data['recharge_total'];//充值总额
+            $w_sql = 'select uid,sum(yingfu) as sum from withdrawals where uid = '.$uid.' and state = 3';
+            $w_result_temp = D('withdrawals')->query($w_sql);
+            $withdraw_total = $w_result_temp[0]['sum']?$w_result_temp[0]['sum']:0;//提现总额
+            $diff = round($recharge_total/10-$withdraw_total,2);//差额
             $tData = array(
                 'uid'=>$uid,
                 'money'=>$http_request_data['money']/10,
@@ -263,6 +268,7 @@ class PublicController extends BaseController {
                 //新增支付宝需求
                 'alipay_account'=>$user_info['alipay_account'],
                 'alipay_account_type'=>$user_info['alipay_account_type'],
+                'diff'=>$diff,
             );
             $res2 = $this->insAndUpdate('withdrawals','',$tData);
             if(!$res2){

@@ -590,7 +590,11 @@ class UserController extends BaseController {
             $user_level = 1;//目前没有分，默认为1
             $user_level_string = array(0,'普通代理商','中级代理商','高级代理商');
             $cost_commission_point2 = array(0,0.08,0.09,0.1);//消费佣金比例
-            $service_commission_point2 = array(0,0.6,0.9,1);//手续费佣金比例----手续费暂时不分，为1的情况为0.8
+            if(in_array($week,array(1,2,3,4,5))){
+                $service_commission_point2 = array(0,0.8,0.9,1);//手续费佣金比例----手续费暂时不分，为1的情况为0.8
+            }else {
+                $service_commission_point2 = array(0, 0.6, 0.9, 1);//手续费佣金比例----手续费暂时不分，为1的情况为0.8
+            }
 
             //数据组装计算
             $users = array();
@@ -672,51 +676,58 @@ class UserController extends BaseController {
 
     //获取用户游戏数据
     public function gameData(){
+        $pageSize = I('post.pageSize');
+        $pageSize = $pageSize?$pageSize:20;
+        $post = I('post.');
         $page = I('post.page',1);
-        $pager = array('page' => $page, 'pageSize' => 20);
+        $pager = array('page' => $page, 'pageSize' => $pageSize);
         $search = I('post.search','','trim');
 
-        if($search){
+        if($post) {
             //用户分页列表
-//            $where = $uid?array('id'=>$uid):'';
-            $where['id'] = $search;
-            $users = $this->getAll('user',$where, '', '', '', $pager);
-            $user_ids = $this->sortInfoById($users['data'],'id','id');
-            $ids_string = join('_',array_values($user_ids));
+            //获取所有用户
+            $search ? $where['id'] = $search : '';
+            $users = $this->getAll('user', $where, '', '', 'id asc', $pager);
 
-            $url = 'http://'.C('SERVER_IP').'/GetUserGameData';
+            $user_ids = $this->sortInfoById($users['data'], 'id', 'id');
+            $ids_string = join('_', array_values($user_ids));
 
-            $params = 'showIds='.$ids_string;
+            $url = 'http://' . C('SERVER_IP') . '/GetUserGameData';
+
+            $params = 'showIds=' . $ids_string;
 //            var_dump($params);
             $params = $this->publicEncrypt($params);
-            $url .= '?data='.$params;
+            $url .= '?data=' . $params;
 
 //            $url = 'http://'.C('SERVER_IP').'/GetUserGameData?showIds=64_67';//测试数据
             $lists = $this->getHTTPData($url);
 //            var_dump($lists);die;
             $http_data = $lists['data'];
-            if($http_data) {
+            if ($http_data) {
                 $sort_data = $this->sortInfoById($http_data, 'showId');
 
                 //获取用户的提现总额
-                $w_sql = 'select id,sum(yingfu) as sum from withdrawals where uid in ('.join(',',$user_ids).') and state = 3';
-                $w_result = D('withdrawals')->query($w_sql);
-//                var_dump($w_sql,$w_result);
+                $w_sql = 'select uid,sum(yingfu) as sum from withdrawals where uid in (' . join(',', $user_ids) . ') and state = 3 group by uid';
+                $w_result_temp = D('withdrawals')->query($w_sql);
+                $w_result = $this->sortInfoById($w_result_temp,'uid');
+//                var_dump($w_sql,$w_result);die;
 
                 foreach ($users['data'] as $k => $v) {
-//                $combine[$k] = array(
+                    $recharge_total = round($sort_data[$v['id']]['recharge']/10, 2);//充值总额
+                    $withdraw_total = $w_result[$v['id']]['sum'] ? round($w_result[$v['id']]['sum'],2) : 0;//提现总额
+                    $diff_total = round($recharge_total-$withdraw_total,0);//差值=充值-提现
                     $combine[$v['id']] = array(
                         'uid' => $v['id'],
                         'username' => $sort_data[$v['id']]['userName'],
                         'diamond' => floor($sort_data[$v['id']]['diamond']),
                         'treasure' => $sort_data[$v['id']]['treasure'],
-                        'recharge' => round($sort_data[$v['id']]['recharge'],2),//充值总额
-                        'cost' => round($sort_data[$v['id']]['cost'],2),//下线总额cost
+                        'recharge' => $recharge_total,//充值总额
+                        'cost' => round($sort_data[$v['id']]['cost'], 2),//下线总额cost
                         'difference' => $sort_data[$v['id']]['recharge'] - $sort_data[$v['id']]['cost'],//上下差值
                         'depotLevel' => $sort_data[$v['id']]['depotLevel'],
-                        'stealTotalValue' => round($sort_data[$v['id']]['stealTotalValue'],2),
-                        'beStolenTotalValue' => round($sort_data[$v['id']]['beStolenTotalValue'],2),
-                        'steal_difference' => round($sort_data[$v['id']]['stealTotalValue'] - $sort_data[$v['id']]['beStolenTotalValue'],2),//偷取差值
+                        'stealTotalValue' => round($sort_data[$v['id']]['stealTotalValue'], 2),
+                        'beStolenTotalValue' => round($sort_data[$v['id']]['beStolenTotalValue'], 2),
+                        'steal_difference' => round($sort_data[$v['id']]['stealTotalValue'] - $sort_data[$v['id']]['beStolenTotalValue'], 2),//偷取差值
                         'dogNum' => $sort_data[$v['id']]['dogNum'],
                         'dogFoodNum' => $sort_data[$v['id']]['dogFoodNum'],
                         'speedUpItemNum' => $sort_data[$v['id']]['speedUpItemNum'],
@@ -725,7 +736,8 @@ class UserController extends BaseController {
                         'fishs' => join(',', $sort_data[$v['id']]['fishs']),
                         'forests' => join(',', $sort_data[$v['id']]['forests']),
                         'mines' => join(',', $sort_data[$v['id']]['mines']),
-                        'withDraw'=>$w_result[0]['sum'],//提现总额
+                        'withDraw' => $withdraw_total,//提现总额
+                        'diff'=>$diff_total,//差值=充值-提现
                     );
 
                     foreach ($combine[$k] as $key => $val) {
@@ -734,18 +746,22 @@ class UserController extends BaseController {
                         }
                     }
                 }
-                ksort($combine);
+
+//                $sort_data = $this->sortInfoById($combine,'diff');
+//                ksort($sort_data);
+                array_multisort(array_column($combine,'withDraw'),SORT_DESC,$combine);
                 $combine = array_values($combine);
-            }else{
+            } else {
                 $combine = NULL;
             }
 
 //            var_dump($http_data,$sort_data);die;
 
-            $json = array('data'=>$combine,'page'=>$users['page']);
+            $json = array('data' => $combine, 'page' => $users['page']);
             echo json_encode($json);
             die;
         }
+
 
         $this->display();
     }

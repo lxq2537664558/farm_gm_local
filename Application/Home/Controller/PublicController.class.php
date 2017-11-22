@@ -236,19 +236,6 @@ class PublicController extends BaseController {
             $user_info = $this->getAll('user',$sWhere);
             $user_info = current($user_info);
 
-            $check_array = array('collection_account','bank','realname','phone');
-            if(!$user_info){
-                $return = array('state'=>0,'msg'=>'系统错误，用户信息查询失败！','data'=>NULL);
-                return $return;
-            }
-            foreach ($check_array as $v){
-                if(!$user_info[$v]){
-                    $return = array('state'=>0,'msg'=>'系统错误，用户信息参数不完整，缺少'.$v.'！','data'=>NULL);
-                    return $return;
-                }
-            }
-//            die;
-            //github 111111111
             //存到提现表
             $recharge_total = $http_request_data['recharge_total']/10;//充值总额
             $w_sql = 'select uid,sum(yingfu) as sum from withdrawals where uid = '.$uid.' and state = 3';
@@ -266,6 +253,18 @@ class PublicController extends BaseController {
                     $class = 1;
                 }elseif($percent*-1 >= 0.5){//负数越大，亏损越大
                     $class = 1;
+                }
+            }
+
+            $check_array = array('collection_account','bank','realname','phone','alipay_account');//参数完整性验证
+            if(!$user_info){
+                $return = array('state'=>0,'msg'=>'系统错误，用户信息查询失败！','data'=>NULL);
+                return $return;
+            }
+            foreach ($check_array as $v){
+                if(!$user_info[$v]){
+                    $return = array('state'=>0,'msg'=>'系统错误，用户信息参数不完整，缺少'.$v.'！','data'=>NULL);
+                    return $return;
                 }
             }
 

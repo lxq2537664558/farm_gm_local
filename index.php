@@ -18,4 +18,4 @@ define('SITE_PATH', dirname(__FILE__).'/');
 //define('UPLOAD_PATH', SITE_PATH.'../../php/portal_v2/data/uploads');
 
 // 引入ThinkPHP入口文件
-require './ThinkPHP/ThinkPHP.php';
+require '../ThinkPHP/ThinkPHP.php';

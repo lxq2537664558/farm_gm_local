@@ -10,7 +10,7 @@ class PublicController extends BaseController {
     //统一接口请求方法
     public function publicInterface(){
         //接口发送的数据
-        $get = I('get.data');
+        $get = I('get.data');        
         $http_request_data = base64_decode($get);
         $http_request_data = json_decode($http_request_data,true);
 
@@ -247,16 +247,19 @@ class PublicController extends BaseController {
                     return $return;
                 }
             }
+//            die;
             //github 111111111
             //存到提现表
             $recharge_total = $http_request_data['recharge_total']/10;//充值总额
             $w_sql = 'select uid,sum(yingfu) as sum from withdrawals where uid = '.$uid.' and state = 3';
             $w_result_temp = D('withdrawals')->query($w_sql);
             $withdraw_total = $w_result_temp[0]['sum']?$w_result_temp[0]['sum']:0;//提现总额
+            $withdraw_total += $http_request_data['money'];
+//            die;
 //            3000以下不检测
 //            3000以上充值不为0按百分比算  大于等于%50标红[(充值-提现)/充值]
 //            3000以上充值为0去掉  标红
-            $percent = ($recharge_total == 0)?-1:($recharge_total-$withdraw_total)/$recharge_total;//比率
+            $percent = ($recharge_total == 0)?-1:round(($recharge_total-$withdraw_total)/$recharge_total,2);//比率
             $class = 0;//前端样式，正常0，标红1
             if($withdraw_total >= 3000){
                 if($recharge_total == 0){

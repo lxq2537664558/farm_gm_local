@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>提现记录</h2>
+<strong>共{:count($withdraws)}条</strong>
+<table border="1" cellspacing="0">
+    <tr>
+        <foreach name="header1" item="h1">
+            <td>{$h1}</td>
+        </foreach>
+        <td>mark</td>
+        <td>time</td>
+    </tr>
+    <foreach name="withdraws" item="w" key="wk">
+        <tr>
+            <foreach name="header1" item="h1">
+                <td>{$w[$h1]}</td>
+            </foreach>
+            <td <if condition="$remark_w[$wk] eq true">style="color:green"</if>>{$remark_w[$wk]}</td>
+            <td>{:date('Y-m-d H:i:s',$w['time'])}</td>
+        </tr>
+    </foreach>
+</table>
+
+<h2>金币记录</h2>
+<strong>共{:count($gold_records)}条</strong>
+<table border="1" cellspacing="0">
+    <tr>
+        <foreach name="header2" item="h2">
+            <td>{$h2}</td>
+        </foreach>
+        <td>mark</td>
+        <td>time</td>
+        <td>操作</td>
+    </tr>
+    <foreach name="gold_records" item="gr" key="gk">
+        <tr>
+            <foreach name="header2" item="h2">
+                <td>{$gr[$h2]}</td>
+            </foreach>
+            <td <if condition="$remark_g[$gr['id']] eq true">style="color:green"</if>>{$remark_g[$gr['id']]}</td>
+            <td>{:date('Y-m-d H:i:s',$gr['time'])}</td>
+            <td>
+                <if condition="$remark_g[$gr['id']] eq false">
+                    <a href="{:U('Home/CheckMoney/addToDatabase',array('gid'=>$gr['id']))}">添加到数据库</a>
+                </if>
+            </td>
+        </tr>
+    </foreach>
+</table>
+
+<h2>用户信息</h2>
+<table border="1" cellspacing="0">
+    <tr>
+        <td>uid</td>
+        <td>phone</td>
+        <td>collection_account</td>
+        <td>bank</td>
+        <td>realname</td>
+
+    </tr>
+    <tr>
+        <td>{$user_info['id']}</td>
+        <td>{$user_info['phone']}</td>
+        <td>{$user_info['collection_account']}</td>
+        <td>{$user_info['bank']}</td>
+        <td>{$user_info['realname']}</td>
+    </tr>
+</table>
+</body>
+</html>

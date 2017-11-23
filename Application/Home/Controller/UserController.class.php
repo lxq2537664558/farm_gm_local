@@ -679,7 +679,7 @@ class UserController extends BaseController {
         $pageSize = I('post.pageSize');
         $pageSize = $pageSize?$pageSize:20;
         $post = I('post.');
-        $page = I('post.page',1);
+        $page = $post['page']?$post['page']:1;
         $pager = array('page' => $page, 'pageSize' => $pageSize);
         $search = I('post.search','','trim');
 
@@ -707,7 +707,7 @@ class UserController extends BaseController {
                 $sort_data = $this->sortInfoById($http_data, 'showId');
 
                 //获取用户的提现总额
-                $w_sql = 'select uid,sum(yingfu) as sum from withdrawals where uid in (' . join(',', $user_ids) . ') and state = 3 group by uid';
+                $w_sql = 'select uid,sum(yingfu) as sum from withdrawals where uid in (' . join(',', $user_ids) . ') group by uid';
                 $w_result_temp = D('withdrawals')->query($w_sql);
                 $w_result = $this->sortInfoById($w_result_temp,'uid');
 //                var_dump($w_sql,$w_result);die;

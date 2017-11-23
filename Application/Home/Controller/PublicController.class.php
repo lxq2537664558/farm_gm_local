@@ -206,8 +206,14 @@ class PublicController extends BaseController {
 
     //请求提现，记录结果
     public function cashRegister($http_request_data){
-        $type = $http_request_data['type'];
+//        $return = array('state'=>0,'msg'=>'系统错误，金币记录写入失败！','data'=>NULL);
+//        return $return;
+
+        $type = $http_request_data['type'];//金币记录表需要的参数 0.提现；1.兑换钻石；2.GM
         $uid = $http_request_data['uid'];
+        $money = $http_request_data['money']/10;//提现的钻石数目，需要/10 当前条目提现金额
+
+    //写入金币记录表
         $data = array(
             'uid' => $uid,
             'money'=>$http_request_data['money'],
@@ -226,23 +232,24 @@ class PublicController extends BaseController {
             return $return;
         }
 
-        if($type == 0){
-            //查找该UID对应的信息
+        if($type == 0){//金币记录表需要的参数 0.提现；
+        //查找该UID对应的信息
             $sWhere['id'] = $uid;
             if(!$uid){
                 $return = array('state'=>0,'msg'=>'系统错误，用户UID丢失！','data'=>NULL);
                 return $return;
             }
+        //获得用户信息
             $user_info = $this->getAll('user',$sWhere);
             $user_info = current($user_info);
 
-            //存到提现表
+        //查询提现总额
             $recharge_total = $http_request_data['recharge_total']/10;//充值总额
-            $w_sql = 'select uid,sum(yingfu) as sum from withdrawals where uid = '.$uid.' and state = 3';
+            $w_sql = 'select uid,sum(yingfu) as sum from withdrawals where uid = '.$uid;//.' and state = 3';
             $w_result_temp = D('withdrawals')->query($w_sql);
             $withdraw_total = $w_result_temp[0]['sum']?$w_result_temp[0]['sum']:0;//提现总额
-            $withdraw_total += $http_request_data['money'];
-//            die;
+            $withdraw_total += $money;
+
 //            3000以下不检测
 //            3000以上充值不为0按百分比算  大于等于%50标红[(充值-提现)/充值]
 //            3000以上充值为0去掉  标红
@@ -256,7 +263,8 @@ class PublicController extends BaseController {
                 }
             }
 
-            $check_array = array('collection_account','bank','realname','phone','alipay_account');//参数完整性验证
+        //参数完整性验证
+            $check_array = array('collection_account','bank','realname','phone','alipay_account');
             if(!$user_info){
                 $return = array('state'=>0,'msg'=>'系统错误，用户信息查询失败！','data'=>NULL);
                 return $return;
@@ -268,21 +276,19 @@ class PublicController extends BaseController {
                 }
             }
 
+        //存到提现表
             $tData = array(
                 'uid'=>$uid,
-                'money'=>$http_request_data['money']/10,
+                'money'=>$money,
                 'collection_account'=>$user_info['collection_account'],
                 'bank'=>$user_info['opening_bank'],
                 'realname'=>$user_info['realname'],
                 'payee_name'=>$user_info['phone'],
                 'time'=>time(),
-//                'yingfu'=>($http_request_data['money']-$http_request_data['money']*0.005)/10,
-            //又改了需求，改成2%
-                'yingfu'=>($http_request_data['money']-$http_request_data['money']*0.02)/10,
-                //新增支付宝需求
+                'yingfu'=>$money-$money*0.02,
+                //新增支付宝功能
                 'alipay_account'=>$user_info['alipay_account'],
                 'alipay_account_type'=>$user_info['alipay_account_type'],
-//                'diff'=>$diff,//差额比例
                 'recharge_total'=>$recharge_total,//充值总额
                 'withdraw_total'=>$withdraw_total,//提现总额
                 'percent'=>$percent,//比例

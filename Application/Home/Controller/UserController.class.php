@@ -44,7 +44,7 @@ class UserController extends BaseController {
 
                     if($lists['ret'] != 1) {
                         $users['data'] = NULL;
-                    }else{
+                    }else{//接口返回正确才开始检索用户数据
                         $user_ids = $this->sortInfoById($lists['users'],'showId','showId');
                         $lWhere['id'] = array('in',$user_ids);
                         $users = $this->getAll('user',$lWhere, 'id', '','id asc', $pager);
@@ -56,24 +56,25 @@ class UserController extends BaseController {
                     $where['idcard'] = array('like', '%' . $search . '%');
                     $where['_logic'] = 'or';
                     $users = $this->getAll('user',$where, 'id', '','id asc', $pager);
-
-                    $user_ids = $this->sortInfoById($users['data'],'id','id');
-                    $uid_string = join('_', $user_ids);
-
-                    $url = 'http://'.C('SERVER_IP').'/GetUserData';
-
-                    $params = 'showIds=' . $uid_string . '&type=0';
-                    $params = $this->publicEncrypt($params);
-                    $url .= '?data='.$params;
-                    $lists = $this->getHTTPData($url);
                 }
             }else{
                 $users = $this->getAll('user','', 'id', '','id asc', $pager);
             }
+            
+            $user_ids = $this->sortInfoById($users['data'],'id','id');
+            $uid_string = join('_', $user_ids);
 
+            //请求用户金币数据的接口
+            $url = 'http://'.C('SERVER_IP').'/GetUserData';
+            $params = 'showIds=' . $uid_string . '&type=0';
+//            var_dump($params);
+            $params = $this->publicEncrypt($params);
+            $url .= '?data='.$params;
+            $lists = $this->getHTTPData($url);
+//            var_dump($url,$lists);die;
             //序列化接口请求的数据
             $http_user_data = $this->sortInfoById($lists['users'],'showId');
-
+//var_dump($users,$lists,$http_user_data);die;
             //组装数据
             foreach ($users['data'] as $k=>$v){
                 $users['data'][$k]['gold'] = $http_user_data[$v['id']]['gold']?floor($http_user_data[$v['id']]['gold']):0;//金币
@@ -371,9 +372,9 @@ class UserController extends BaseController {
             $url = 'http://'.C('SERVER_IP').'/GetTradeRecord';
 
             $params = 'index='. $start .'&num=' . $pageSize  . '&owner=' . $mid . '&sort=startTime&type=2';
+//            var_dump($mid,$params);die;
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
-
 
             $lists = $this->getHTTPData($url);
 //            var_dump($url,$lists);die;

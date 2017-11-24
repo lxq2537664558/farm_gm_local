@@ -181,12 +181,6 @@ function checktable(is_nickname,issearch){
                     })
                 })
                 // 用户删除
-                if($('#group').val()!=2){
-                    $('.delete_user').hide();
-                    $('.delete_user').click(function(){
-                        alert('您没有此权限');
-                    })
-                }else{
                     $('.delete_user').click(function(){
                         var r = confirm("确定删除吗");
                         if(r == true) {

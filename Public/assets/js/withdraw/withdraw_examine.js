@@ -24,13 +24,30 @@ function checktable(ispagesize,issearch,isfield,isegt,iselt){
                 console.log(data);
                 for(var i = 0; i<data.data.length; i++){
                     // $('#mytable tbody').append(`<tr><td><input class="selected" type="checkbox" /></td><td>${data.data[i].uid}</td><td><span>${data.data[i].id}<i style="display: none">a</i></span></td><td>${data.data[i].money}</td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].transfer_type}</td><td>${data.data[i].remarks}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
-                    $('#mytable tbody').append(`<tr><td><input class="selected" type="checkbox" /></td><td>${data.data[i].uid}</td><td><span>${data.data[i].id}<i style="display: none">a</i></span></td><td>${data.data[i].money}</td><td><span>${data.data[i].percent}</span><i style="display: none">${data.data[i].class}</i></td><td>${data.data[i].collection_account}</td><td>${data.data[i].payee_name}</td><td>${data.data[i].bank}</td><td>${data.data[i].realname}</td><td>${data.data[i].yingfu}</td><td>${data.data[i].state}</td><td>${data.data[i].time}</td></tr>`)
+                    $('#mytable tbody').append(`<tr>
+                        <td><input class="selected" type="checkbox" /></td>
+                        <td>${data.data[i].uid}</td>
+                        <td><span>${data.data[i].id}<i style="display: none">a</i></span></td>
+                        <td>${data.data[i].money}</td>
+
+                        <td>${data.data[i].recharge_total}</td>
+                        <td>${data.data[i].withdraw_total}</td>
+
+                        <td><span>${data.data[i].percent}</span><i style="display: none">${data.data[i].class}</i></td>
+                        <td>${data.data[i].collection_account}</td>
+                        <td>${data.data[i].payee_name}</td>
+                        <td>${data.data[i].bank}</td>
+                        <td>${data.data[i].realname}</td>
+                        <td>${data.data[i].yingfu}</td>
+                        <td>${data.data[i].state}</td>
+                        <td>${data.data[i].time}</td></tr>`)
                 }
 
                 // 判断是否符合提现界限    否则标红
                 for(var i = 0; i < $('#mytable tbody tr').length; i++){
-                    if($('#mytable tbody tr').eq(i).find('td:nth-child(5) i').text()=="1"){
+                    if($('#mytable tbody tr').eq(i).find('td:nth-child(7) i').text()=="1"){
                         $('#mytable tbody tr').eq(i).find('td:nth-child(2)').css({'color' : 'red', 'font-weight' : 'bold'});
+                        $('#mytable tbody tr').eq(i).find('td:nth-child(7) span').css({'color' : 'red', 'font-weight' : 'bold'});
                     }
                 }
 
@@ -38,50 +55,50 @@ function checktable(ispagesize,issearch,isfield,isegt,iselt){
                 $('#left_page').show();
                 $('#right_page').show();
 
-                // 批量审核
-                $('.review_btn').click(function(){
-                    $('.go_review').hide()
-                    $('.review_area').show();
-                    // 确定修改审核状态
-                    $('.review_sure').click(function(){
-                        var id_str = $('.selected:checked').parents('tr').find('td:nth-child(3) span').text();
-                        console.log(id_str);
-                        var id_array = id_str.split('a');
-                        var id_arr=[];
-                        for( var i=0; i<id_array.length-1; i++){
-                            id_arr.push(id_array[i]);
-                        }
-                        console.log(id_arr);
-                        var state = null;
-                        if($('.review_select').val()=="已通过"){
-                            state = 1;
-                        }else if($('.review_select').val()=="未通过"){
-                            state = 2;
-                        }else if($('.review_select').val()=="已完成"){
-                            state = 3;
-                        }
-                        $.ajax({
-                            url: ipaddress+"index.php?m=Home&c=Withdraw&a=batchCheck",
-                            type: "POST",
-                            data: {
-                                id_arr: id_arr,
-                                state: state
-                            },
-                            dataType: "json",
-                            success: function(data){
-                                if(data.state==1){
-                                    alert(data.msg);
-                                    // window.location.reload();
-                                }
-                            }
-                        })
-                    })
-                    // 取消修改审核状态
-                    $('.review_cancel').click(function(){
-                        $('.go_review').show()
-                        $('.review_area').hide();
-                    })
-                })
+                // // 批量审核
+                // $('.review_btn').click(function(){
+                //     $('.go_review').hide()
+                //     $('.review_area').show();
+                //     // 确定修改审核状态
+                //     $('.review_sure').click(function(){
+                //         var id_str = $('.selected:checked').parents('tr').find('td:nth-child(3) span').text();
+                //         console.log(id_str);
+                //         var id_array = id_str.split('a');
+                //         var id_arr=[];
+                //         for( var i=0; i<id_array.length-1; i++){
+                //             id_arr.push(id_array[i]);
+                //         }
+                //         console.log(id_arr);
+                //         var state = null;
+                //         if($('.review_select').val()=="已通过"){
+                //             state = 1;
+                //         }else if($('.review_select').val()=="未通过"){
+                //             state = 2;
+                //         }else if($('.review_select').val()=="已完成"){
+                //             state = 3;
+                //         }
+                //         $.ajax({
+                //             url: ipaddress+"index.php?m=Home&c=Withdraw&a=batchCheck",
+                //             type: "POST",
+                //             data: {
+                //                 id_arr: id_arr,
+                //                 state: state
+                //             },
+                //             dataType: "json",
+                //             success: function(data){
+                //                 if(data.state==1){
+                //                     alert(data.msg);
+                //                     // window.location.reload();
+                //                 }
+                //             }
+                //         })
+                //     })
+                //     // 取消修改审核状态
+                //     $('.review_cancel').click(function(){
+                //         $('.go_review').show()
+                //         $('.review_area').hide();
+                //     })
+                // })
             }else{
                 alert("没有此查询数据");
                 $('#left_page').hide();

@@ -98,7 +98,7 @@ $('#prev').click(function(){
 $('#search button').click(function(){
     page = 1;
     $('#prev').attr('disabled',true).css('background','gray');
-    checktable($('#search input').val());
+    checktable($('.setting_display_num_input').val(),$('#search input').val());
     // 若最大页为1，设置下一页不可点
     if($('#largest_page').text()==1){
         $('#next').attr('disabled',true).css('background','gray');
@@ -114,7 +114,7 @@ $('#search button').click(function(){
         if(page==$('#largest_page').text()){
             $(this).attr('disabled',true).css('background','gray');
         }
-        checktable($('#search input').val());
+        checktable($('.setting_display_num_input').val(),$('#search input').val());
     });
     $('#prev').click(function(){
         page--;
@@ -122,7 +122,7 @@ $('#search button').click(function(){
             $('#prev').attr('disabled',true).css('background','gray');
         }
         $('#next').attr('disabled',false).css('background','#4B97EB');
-        checktable($('#search input').val());
+        checktable($('.setting_display_num_input').val(),$('#search input').val());
     });
     $('#jump').click(function(){
     if(isNaN($('#jump_val').val())){
@@ -153,7 +153,7 @@ $('#search button').click(function(){
             $('#next').attr('disabled',false).css('background','#4B97EB');
         }
         page = jump_num;
-        checktable($('#search input').val());
+        checktable($('.setting_display_num_input').val(),$('#search input').val());
     }
 })
 })

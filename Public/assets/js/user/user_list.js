@@ -13,8 +13,8 @@ function checktable(is_nickname,issearch){
          dataType: 'json',
          async: false,
          success: function (data) {
-            console.log(data);
-            // console.log(data.data);
+            // console.log(data);
+            console.log(data.data);
             $('#mytable tbody').empty();
             $('#total_page').html(`当前<b id="current_page">${data.page.page}</b>/<b id="largest_page">${data.page.totalPage}</b>页`);
             if(data.data){
@@ -24,12 +24,37 @@ function checktable(is_nickname,issearch){
 
                 // 添加操作菜单
                 for(var i=0; i<data.data.length+1; i++){
-                    // 判断用户是否拥有 推广列表
-                    if($('#mytable tbody tr:nth-child('+i+')').find('td:nth-child(7)').text()!="普通用户"){
-                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>');
-                    }else{
-                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>')
+                    if($('#group').val() == 2){
+                        $('.user_game_data').hide();
+                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span></td>')
+                    }else if($('#group').val() == 3){
+                        $('.user_game_data').hide();
+                        if($('#mytable tbody tr:nth-child('+i+')').find('td:nth-child(7)').text()!="普通用户"){
+                            $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span></td>')
+                        }else{
+                            $('#mytable tbody tr:nth-child('+i+')').append('<td></td>')
+                        }
+
+                    }else if($('#group').val() == 4){
+                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>')
+                    }else if($('#group').val() == 5){
+                        $('.user_game_data').hide();
+                        $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span></td>')
+                    }else if($('#group').val() == 1){
+                        if($('#mytable tbody tr:nth-child('+i+')').find('td:nth-child(7)').text()!="普通用户"){
+                             $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>');
+                        }else{
+                            $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>')
+                        }
                     }
+                    // else{
+                    //     // 判断用户是否拥有 推广列表
+                    //     if($('#mytable tbody tr:nth-child('+i+')').find('td:nth-child(7)').text()!="普通用户"){
+                    //         $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>');
+                    //     }else{
+                    //         $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>')
+                    //     }
+                    // }
                 }
 
 
@@ -39,121 +64,122 @@ function checktable(is_nickname,issearch){
                 $('#right_page').show();
 
                 // 用户编辑
-                if($('#group').val()!=2 && $('#group').val()!=3){
-                    $('.edit').hide();
-                    $('.edit').click(function(){
-                        alert('您没有此权限');
-                    })
-                }else{
-                    $('.edit').show();
-                    $('.edit').click(function(){
-                        var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
-                        $.ajax({
-                            url: ipaddress+`index.php?m=Home&c=User&a=editUser&uid=${uid}`,
-                            type: 'GET',
-                            dataType: 'json',
-                            success: function(data){
-                                // 创建编辑html
-                                var edit_html = '<h3 style="margin-top: 10px; text-align: center;">用户编辑</h3>'+
-                                '<p class="change_uid"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">用户uid</span><input type="" name="" readonly="readonly"></p>'+
-                                '<p class="change_username"> <span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">用户名</span><input type="" name=""></p>'+
-                                '<p class="change_password"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">设置密码</span><input type="password" name="" placeholder="若不更改密码请勿填写"></p>'+
-                                '<p class="change_type"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">用户组</span><select class="type_select"><option value="putong">普通用户</option><option value="daili">代理商</option><option value="huizhang">商会长</option></select></p>'+
-                                '<p class="change_banned"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">禁言</span><select class="banned_select"><option value="0">否</option><option value="1">是</option></select></p>'+
-                                '<p class="change_state"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">状态</span><select class="state_select"><option value="zhengchang">正常</option><option value="fenghao">封号</option><option value="yongjiu">永久封号</option></select></p><p style="display: none;" class="seal_time"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">封号时间</span><input type="" name="" placeholder="请输入封号天数"></p>'+
-                                '<div class="btn" style="padding-left: 80px;"><button style="width: 80px; height: 30px; margin-right: 20px; border-radius: 5px; border: none; margin-bottom: 20px;" class="sure_change">确定</button><button style="width: 80px; height: 30px; border-radius: 5px; border: none; margin-bottom: 20px;" class="cancel_change">取消</button></div>';
+                $('.edit').click(function(){
+                    var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
+                    $.ajax({
+                        url: ipaddress+`index.php?m=Home&c=User&a=editUser&uid=${uid}`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data){
 
-                                $('.user_edit').html(edit_html);
+                            // 创建编辑html
+                            var edit_html = '<h3 style="margin-top: 10px; text-align: center;">用户编辑</h3>'+
+                            '<p class="change_uid"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">用户uid</span><input type="" name="" readonly="readonly"></p>'+
+                            '<p class="change_username"> <span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">用户名</span><input type="" name=""></p>'+
+                            '<p class="change_password"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">设置密码</span><input type="password" name="" placeholder="若不更改密码请勿填写"></p>'+
+                            '<p class="change_type"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">用户组</span><select class="type_select"><option value="putong">普通用户</option><option value="daili">代理商</option><option value="huizhang">商会长</option></select></p>'+
+                            '<p class="change_banned"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">禁言</span><select class="banned_select"><option value="0">否</option><option value="1">是</option></select></p>'+
+                            '<p class="change_state"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">状态</span><select class="state_select"><option value="zhengchang">正常</option><option value="fenghao">封号</option><option value="yongjiu">永久封号</option></select></p><p style="display: none;" class="seal_time"><span style="display: inline-block; width: 80px; text-align: right; margin-right: 20px;">封号时间</span><input type="" name="" placeholder="请输入封号天数"></p>'+
+                            '<div class="btn" style="padding-left: 80px;"><button style="width: 80px; height: 30px; margin-right: 20px; border-radius: 5px; border: none; margin-bottom: 20px;" class="sure_change">确定</button><button style="width: 80px; height: 30px; border-radius: 5px; border: none; margin-bottom: 20px;" class="cancel_change">取消</button></div>';
 
-                                $('.user_edit').find('.change_uid input').val(data.id);
-                                $('.user_edit').find('.change_username input').val(data.username);
-                                // 禁言状态
-                                $('.user_edit').find('.change_banned select').val(data.banned);
-                                $('.user_edit').find('.change_username input').attr('readonly',true);
-                                // $('.user_edit').find('.change_idcard input').val(data.idcard);
-                                if(data.user_type==0){
-                                    $('.type_select').val('putong');
-                                }else if(data.user_type==1){
-                                    $('.type_select').val('daili');
-                                }else if(data.user_type==2){
-                                    $('.type_select').val('huizhang');
-                                }
-                                if(data.state==0){
-                                    $('.state_select').val('zhengchang');
-                                    $('.seal_time').hide()
-                                }else if(data.state==1){
-                                    $('.state_select').val('fenghao');
-                                    $('.seal_time').show().find('input').val(data.close_time);
-                                }else if(data.state==2){
-                                    $('.state_select').val('yongjiu');
-                                    $('.seal_time').show().find('input').val(data.close_time);
-                                }
-                                // 封号选择
-                                $('.state_select').change(function(){
-                                    if($('.state_select').val()=="zhengchang" || $('.state_select').val()=="yongjiu"){
-                                        $('.seal_time').hide();
-                                    }else{
-                                        $('.seal_time').show();
-                                    }
-                                })
+                            $('.user_edit').html(edit_html);
 
-                                 // 点击取消更改
-                                $('.cancel_change').click(function(){
-                                    $('.user_edit').empty();
-                                    // alert(1);
-                                });
-
-
-                                // 点击确定更改
-                                $('.sure_change').click(function(){
-                                   // console.log(1);
-                                    var user_type = 0;
-                                    var state = 0;
-                                    if($('.change_type .type_select').val()=="putong"){
-                                        user_type = 0;
-                                    }else if($('.change_type .type_select').val()=="daili"){
-                                        user_type = 1;
-                                    }else if($('.change_type .type_select')
-                                        .val()=="huizhang"){
-                                        user_type = 2;
-                                    }
-                                    if($('.change_state .state_select').val()=="zhengchang"){
-                                        state = 0;
-                                    }else if($('.change_state .state_select').val()=="fenghao"){
-                                        state = 1;
-                                    }else if($('.change_state .state_select').val()=="yongjiu"){
-                                        state = -1;
-                                    }
-                                    $.ajax({
-                                        url : ipaddress+"index.php?m=Home&c=User&a=editUser",
-                                        data: {
-                                            uid : $('.change_uid input').val(),
-                                            username: $('.change_username input').val(),
-                                            // idcard : $('.change_idcard input').val(),
-                                            password : $('.change_password input').val(),
-                                            user_type : user_type,
-                                            state : state,
-                                            close_time : $('.seal_time input').val(),
-                                            banned : $('.banned_select').val()
-                                        },
-                                        dataType: "json",
-                                        type: "POST",
-                                        success: function(data){
-                                            alert(data.msg);
-                                            console.log(data);
-                                            // $('.user_edit').hide();
-                                            if(data.msg=="修改成功！"){
-                                                // $('.user_edit').hide();
-                                                $('.user_edit').html("");
-                                            }
-                                        }
-                                    })
-                                })
+                            // 判断权限
+                            if($('#group').val() == 2){
+                                $('.change_password').hide();
+                                $('.change_banned').hide();
+                                $('.change_state').hide();
+                            }else if($('#group').val() == 5){
+                                $('.change_password').hide();
+                                $('.change_type').hide();
                             }
-                        })
-                    })
-                }
+                            $('.user_edit').find('.change_uid input').val(data.id);
+                            $('.user_edit').find('.change_username input').val(data.username);
+                            // 禁言状态
+                            $('.user_edit').find('.change_banned select').val(data.banned);
+                            $('.user_edit').find('.change_username input').attr('readonly',true);
+                            // $('.user_edit').find('.change_idcard input').val(data.idcard);
+                            if(data.user_type==0){
+                                $('.type_select').val('putong');
+                            }else if(data.user_type==1){
+                                $('.type_select').val('daili');
+                            }else if(data.user_type==2){
+                                $('.type_select').val('huizhang');
+                            }
+                            if(data.state==0){
+                                $('.state_select').val('zhengchang');
+                                $('.seal_time').hide()
+                            }else if(data.state==1){
+                                $('.state_select').val('fenghao');
+                                $('.seal_time').show().find('input').val(data.close_time);
+                            }else if(data.state==2){
+                                $('.state_select').val('yongjiu');
+                                $('.seal_time').show().find('input').val(data.close_time);
+                            }
+                            // 封号选择
+                            $('.state_select').change(function(){
+                                if($('.state_select').val()=="zhengchang" || $('.state_select').val()=="yongjiu"){
+                                    $('.seal_time').hide();
+                                }else{
+                                    $('.seal_time').show();
+                                }
+                            })
 
+                             // 点击取消更改
+                            $('.cancel_change').click(function(){
+                                $('.user_edit').empty();
+                                // alert(1);
+                            });
+
+
+                            // 点击确定更改
+                            $('.sure_change').click(function(){
+                               // console.log(1);
+                                var user_type = 0;
+                                var state = 0;
+                                if($('.change_type .type_select').val()=="putong"){
+                                    user_type = 0;
+                                }else if($('.change_type .type_select').val()=="daili"){
+                                    user_type = 1;
+                                }else if($('.change_type .type_select')
+                                    .val()=="huizhang"){
+                                    user_type = 2;
+                                }
+                                if($('.change_state .state_select').val()=="zhengchang"){
+                                    state = 0;
+                                }else if($('.change_state .state_select').val()=="fenghao"){
+                                    state = 1;
+                                }else if($('.change_state .state_select').val()=="yongjiu"){
+                                    state = -1;
+                                }
+                                $.ajax({
+                                    url : ipaddress+"index.php?m=Home&c=User&a=editUser",
+                                    data: {
+                                        uid : $('.change_uid input').val(),
+                                        username: $('.change_username input').val(),
+                                        // idcard : $('.change_idcard input').val(),
+                                        password : $('.change_password input').val(),
+                                        user_type : user_type,
+                                        state : state,
+                                        close_time : $('.seal_time input').val(),
+                                        banned : $('.banned_select').val()
+                                    },
+                                    dataType: "json",
+                                    type: "POST",
+                                    success: function(data){
+                                        alert(data.msg);
+                                        console.log(data);
+                                        // $('.user_edit').hide();
+                                        if(data.msg=="修改成功！"){
+                                            // $('.user_edit').hide();
+                                            $('.user_edit').html("");
+                                        }
+                                    }
+                                })
+                            })
+                        }
+                    })
+                })
                 // 用户删除
                 if($('#group').val()!=2){
                     $('.delete_user').hide();

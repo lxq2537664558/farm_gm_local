@@ -30,50 +30,50 @@ function checktable(ispagesize,issearch,isfield,isegt,iselt){
                 $('#left_page').show();
                 $('#right_page').show();
 
-                // 批量审核
-                $('.review_btn').click(function(){
-                    $('.go_review').hide()
-                    $('.review_area').show();
-                    // 确定修改审核状态
-                    $('.review_sure').click(function(){
-                        var id_str = $('.selected:checked').parents('tr').find('td:nth-child(3) span').text();
-                        console.log(id_str);
-                        var id_array = id_str.split('a');
-                        var id_arr=[];
-                        for( var i=0; i<id_array.length-1; i++){
-                            id_arr.push(id_array[i]);
-                        }
-                        console.log(id_arr);
-                        var state = null;
-                        if($('.review_select').val()=="已通过"){
-                            state = 1;
-                        }else if($('.review_select').val()=="未通过"){
-                            state = 2;
-                        }else if($('.review_select').val()=="已完成"){
-                            state = 3;
-                        }
-                        $.ajax({
-                            url: ipaddress+"index.php?m=Home&c=Withdraw&a=batchCheck",
-                            type: "POST",
-                            data: {
-                                id_arr: id_arr,
-                                state: state
-                            },
-                            dataType: "json",
-                            success: function(data){
-                                if(data.state==1){
-                                    alert(data.msg);
-                                    // window.location.reload();
-                                }
-                            }
-                        })
-                    })
-                    // 取消修改审核状态
-                    $('.review_cancel').click(function(){
-                        $('.go_review').show()
-                        $('.review_area').hide();
-                    })
-                })
+                // // 批量审核
+                // $('.review_btn').click(function(){
+                //     $('.go_review').hide()
+                //     $('.review_area').show();
+                //     // 确定修改审核状态
+                //     $('.review_sure').click(function(){
+                //         var id_str = $('.selected:checked').parents('tr').find('td:nth-child(3) span').text();
+                //         console.log(id_str);
+                //         var id_array = id_str.split('a');
+                //         var id_arr=[];
+                //         for( var i=0; i<id_array.length-1; i++){
+                //             id_arr.push(id_array[i]);
+                //         }
+                //         console.log(id_arr);
+                //         var state = null;
+                //         if($('.review_select').val()=="已通过"){
+                //             state = 1;
+                //         }else if($('.review_select').val()=="未通过"){
+                //             state = 2;
+                //         }else if($('.review_select').val()=="已完成"){
+                //             state = 3;
+                //         }
+                //         $.ajax({
+                //             url: ipaddress+"index.php?m=Home&c=Withdraw&a=batchCheck",
+                //             type: "POST",
+                //             data: {
+                //                 id_arr: id_arr,
+                //                 state: state
+                //             },
+                //             dataType: "json",
+                //             success: function(data){
+                //                 if(data.state==1){
+                //                     alert(data.msg);
+                //                     // window.location.reload();
+                //                 }
+                //             }
+                //         })
+                //     })
+                //     // 取消修改审核状态
+                //     $('.review_cancel').click(function(){
+                //         $('.go_review').show()
+                //         $('.review_area').hide();
+                //     })
+                // })
             }else{
                 alert("没有此查询数据");
                 $('#left_page').hide();

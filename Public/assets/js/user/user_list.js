@@ -22,7 +22,7 @@ function checktable(is_nickname,issearch){
                     $('#mytable tbody').append(`<tr><td><span>${data.data[i].id}</span><input type="hidden" name="" value=${data.data[i].mid}></td><td>${data.data[i].username}</td><td>${data.data[i].phone}</td><td>${data.data[i].idcard}</td><td>${data.data[i].state}</td><td>${data.data[i].father_id}</td><td>${data.data[i].user_type}</td><td>${data.data[i].gold}</td><td>${data.data[i].login_time}</td><td>${data.data[i].register_time}</td></tr>`)
                 }
 
-                // 添加操作菜单
+                // 根据权限添加操作菜单
                 for(var i=0; i<data.data.length+1; i++){
                     if($('#group').val() == 2){
                         $('.user_game_data').hide();
@@ -84,7 +84,7 @@ function checktable(is_nickname,issearch){
 
                             $('.user_edit').html(edit_html);
 
-                            // 判断权限
+                            // 根据权限判断编辑权限
                             if($('#group').val() == 2){
                                 $('.change_password').hide();
                                 $('.change_banned').hide();

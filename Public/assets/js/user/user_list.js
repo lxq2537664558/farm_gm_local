@@ -1,4 +1,8 @@
-// console.log(ipaddress);
+// 判断是否有游戏数据
+if($('#group').val() == 2 || $('#group').val() == 3){
+    $('.user_game_data').hide();
+}
+
 function checktable(is_nickname,issearch){
     $.ajax({
          url: ipaddress+"index.php?m=Home&c=User&a=index",
@@ -25,10 +29,10 @@ function checktable(is_nickname,issearch){
                 // 根据权限添加操作菜单
                 for(var i=0; i<data.data.length+1; i++){
                     if($('#group').val() == 2){
-                        $('.user_game_data').hide();
+                        // $('.user_game_data').hide();
                         $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span></td>')
                     }else if($('#group').val() == 3){
-                        $('.user_game_data').hide();
+                        // $('.user_game_data').hide();
                         if($('#mytable tbody tr:nth-child('+i+')').find('td:nth-child(7)').text()!="普通用户"){
                             $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span></td>')
                         }else{
@@ -181,17 +185,17 @@ function checktable(is_nickname,issearch){
                     })
                 })
                 // 用户删除
-                    $('.delete_user').click(function(){
-                        var r = confirm("确定删除吗");
-                        if(r == true) {
-                            var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
-                            var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
-                            window.location=ipaddress+`index.php?m=Home&c=User&a=deleteUser&uid=${uid}`
-                        }else {
-                            return false;
-                        }
-                    })
-                }
+                $('.delete_user').click(function(){
+                    var r = confirm("确定删除吗");
+                    if(r == true) {
+                        var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
+                        var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
+                        window.location=ipaddress+`index.php?m=Home&c=User&a=deleteUser&uid=${uid}`
+                    }else {
+                        return false;
+                    }
+                })
+                // }
 
                 // 用户挂单记录
                 $('.pending_order').click(function(){
@@ -220,20 +224,6 @@ function checktable(is_nickname,issearch){
                     var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
                     window.location=ipaddress+`index.php?m=Home&c=User&a=itemsList&uid=${uid}&mid=${mid}`
                 })
-
-                // // 禁言
-                // $('.banned').click(function(){
-                //     var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
-                //     var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
-                //     window.location=ipaddress+`index.php?m=Home&c=User&a=banned&state=1&uid=${uid}&mid=${mid}`
-                // })
-                //
-                // // 解言
-                // $('.not_banned').click(function(){
-                //     var uid = $(this).parents('tr').find('td:nth-child(1) span').text();
-                //     var mid = $(this).parents('tr').find('td:nth-child(1) input').val();
-                //     window.location=ipaddress+`index.php?m=Home&c=User&a=banned&state=0&uid=${uid}&mid=${mid}`
-                // })
             }else{
                 alert("没有此查询数据");
                 $('#left_page').hide();

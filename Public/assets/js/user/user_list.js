@@ -44,7 +44,7 @@ function checktable(is_nickname,issearch){
                     }else if($('#group').val() == 5){
                         $('.user_game_data').hide();
                         $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span></td>')
-                    }else if($('#group').val() == 1){
+                    }else if($('#group').val() == 1 || $('#group').val() == 6){
                         if($('#mytable tbody tr:nth-child('+i+')').find('td:nth-child(7)').text()!="普通用户"){
                              $('#mytable tbody tr:nth-child('+i+')').append('<td><span class="edit" style="color: blue; cursor: pointer; margin-right: 10px;">编辑</span><span class="delete_user" style="color: blue; cursor: pointer; margin-right: 10px;">删除</span><span class="pending_order" style="color: blue; cursor: pointer; margin-right: 10px;">挂单记录</span><span class="gold_records" style="color: blue; cursor: pointer; margin-right: 10px;">金币记录</span><span class="promotion_list" style="color: blue; cursor: pointer; margin-right: 10px;">推广列表</span><span class="items_list" style="color: blue; cursor: pointer;">物品清单</span></td>');
                         }else{

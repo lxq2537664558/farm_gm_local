@@ -23,11 +23,10 @@ class BaseController extends Controller {
     public function __construct(){
         parent::__construct();
         $this->get_device_type();
+
         //后台权限验证
         if((CONTROLLER_NAME != 'Public') && (MODULE_NAME != 'Agent')){
-//            if(!(CONTROLLER_NAME == 'User' && ACTION_NAME == 'addUser')){
             $this->checkAdmin();
-//            }
         }
         $this->behaviorRecords();
     }
@@ -136,14 +135,51 @@ class BaseController extends Controller {
         $qrcode_pass = I('get.qrcode_pass','');
         $code = I('get.extension_code','');
 
-        $loginInfo = session(C('ADMIN_LOGIN_SESSION_FIELD'));
+        $loginInfo = session(C('ADMIN_LOGIN_SESSION_FIELD'));//获取SESSION信息
         $isLogin = $loginInfo['isAdmin']?$loginInfo['isAdmin']:$loginInfo['isAgent'];//管理员或者代理商
-//        var_dump($isLogin,$_SESSION);die;
+
         if(!$isLogin){//未登录，跳转到登录页面
             session(C('ADMIN_LOGIN_SESSION_FIELD'),NULL);//清理session
             $this->redirect('Home/Public/'.C('ADMIN_LOGIN_ACTION_NAME'),array('extension_code'=>$code,'qrcode_pass'=>$qrcode_pass));
             die;
         }else{
+            //判断节点的权限
+            $group = $loginInfo['group'];
+            $gnWhere['role_id'] = $group;//根据用户组获取节点id
+            $node_ids = $this->getAll('role_node',$gnWhere,'node_id','node_id');
+
+            //根据节点id获取用户权限节点
+            $nWhere['id'] = array('in',$node_ids);
+            $nodes = $this->getAll('node',$nWhere);
+
+            //整理节点数据，与方法对应
+            $tolower_array = array('module_name','controller_name','action_name');
+            foreach ($nodes as $v){
+                //将节点名称字母小写
+                foreach ($tolower_array as $ta){
+                    $v[$ta] = strtolower($v[$ta]);
+                }
+                $node_detail[$v['module_name']][$v['controller_name']][$v['action_name']] = 1;
+            }
+
+            //当前所属节点的名称
+            $current_module_name = strtolower(MODULE_NAME);
+            $current_controller_name = strtolower(CONTROLLER_NAME);
+            $current_action_name = strtolower(ACTION_NAME);
+
+//            var_dump($nodes,$node_detail);die;
+            if($node_detail[$current_module_name][$current_controller_name][$current_action_name] != 1){//踢出去
+                session(C('ADMIN_LOGIN_SESSION_FIELD'),NULL);//清理session
+                $this->error('你没有权限访问此页面！','Home/Public/'.C('ADMIN_LOGIN_ACTION_NAME'),array('extension_code'=>$code,'qrcode_pass'=>$qrcode_pass));
+                die;
+            }else{
+                $this->sidebar($loginInfo['group']);//左侧导航菜单
+                $this->adminInfo = $loginInfo;
+                $this->assign('group',$loginInfo['group']);
+            }
+
+
+            //临时关闭权限检测
             $this->sidebar($loginInfo['group']);//左侧导航菜单
             $this->adminInfo = $loginInfo;
             $this->assign('group',$loginInfo['group']);

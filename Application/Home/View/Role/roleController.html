@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<strong>用户组</strong>
+<select id="group_id_select">
+    <option value="0">请选择</option>
+    <option value="1">1最高管理员</option>
+    <option value="2">2代理管理员</option>
+    <option value="3">3佣金管理员</option>
+    <option value="4">4客服管理员</option>
+    <option value="5">5秩序管理员</option>
+    <option value="6">6策划管理员</option>
+</select>
+
+<br/><br/><br/>
+<div style="float:left;">
+    <strong>当前权限</strong>
+    <table border="1" cellspacing="0">
+        <tr>
+            <td>用户组</td>
+            <td>节点id</td>
+            <td>module</td>
+            <td>controller</td>
+            <td>action</td>
+            <td>菜单名</td>
+            <td>主菜单</td>
+            <td>删除</td>
+        </tr>
+
+        <foreach name="rules" item="rid">
+            <tr>
+                <td>{$group_id}</td>
+                <td>{$rid}</td>
+                <td>{$nodes[$rid]['module_name']}</td>
+                <td>{$nodes[$rid]['controller_name']}</td>
+                <td>{$nodes[$rid]['action_name']}</td>
+                <td>{$nodes[$rid]['menu_name']}</td>
+                <td>{$nodes[$rid]['main_menu']}</td>
+                <td><a href="{:U('Home/Role/delNode',array('group_id'=>$group_id,'node_id'=>$rid))}">删除</a></td>
+            </tr>
+        </foreach>
+    </table>
+</div>
+
+<form action="{:U('Home/Role/addNode',array('group_id'=>$group_id))}" method="post" id="check_form">
+<div style="float:right;">
+    <strong>可添加的权限</strong>&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit"  value="批量添加" />
+    <table border="1" cellspacing="0">
+        <thead>
+            <tr>
+                <td><input type="checkbox" id="check_all" /></td>
+                <td>操作</td>
+                <td>用户组</td>
+                <td>节点id</td>
+                <td>module</td>
+                <td>controller</td>
+                <td>action</td>
+                <td>菜单名</td>
+                <td>主菜单</td>
+            </tr>
+        </thead>
+
+        <tbody id="tbody">
+        <foreach name="diff_node_ids" item="d">
+            <tr>
+                <td><input class="xuanze" type="checkbox" name="node_ids[]" value="{$d}" /></td>
+                <td><a href="{:U('Home/Role/addNode',array('group_id'=>$group_id,'node_id'=>$d))}">添加</a></td>
+                <td>{$group_id}</td>
+                <td>{$d}</td>
+                <td>{$nodes[$d]['module_name']}</td>
+                <td>{$nodes[$d]['controller_name']}</td>
+                <td>{$nodes[$d]['action_name']}</td>
+                <td>{$nodes[$d]['menu_name']}</td>
+                <td>{$nodes[$d]['main_menu']}</td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+</div>
+</form>
+
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery-2.1.0.js" ></script>
+<script>
+    $('#group_id_select').change(function () {
+        var group_id = $(this).val();
+        var url = "{:U('Home/Role/roleController')}&group_id="+group_id;
+        window.location.href = url;
+    });
+    var current_value = false;
+    $('#check_all').click(function () {
+//        var current_value = $('#check_all').attr('checked');
+        if(current_value == true){
+            $('.xuanze').prop('checked',false);
+            current_value = false;
+        }else{
+            $('.xuanze').prop('checked',true);
+            current_value =true;
+        }
+    });
+</script>
+</body>
+</html>

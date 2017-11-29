@@ -1007,4 +1007,5 @@ class UserController extends BaseController {
             die;
         }
     }
+
 }

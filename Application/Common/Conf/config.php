@@ -3,7 +3,7 @@ return array(
     // 数据库常用配置
     'DB_TYPE' => 'mysql', // 数据库类型
     'DB_HOST' => 'localhost', // 数据库服务器地址
-    'DB_NAME' => 'farm_local', // 数据库名
+    'DB_NAME' => 'farm', // 数据库名
     'DB_USER' => 'root', // 数据库用户名
     'DB_PWD' =>'olwn_N382loi',//数据库密码
     'DB_PORT' => 3306, // 数据库端口
@@ -37,16 +37,16 @@ return array(
             'username'=>'用户名'
         ),
         'withdrawManagement'=>array(//提现页面
-            'id'=>'ID',
+//            'id'=>'ID',
             'uid'=>'UID',
             'money'=>'金额',
             'collection_account'=>'收款人账号',
 //            'username'=>'收款人名称',
             'bank'=>'收款人开户行',
-            'province'=>'收款人所在省',
-            'area'=>'收款人所在县',
-            'transfer_type'=>'转账类型',
-            'remarks'=>'汇款用途',
+//            'province'=>'收款人所在省',
+//            'area'=>'收款人所在县',
+//            'transfer_type'=>'转账类型',
+//            'remarks'=>'汇款用途',
 //            'state'=>'审核状态',
 //            'time'=>'提现时间',
             'payee_name'=>'收款人名称',
@@ -55,7 +55,6 @@ return array(
             'account'=>'用户帐号',
             'uid'=>'UID',
             'nickname'=>'用户昵称',
-            'user_type'=>'用户组',
         ),
     ),
 
@@ -67,6 +66,8 @@ return array(
             'login_time'=>'to_time',//to_time表示需要时间戳转日期
             'register_time'=>'to_time',
             'close_time'=>'to_time',
+            'order_time'=>'to_time',
+            'end_time'=>'to_time',
         ),
         'withdrawals'=>array(
             'state'=>array('审核中','已通过','未通过','已完成'),
@@ -75,7 +76,7 @@ return array(
     ),
 
     'ADMIN_LOGIN_ACTION_NAME'=>'loginAdmin',
-    'ADMIN_LOGIN_SESSION_FIELD'=>'admin_login_session_field',
-    'INTERFACE_IP'=>'http://172.168.1.54/farm_gm_local',
-    'SERVER_IP'=>'172.168.1.49:9999',
+    'ADMIN_LOGIN_SESSION_FIELD'=>'farm_gm_admin',
+//    'INTERFACE_IP'=>'http://farm.jiyu-keji.com/farm_4Zm5FybQ0i',
+    'SERVER_IP'=>'59.110.213.102:8888',//HTTPserver服务器
 );

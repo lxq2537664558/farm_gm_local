@@ -4,8 +4,61 @@ use Think\Controller;
 use Common\Controller\BaseController;
 use Home\Controller\UserController;
 use Home\Controller\OpenSSLController;
+use Home\Controller\AdvanceController;
 class PublicController extends BaseController {
     //此类不受登录权限验证限制
+
+    public function __construct(){
+        parent::__construct();
+        $this->getAllNodes();//获取所有节点并更新
+    }
+
+    //获取所有节点并更新
+    private function getAllNodes(){
+        $controller_dir_path = './Application/Home/Controller';
+        $controller_file_names = scandir($controller_dir_path);//获取所有的文件名
+        unset($controller_file_names[0],$controller_file_names[1]);//删除本级、上级目录
+
+        //获取表里已有的节点
+        $navi_nodes = $this->getAll('node');
+        //整理节点
+        foreach ($navi_nodes as $nn){
+            $navi_saved[$nn['controller_name']][$nn['action_name']] = 1;//已经存储的节点
+        }
+
+        //获取所有的方法名
+        foreach ($controller_file_names as $k=>$cfn){
+            $temp_file_name = $controller_dir_path.'/'.$cfn;
+            if(file_exists($temp_file_name)) {
+                $temp_content = file_get_contents($temp_file_name);
+                $pattern = '/function (\S+)\(/';
+                preg_match_all($pattern,$temp_content,$matches);//获得所有的方法名
+                //剔除__construct
+                $construct_exists = array_search('__construct',$matches[1]);
+                if($construct_exists !== false){//search函数找到结果返回键名，可能是0
+                    unset($matches[1][$construct_exists]);
+                }
+
+                $current_class_name = substr($cfn,0,strpos($cfn,'Controller'));//当前类名
+            //组装数据写入数据库
+                //避免重复添加节点
+                foreach ($matches[1] as $mt) {
+                    if (!$navi_saved[$current_class_name][$mt] && ($mt != '(\\S+)\\')){//排除pattern公式
+//                        $insert_data[$current_class_name][] = $mt;
+                        $insert_data[] = array(
+                            'module_name'=>'Home',
+                            'controller_name'=>$current_class_name,
+                            'action_name'=>$mt,
+                        );
+                    }
+                }
+//                var_dump($current_class_name);
+            }
+        }
+
+        //添加节点
+        D('node')->addAll($insert_data);
+    }
 
     //统一接口请求方法
     public function publicInterface(){
@@ -443,7 +496,7 @@ class PublicController extends BaseController {
                 'isAdmin' => 1,
                 'uid'=>$user_info['id'],
                 'username'=>$user_info['username'],
-                'group'=>$user_info['group'],
+                'group'=>$user_info['group_id'],
             );
             session(C('ADMIN_LOGIN_SESSION_FIELD'),$loginInfo);
 
@@ -547,5 +600,4 @@ class PublicController extends BaseController {
 
         return $return;
     }
-
 }

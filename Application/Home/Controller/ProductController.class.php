@@ -19,7 +19,11 @@ class ProductController extends BaseController {
         $params = $this->publicEncrypt($params);
         $url .= '?data='.$params;
 
+        //gm_num  gm的数量
+        //num 其他玩家的数量
+//        var_dump($url);die;
         $products = $this->getHTTPData($url);
+
 
         $this->assign('products',$products['items']);
 
@@ -141,6 +145,7 @@ class ProductController extends BaseController {
         $url .= '?data='.$params;
 
         $lists = $this->getHTTPData($url);
+//        var_dump($lists);die;
         $data = array();
         foreach ($lists['details'] as $k=>$v){
             $data[$v['itemId']] = $v;

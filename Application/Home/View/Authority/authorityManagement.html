@@ -40,10 +40,8 @@
                         <td>{$a['group']}</td>
                         <td>{:date('Y-m-d',$a['add_time'])}</td>
                         <td>
-                            <if condition="$group eq 2">
-                                <a href="{:U(MODULE_NAME.'/'.CONTROLLER_NAME.'/editUser',array('id'=>$a['id']))}">更新</a>
-                                <span class="to_delete" style="cursor: pointer; color: #0e90d2;" delete_url="{:U(MODULE_NAME.'/'.CONTROLLER_NAME.'/deleteUser',array('id'=>$a['id']))}">删除</span>
-                            </if>
+                            <a href="{:U(MODULE_NAME.'/'.CONTROLLER_NAME.'/editUser',array('id'=>$a['id']))}">更新</a>
+                            <span class="to_delete" style="cursor: pointer; color: #0e90d2;" delete_url="{:U(MODULE_NAME.'/'.CONTROLLER_NAME.'/deleteUser',array('id'=>$a['id']))}">删除</span>
                         </td>
                     </tr>
                 </foreach>

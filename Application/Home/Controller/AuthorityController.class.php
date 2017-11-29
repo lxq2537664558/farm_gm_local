@@ -16,10 +16,11 @@ class AuthorityController extends BaseController {
     public function authorityManagement(){
         $admin = $this->getAll('admin');
         $state_array = array('启用','禁用');
-        $group_array = array('普通','操作员-支付','管理员','操作员-代理');
+        $group_array = array(0,'最高管理员','代理管理员','佣金管理员','客服管理员','秩序管理员','策划管理员');
+//        var_dump($admin);
         foreach ($admin as $k=>$v){
             $admin[$k]['state'] = $state_array[$v['state']];
-            $admin[$k]['group'] = $group_array[$v['group']];
+            $admin[$k]['group'] = $group_array[$v['group_id']];
         }
 
         $this->assign('admin',$admin);

@@ -78,5 +78,6 @@ return array(
     'ADMIN_LOGIN_ACTION_NAME'=>'loginAdmin',
     'ADMIN_LOGIN_SESSION_FIELD'=>'farm_gm_admin',
 //    'INTERFACE_IP'=>'http://farm.jiyu-keji.com/farm_4Zm5FybQ0i',
-    'SERVER_IP'=>'59.110.213.102:8888',//HTTPserver服务器
+//    'SERVER_IP'=>'59.110.213.102:8888',//HTTPserver服务器
+    'SERVER_IP'=>'172.168.1.49:9999',//HTTPserver服务器
 );

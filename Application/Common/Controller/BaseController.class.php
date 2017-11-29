@@ -23,7 +23,7 @@ class BaseController extends Controller {
     public function __construct(){
         parent::__construct();
         $this->get_device_type();
-
+//var_dump($_SESSION);
         //后台权限验证
         if((CONTROLLER_NAME != 'Public') && (MODULE_NAME != 'Agent')){
             $this->checkAdmin();

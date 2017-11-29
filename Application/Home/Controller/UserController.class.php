@@ -60,7 +60,8 @@ class UserController extends BaseController {
             }else{
                 $users = $this->getAll('user','', 'id', '','id asc', $pager);
             }
-            
+
+//            var_dump($users);die;
             $user_ids = $this->sortInfoById($users['data'],'id','id');
             $uid_string = join('_', $user_ids);
 

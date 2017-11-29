@@ -16,7 +16,7 @@ class AuthorityController extends BaseController {
     public function authorityManagement(){
         $admin = $this->getAll('admin');
         $state_array = array('启用','禁用');
-        $group_array = array(0,'最高管理员','代理管理员','佣金管理员','客服管理员','秩序管理员','策划管理员');
+        $group_array = C('ADMIN_GROUP');
 //        var_dump($admin);
         foreach ($admin as $k=>$v){
             $admin[$k]['state'] = $state_array[$v['state']];
@@ -114,6 +114,7 @@ class AuthorityController extends BaseController {
     //添加用户
     public function addUser(){
         $post = I('post.');
+        $group_array = C('ADMIN_GROUP');
         if($post) {
             $post['password'] = base64_encode($post['password']);
             $post['add_time'] = time();
@@ -124,6 +125,7 @@ class AuthorityController extends BaseController {
                 $this->error('添加失败！');
             }
         }else{
+            $this->assign('groups',$group_array);
             $this->assign('url',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
             $this->display();
         }
@@ -134,6 +136,7 @@ class AuthorityController extends BaseController {
         $post = I('post.');
         $id = I('get.id');
         $where['id'] = $id;
+        $group_array = C('ADMIN_GROUP');
         if($post) {
             $post['password'] = base64_encode($post['password']);
             $post['add_time'] = time();
@@ -147,6 +150,7 @@ class AuthorityController extends BaseController {
         }else{
             $info = $this->getAll('admin',$where);
             $info = current($info);
+            $this->assign('groups',$group_array);
             $this->assign('info',$info);
             $this->assign('url',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME,array('id'=>$id)));
             $this->display();

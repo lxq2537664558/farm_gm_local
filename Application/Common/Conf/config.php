@@ -80,4 +80,6 @@ return array(
 //    'INTERFACE_IP'=>'http://farm.jiyu-keji.com/farm_4Zm5FybQ0i',
 //    'SERVER_IP'=>'59.110.213.102:8888',//HTTPserver服务器
     'SERVER_IP'=>'172.168.1.49:9999',//HTTPserver服务器
+
+    'ADMIN_GROUP'=>array('请选择','最高管理员','代理管理员','佣金管理员','客服管理员','秩序管理员','策划管理员'),
 );

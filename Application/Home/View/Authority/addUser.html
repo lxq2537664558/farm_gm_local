@@ -28,10 +28,9 @@
                 <p>
                     <span>用户组</span>
                     <select name="group">
-                        <option value="3">操作员-代理</option>
-                        <option value="2">管理员</option>
-                        <option value="1">操作员-支付</option>
-                        <option value="0">普通用户</option>
+                        <foreach name="groups" item="gs" key="gk">
+                            <option value="{$gk}">{$gs}</option>
+                        </foreach>
                     </select>
                 </p>
                 <p>

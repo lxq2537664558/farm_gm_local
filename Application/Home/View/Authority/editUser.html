@@ -30,10 +30,9 @@
             <p>
                 <span style="display: inline-block; width: 80px;">用户组</span>
                 <select name="group">
-                    <option value="3" <if condition="$info['group'] eq 1">selected</if>>操作员-代理</option>
-                    <option value="2" <if condition="$info['group'] eq 2">selected</if>>管理员</option>
-                    <option value="1" <if condition="$info['group'] eq 1">selected</if>>操作员-支付</option>
-                    <option value="0" <if condition="$info['group'] eq 0">selected</if>>普通用户</option>
+                    <foreach name="groups" item="gs" key="gk">
+                        <option value="{$gk}" <if condition="$info['group'] eq $gk">selected</if>>{$gs}</option>
+                    </foreach>
                 </select>
             </p>
             <p>

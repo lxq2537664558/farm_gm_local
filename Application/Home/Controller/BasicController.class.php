@@ -871,4 +871,102 @@ class BasicController extends BaseController {
 
         $this->display();
     }
+    
+    
+    //转盘
+    public function basicFarmStableTurntable(){
+        //区分分类
+        $current_turnType = I('get.turnType',1);
+        $current_area = I('get.area',1);
+        $this->assign('current_turnType',$current_turnType);
+        $this->assign('current_area',$current_area);
+
+        //导航及链接数据
+        $basic_navi = array(
+            array(
+                'area'=>1,
+                'turnType'=>1,
+                'navi'=>'农地稳定转盘',
+            ),
+            array(
+                'area'=>1,
+                'turnType'=>2,
+                'navi'=>'农地风险转盘',
+            ),
+            array(
+                'area'=>2,
+                'turnType'=>1,
+                'navi'=>'鱼塘稳定转盘',
+            ),
+            array(
+                'area'=>2,
+                'turnType'=>2,
+                'navi'=>'鱼塘风险转盘',
+            ),
+            array(
+                'area'=>3,
+                'turnType'=>1,
+                'navi'=>'森林稳定转盘',
+            ),
+            array(
+                'area'=>3,
+                'turnType'=>2,
+                'navi'=>'森林风险转盘',
+            ),
+            array(
+                'area'=>4,
+                'turnType'=>1,
+                'navi'=>'矿洞稳定转盘',
+            ),
+            array(
+                'area'=>4,
+                'turnType'=>2,
+                'navi'=>'矿洞风险转盘',
+            ),
+        );
+
+        //请求接口实时数据
+        $url = 'http://'.C('SERVER_IP').'/GetOblationRewardList';
+        $params = 'area='.$current_area.'&turnType='.$current_turnType;
+        $params = $this->publicEncrypt($params);
+        $url .= '?data='.$params;
+
+        $lists = $this->getHTTPData($url);
+        $sets_temp = $lists['items'];
+        $sets_temp = $this->sortInfoById($sets_temp,'id');
+        ksort($sets_temp);
+        $sets = array_values($sets_temp);
+//        var_dump($lists['items']);
+
+        $this->assign('basic_navi',$basic_navi);
+        $this->assign('sets',$sets);
+        $this->display();
+    }
+
+    //选择转盘
+    public function selectTurnTable(){
+        $area = I('get.area',1);
+        $turnType = I('get.turnType',1);
+        $id = I('get.id',0);
+
+        if(!$id){
+            $this->error('操作失败，参数丢失!');
+            die;
+        }
+
+        //请求接口
+        $url = 'http://'.C('SERVER_IP').'/SelectOblationReward';
+        $params = 'area='.$area.'&id='.$id;
+        $params = $this->publicEncrypt($params);
+        $url .= '?data='.$params;
+
+        $lists = $this->getHTTPData($url);
+        if($lists['ret'] == 1){
+            $this->success('操作成功！',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/basicFarmStableTurntable',array('turnType'=>$turnType,'area'=>$area)));
+            die;
+        }else{
+            $this->error('操作失败!',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/basicFarmStableTurntable'));
+            die;
+        }
+    }
 }

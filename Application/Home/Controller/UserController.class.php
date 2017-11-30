@@ -222,12 +222,14 @@ class UserController extends BaseController {
 
             //禁言部分===没有加入到事务中
             //接口
+//            var_dump($banned);die;
             $params = 'showId='.$uid.'&bannedToPost='.$banned;
 //            var_dump($params);die;
             $url = 'http://'.C('SERVER_IP').'/gm.GMHandler.BannedToPost';
             $params = $this->publicEncrypt($params);
             $url .= '?data='.$params;
             $lists = $this->getHTTPData($url);
+//            var_dump($url);die;
             if(!$lists['ret']){
                 $model->rollback();
                 echo json_encode(array('state'=>0,'msg'=>'修改失败，接口错误！'));

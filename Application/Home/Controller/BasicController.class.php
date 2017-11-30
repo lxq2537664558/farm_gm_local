@@ -1045,4 +1045,27 @@ class BasicController extends BaseController {
             die;
         }
     }
+
+    public function refreshWorship(){
+        //获取用户信息
+        $session_info = session(C('ADMIN_LOGIN_SESSION_FIELD'));
+        $where['id'] = $session_info['uid'];
+        $user_info = $this->getAll('admin',$where);
+        $user_info = current($user_info);
+
+        //请求接口
+        $url = 'http://' . C('SERVER_IP') . '/RefreshOblation';
+        $params = 'userName='.$user_info['username'].'&password='.$user_info['password'];
+        $params = $this->publicEncrypt($params);
+        $url .= '?data=' . $params;
+
+        $lists = $this->getHTTPData($url);
+        if($lists['ret'] == 1){
+            $this->success('操作成功！',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/basicWorshipFarmland'));
+            die;
+        }else{
+            $this->error('操作失败!',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/basicWorshipFarmland'));
+            die;
+        }
+    }
 }

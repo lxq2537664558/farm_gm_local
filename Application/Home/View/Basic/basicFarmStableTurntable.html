@@ -49,7 +49,7 @@
                             <if condition="$s['select'] eq 1">
                                 <td>已选择</td>
                             <else/>
-                                <td><a href="{:U('Home/Basic/selectTurnTable',array('area'=>$current_area,'id'=>$s['id'],'turnType'=>$current_turnType))}">选择</a></td>
+                                <td><a href="{:U('Home/Basic/selectTurnTable',array('area'=>$current_area,'id'=>$s['id'],'turnType'=>$current_turnType))}" onClick="return confirm('确定提交吗?');">选择</a></td>
                             </if>
                         </tr>
                     </foreach>

@@ -24,7 +24,7 @@
                         <th>邮件标题</th>
                         <th style="width: 700px;">邮件内容<span style="color: red">[内容有代码属正常现象]</span></th>
                         <th>物品ID</th>
-                        <th>物品数量</th>
+                        <th style="width: 200px;">物品数量</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -33,8 +33,8 @@
                         <tr>
                             <td>{$m['title']}</td>
                             <td style="word-wrap: break-word; word-break: break-all;">{$m['content']}</td>
-                            <td>{$m['item_ids']}</td>
-                            <td>{$m['item_number']}</td>
+                            <td style="word-wrap: break-word; word-break: break-all;">{$m['item_ids']}</td>
+                            <td style="word-wrap: break-word; word-break: break-all;">{$m['item_number']}</td>
                             <td>
                                 <if condition="$group neq 0">
                                     <a href="{:U('Home/Basic/basicAddMail',array('id'=>$m['id']))}">编辑</a>

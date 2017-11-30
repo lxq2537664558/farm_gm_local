@@ -57,9 +57,12 @@
     $('#collapse-nav8').addClass('am-in');
     $('.set_btn').click(function(){
         var a = false;
+        var b = confirm("确定要提交?");
         $(this).siblings('.set_btn').prop("name","");
-        if($(this).siblings('.set_btn').prop("name")==""){
+        if($(this).siblings('.set_btn').prop("name")=="" && b == true){
             a = true;
+        }else{
+            a =false;
         }
         return a;
     })

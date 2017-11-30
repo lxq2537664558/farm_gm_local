@@ -936,7 +936,7 @@ class BasicController extends BaseController {
         $sets_temp = $this->sortInfoById($sets_temp,'id');
         ksort($sets_temp);
         $sets = array_values($sets_temp);
-//        var_dump($lists['items']);
+//        var_dump($lists['items']);die;
 
         $this->assign('basic_navi',$basic_navi);
         $this->assign('sets',$sets);

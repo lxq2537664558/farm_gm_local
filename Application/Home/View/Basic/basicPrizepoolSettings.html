@@ -40,8 +40,8 @@
                         <td>
                             <form method="post" action="{$url}">
                                 <input type="text" name="num" value="">
-                                <button name="add" value="1">增加</button>
-                                <button name="remove" value="1">减少</button>
+                                <button class="set_btn" name="add">增加</button>
+                                <button class="set_btn" name="remove">减少</button>
                             </form>
                         </td>
                     </tr>
@@ -55,6 +55,14 @@
 <script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
 <script type="text/javascript">
     $('#collapse-nav8').addClass('am-in');
+    $('.set_btn').click(function(){
+        var a = false;
+        $(this).siblings('.set_btn').prop("name","");
+        if($(this).siblings('.set_btn').prop("name")==""){
+            a = true;
+        }
+        return a;
+    })
 </script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
 </body>

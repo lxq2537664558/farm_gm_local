@@ -969,4 +969,33 @@ class BasicController extends BaseController {
             die;
         }
     }
+
+    public function basicAnnounce(){
+        $post = I('post.');
+
+        if($post) {
+            $content = I('post.content', '');
+            if (!$content) {
+                $this->error('操作失败，内容不能为空!');
+                die;
+            }
+
+            //请求接口
+            $url = 'http://' . C('SERVER_IP') . '/SendWorldNotice';
+            $params = 'content=' . $content . '&type=3000';
+            $params = $this->publicEncrypt($params);
+            $url .= '?data=' . $params;
+
+            $lists = $this->getHTTPData($url);
+            if($lists['ret'] == 1){
+                $this->success('操作成功！',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
+                die;
+            }else{
+                $this->error('操作失败!',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME));
+                die;
+            }
+        }
+
+        $this->display();
+    }
 }

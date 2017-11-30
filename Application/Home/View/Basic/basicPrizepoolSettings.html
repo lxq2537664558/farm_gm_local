@@ -30,17 +30,19 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>111</td>
-                        <td>111</td>
-                        <td>111</td>
-                        <td>111</td>
-                        <td>111</td>
-                        <td>111</td>
-                        <td>111</td>
+                        <td>{$info['inNum']}</td>
+                        <td>{$info['outNum']}</td>
+                        <td>{$info['in_out']}</td>
+                        <td>{$info['rewardNum']}</td>
+                        <td>{$info['addNum']}</td>
+                        <td>{$info['removeNum']}</td>
+                        <td>{$info['add_remove']}</td>
                         <td>
-                            <input type="text" name="" value="">
-                            <button>增加</button>
-                            <button>减少</button>
+                            <form method="post" action="{$url}">
+                                <input type="text" name="num" value="">
+                                <button name="add" value="1">增加</button>
+                                <button name="remove" value="1">减少</button>
+                            </form>
                         </td>
                     </tr>
                 </tbody>

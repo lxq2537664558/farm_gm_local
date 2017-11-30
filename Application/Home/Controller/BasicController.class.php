@@ -998,4 +998,20 @@ class BasicController extends BaseController {
 
         $this->display();
     }
+
+    //奖池设置
+    public function basicPrizepoolSettings(){
+        //请求接口
+        $url = 'http://' . C('SERVER_IP') . '/GetRewardInfo';
+        $lists = $this->getHTTPData($url);
+
+        $this->assign('url',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/doPrizepoolSettings'));
+        $this->assign('info',$lists);
+        $this->display();
+    }
+
+    //执行奖金的增减
+    public function doPrizepoolSettings(){
+        
+    }
 }

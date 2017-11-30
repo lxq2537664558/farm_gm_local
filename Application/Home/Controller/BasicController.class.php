@@ -1012,6 +1012,37 @@ class BasicController extends BaseController {
 
     //执行奖金的增减
     public function doPrizepoolSettings(){
-        
+        $add = I('post.add',0);
+        $num = I('post.num',0);
+
+        if($add == 1){
+            //添加的接口
+            $url = 'http://' . C('SERVER_IP') . '/AddReward';
+        }else{
+            //减少的接口
+            $url = 'http://' . C('SERVER_IP') . '/RemoveReward';
+        }
+
+        //获取用户信息
+        $session_info = session(C('ADMIN_LOGIN_SESSION_FIELD'));
+        $where['id'] = $session_info['uid'];
+        $user_info = $this->getAll('admin',$where);
+        $user_info = current($user_info);
+
+        //请求接口
+        $params = 'num='.$num.'&userName='.$user_info['username'].'&password='.$user_info['password'];
+//        var_dump($params);
+        $params = $this->publicEncrypt($params);
+        $url .= '?data=' . $params;
+
+        $lists = $this->getHTTPData($url);
+//        var_dump($lists);die;
+        if($lists['ret'] == 1){
+            $this->success('操作成功！',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/basicPrizepoolSettings'));
+            die;
+        }else{
+            $this->error('操作失败!',U(MODULE_NAME.'/'.CONTROLLER_NAME.'/basicPrizepoolSettings'));
+            die;
+        }
     }
 }

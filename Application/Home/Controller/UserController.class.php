@@ -24,12 +24,17 @@ class UserController extends BaseController {
     public function index(){
         set_time_limit(0);
         $post = I('post.');
+        $show = $_GET['show'];
 
         if($post) {
             $search = I('post.search','','trim');
             $table = I('post.table');
             $page = I('post.page', 1);
-            $pager = array('page' => $page, 'pageSize' => 20);
+            if($show) {
+                $pager = array('page' => $page, 'pageSize' => 25);
+            }else {
+                $pager = array('page' => $page, 'pageSize' => 20);
+            }
             $nicheng = I('post.nicheng',0);
 
             //模糊搜索

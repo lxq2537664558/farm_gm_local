@@ -90,10 +90,10 @@ if($('#largest_page').text()==1){
 $('#next').click(function(){
     page++;
     checktable($('.setting_display_num_input').val());
-    console.log(1);
+    // console.log(1);
     $('#prev').attr('disabled',false).css('background','#ED6033');
     if(page==$('#largest_page').text()){
-        console.log(1);
+        // console.log(1);
         $(this).attr('disabled',true).css('background','gray');
     }
 
@@ -113,11 +113,6 @@ $('#prev').click(function(){
 $('#search button').click(function(){
     page = 1;
     $('#prev').attr('disabled',true).css('background','gray');
-    // if($('#search select').val()=="uid"){
-    //     checktable1($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
-    // }else{
-    //     checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
-    // }
     checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
     // 若最大页为1，设置下一页不可点
     if($('#largest_page').text()==1){
@@ -170,7 +165,7 @@ $('#search button').click(function(){
             jump_num = current_page;
             $('#jump_val').val(current_page);
         }
-        
+
         page = jump_num;
         checktable($('.setting_display_num_input').val(),$('#search .mohu').val(),$('#search select').val(),$('#search .more_money').val(),$('#search .less_money').val());
 

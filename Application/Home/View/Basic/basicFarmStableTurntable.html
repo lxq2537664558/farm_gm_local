@@ -35,6 +35,7 @@
                     <th>道具类型</th>
                     <th>档位</th>
                     <th>档位几率</th>
+                    <th>次数</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -46,16 +47,17 @@
                             <td>{:join(',',$s['rewardIds'])}</td>
                             <td>{:join(',',$s['rewardCount'])}</td>
                             <td>{:join(',',$s['getRewardProbability'])}</td>
+                            <td>{$s['times']}</td>
                             <if condition="$s['select'] eq 1">
                                 <td>已选择</td>
                             <else/>
                                 <td><a href="{:U('Home/Basic/selectTurnTable',array('area'=>$current_area,'id'=>$s['id'],'turnType'=>$current_turnType))}" onClick="return confirm('确定提交吗?');">选择</a></td>
                             </if>
                         </tr>
+                        <!--<p class="times" style="margin-left: 30px;">共玩了 <b style="color: red"></b> 次</p>-->
                     </foreach>
                 </tbody>
             </table>
-            <b>共玩了<b style="color: red">{$s['times']}</b>次</b>
         </div>
     </div>
 </div>
@@ -64,6 +66,9 @@
 <script type="text/javascript" src="__PUBLIC__/assets/js/ipaddress.js"></script>
 <script type="text/javascript">
     $('#collapse-nav8').addClass('am-in');
+
+    $('.times').eq(1).hide();
+    $('.times').eq(2).hide();
 </script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/nav.js"></script>
 </body>

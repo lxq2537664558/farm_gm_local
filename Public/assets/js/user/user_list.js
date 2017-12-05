@@ -270,7 +270,8 @@ $('#prev').click(function(){
 $('#search button').click(function(){
     page = 1;
     $('#prev').attr('disabled',true).css('background','gray');
-    checktable($('.is_nickname').val(),$('#search input').val());
+    // checktable($('.is_nickname').val(),$('#search input').val());
+    checktable($('.setting_display_num_input').val(),$('.is_nickname').val(),$('#search input').val());
     // 若最大页为1，设置下一页不可点
     if($('#largest_page').text()==1){
         $('#next').attr('disabled',true).css('background','gray');
